@@ -3,13 +3,13 @@
     <div style="display: flex;position:relative;left:50px;">
         <div style="position:relative;width:241px;height:188px;border:2px solid black;padding-left:5px;">
             <div style="width:100%;text-align:center;padding-top:5px;">
-                <img src="<?= base_url(); ?>/dist/img/logo_text.png" alt="PT TRUSUR" height="75">
+                <img src="<?= base_url(); ?>/dist/img/logo_text.png" alt="INTIMES" height="75">
             </div>
-            <b>PT. Trusur Unggul Teknusa</b><br>
-            Jl. Lapangan Tembak No. 64 G,<br>
-            Cibubur, Jakarta Timur 13720<br>
-            INDONESIA<br>
-            Telp. +62(21)29627001 - 3
+            <b>PT. Cahaya Berkat Abadi</b><br>
+            Ruko Grand Galaxy City Blok RSA5 No.2<br>
+            Jaka Setia, Bekasi Selatan, Kota Bekasi<br>
+            Jawa Barat 17147<br>
+            Telp. +62(21)82731502 ext. 189
         </div>
         <div style="position:relative;width:375px;height:188px;border:2px solid black;left:-2px;text-align:center;padding-top:50px;font-size:24px;">
             <b>Purchase Request</b>

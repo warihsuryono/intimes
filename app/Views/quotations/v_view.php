@@ -2,13 +2,13 @@
 <div style="font-size:14px">
     <div style="display: flex;position:relative;left:50px;">
         <div style="position:relative;width:199px;height:199px;border-bottom:3px solid black;">
-            <img src="<?= base_url(); ?>/dist/img/logo_text_2.png" alt="PT TRUSUR" width="190">
+            <img src="<?= base_url(); ?>/dist/img/logo_text_2.png" alt="INTIMES" width="190">
         </div>
         <div style="position:relative;width:596px;height:199px;border-bottom:3px solid black;text-align:center;padding-top:40px;">
-            <b style="font-weight:bolder;font-size:30px;">PT. TRUSUR UNGGUL TEKNUSA</b><br>
-            Jalan Lapangan Tembak Raya No. 64-G Cibubur Jakarta Timur 13720<br>
-            Telp: (021) 29627001-3&nbsp;&nbsp;&nbsp;&nbsp;Faks: (021) 29627005<br>
-            <u>www.trusur.com</u>
+            <b style="font-weight:bolder;font-size:30px;">PT. CAHAYA BERKAT ABADI</b><br>
+            Ruko Grand Galaxy City Blok RSA5 No.2, Jaka Setia, Bekasi Selatan, Kota Bekasi, Jawa Barat 17147<br>
+            Telp: (021) 82731502 ext. 189<br>
+            <u>www.intimessolution.com</u>
         </div>
         <div style="position:relative;width:170px;height:199px;border-bottom:3px solid black;padding-top:5px;padding-left:20px;">
             <img src="<?= base_url(); ?>/dist/img/logo_kan.png" alt="KAN" width="142">
@@ -163,7 +163,7 @@
     <div style="display: flex;position:relative;left:50px;">
         <div style="width:965px;">
             Hormat Kami,<br>
-            <b>PT. Trusur Unggul Teknusa</b>
+            <b>PT. Cahaya Berkat Abadi</b>
             <?php if ($quotation->is_approved == "0") : ?> <br><br><button class="btn btn-primary d-print-none" onclick="approving();"><i class="fa fa-check"></i> Approve</button> <?php endif ?>
             <?php if (file_exists("dist/upload/users_signature/" . @$approved_user->signature) && @$approved_user->signature != "") : ?>
                 <br><br><img src="<?= base_url(); ?>/dist/upload/users_signature/<?= @$approved_user->signature; ?>" height="90">

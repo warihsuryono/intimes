@@ -1,6 +1,6 @@
 </div>
 <footer class="main-footer d-print-none">
-    <strong>Copyright &copy; <?= date("Y"); ?> <a href="https://trusur.com">PT. Trusur Unggul Teknusa</a>.</strong>
+    <strong>Copyright &copy; <?= date("Y"); ?> <a href="https://intimessolution.com">PT. Cahaya Berkat Abadi</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 1.0

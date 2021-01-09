@@ -97,7 +97,6 @@
         $("[name='price_notes']").val("Harga franco Jakarta");
         $("[name='payment_notes']").val("30 hari kalender setelah invoice di terima");
         $("[name='execution_time']").val("Waktu pengerjaan 7 (tujuh) hari kerja");
-        $("[name='execution_at']").val("Pengerjaan kalibrasi dilakukan di Lab. PT Trusur");
         $("[name='validation_notes']").val("Validasi penawaran 30 hari");
     <?php endif ?>
     <?php if (isset($quotation_details) && count($quotation_details) > 0) : ?>

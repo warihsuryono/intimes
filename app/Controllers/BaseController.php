@@ -19,7 +19,6 @@ use App\Models\m_a_menu;
 use App\Models\m_a_user;
 use App\Models\m_a_group;
 use App\Models\m_division;
-use App\Models\m_sales_category;
 use CodeIgniter\Controller;
 
 class BaseController extends Controller
@@ -28,7 +27,6 @@ class BaseController extends Controller
 	protected $groups;
 	protected $menus;
 	protected $divisions;
-	protected $sales_categories;
 	protected $session;
 
 	public function __construct()
@@ -37,7 +35,6 @@ class BaseController extends Controller
 		$this->groups =  new m_a_group();
 		$this->menus =  new m_a_menu();
 		$this->divisions =  new m_division();
-		$this->sales_categories =  new m_sales_category();
 		$this->session = \Config\Services::session();
 		if ($_SERVER["REQUEST_URI"] != "/login" && !$this->session->get("loggedin")) {
 			echo "<script> window.location='" . base_url() . "/login'; </script>";
@@ -507,15 +504,6 @@ class BaseController extends Controller
 				public function numberpad($number, $pad)
 				{
 					return sprintf("%0" . $pad . "d", $number);
-				}
-
-				public function letter_no_template($type, $sales_category_id = 1)
-				{
-					$division_id = $this->users->where("is_deleted", 0)->find([$this->session->get("user_id")])[0]->division_id;
-					$div = @$this->divisions->where("is_deleted", 0)->find([$division_id])[0]->initial;
-					$letter_no_variables = ["{seqno}", "{month}", "{month_roman}", "{year}", "{div}"];
-					$letter_no_values = ["%", date("m"), $this->numberToRoman(date("m")), date("Y"), $div];
-					return str_replace($letter_no_variables, $letter_no_values, @$this->sales_categories->where("is_deleted", 0)->find([$sales_category_id])[0]->$type);
 				}
 
 				public function supplier_invoice_no_template()

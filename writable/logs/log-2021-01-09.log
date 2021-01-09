@@ -1,0 +1,7 @@
+CRITICAL - 2021-01-09 14:46:12 --> Class 'App\Models\m_sales_category' not found
+#0 C:\xampp\htdocs\intimes\vendor\codeigniter4\framework\system\CodeIgniter.php(886): App\Controllers\BaseController->__construct()
+#1 C:\xampp\htdocs\intimes\vendor\codeigniter4\framework\system\CodeIgniter.php(395): CodeIgniter\CodeIgniter->createController()
+#2 C:\xampp\htdocs\intimes\vendor\codeigniter4\framework\system\CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\xampp\htdocs\intimes\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#4 C:\xampp\htdocs\intimes\vendor\codeigniter4\framework\system\Commands\Server\rewrite.php(34): require_once('C:\\xampp\\htdocs...')
+#5 {main}

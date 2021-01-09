@@ -1,0 +1,18 @@
+CRITICAL - 2020-08-26 12:02:24 --> Invalid file: _menus/v_list.php
+#0 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('_menus/v_list.p...')
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/Common.php(1087): CodeIgniter\View\View->render('_menus/v_list', Array, true)
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/A_menu.php(52): view('_menus/v_list')
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\A_menu->index()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\A_menu))
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2020-08-26 14:07:14 --> Invalid file: _menus/v_list.php
+#0 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('_menus/v_list.p...')
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/Common.php(1087): CodeIgniter\View\View->render('_menus/v_list', Array, true)
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/A_menu.php(52): view('_menus/v_list')
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\A_menu->index()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\A_menu))
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#7 {main}

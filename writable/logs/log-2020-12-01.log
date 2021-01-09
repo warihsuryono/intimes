@@ -1,0 +1,27 @@
+CRITICAL - 2020-12-01 07:41:59 --> Invalid argument supplied for foreach()
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/Maintenance_item.php(114): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Invalid argumen...', '/home/ispumaps/...', 114, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\Maintenance_item->add()
+#2 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Maintenance_item))
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2020-12-01 07:45:31 --> Invalid argument supplied for foreach()
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/Maintenance_item.php(114): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Invalid argumen...', '/home/ispumaps/...', 114, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\Maintenance_item->add()
+#2 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Maintenance_item))
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2020-12-01 07:47:06 --> Invalid argument supplied for foreach()
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/Maintenance_item.php(114): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Invalid argumen...', '/home/ispumaps/...', 114, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\Maintenance_item->add()
+#2 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Maintenance_item))
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2020-12-01 08:26:50 --> Too few arguments to function App\Controllers\Item_scope::scopes_by_type_id(), 0 passed in /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php on line 914 and exactly 1 expected
+#0 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\Item_scope->scopes_by_type_id()
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Item_scope))
+#2 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#4 {main}

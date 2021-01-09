@@ -1,0 +1,57 @@
+CRITICAL - 2020-11-20 17:26:06 --> Creating default object from empty value
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/Quotation.php(367): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Creating defaul...', '/home/ispumaps/...', 367, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\Quotation->get_quotation()
+#2 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Quotation))
+#3 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2020-11-20 17:29:56 --> A non-numeric value encountered
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/BaseController.php(380): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric v...', '/home/ispumaps/...', 380, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(104): App\Controllers\BaseController->angka_kalimat('')
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(149): App\Controllers\So->saving_data('add')
+#3 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(284): App\Controllers\So->saving_add()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\So->add()
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\So))
+#6 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2020-11-20 17:29:59 --> A non-numeric value encountered
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/BaseController.php(380): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric v...', '/home/ispumaps/...', 380, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(104): App\Controllers\BaseController->angka_kalimat('')
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(149): App\Controllers\So->saving_data('add')
+#3 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(284): App\Controllers\So->saving_add()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\So->add()
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\So))
+#6 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2020-11-20 17:30:09 --> A non-numeric value encountered
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/BaseController.php(380): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric v...', '/home/ispumaps/...', 380, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(104): App\Controllers\BaseController->angka_kalimat('')
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(149): App\Controllers\So->saving_data('add')
+#3 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(284): App\Controllers\So->saving_add()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\So->add()
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\So))
+#6 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2020-11-20 17:30:21 --> A non-numeric value encountered
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/BaseController.php(380): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric v...', '/home/ispumaps/...', 380, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(104): App\Controllers\BaseController->angka_kalimat('')
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(149): App\Controllers\So->saving_data('add')
+#3 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(284): App\Controllers\So->saving_add()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\So->add()
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\So))
+#6 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2020-11-20 17:30:28 --> A non-numeric value encountered
+#0 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/BaseController.php(380): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric v...', '/home/ispumaps/...', 380, Array)
+#1 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(104): App\Controllers\BaseController->angka_kalimat('')
+#2 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(149): App\Controllers\So->saving_data('add')
+#3 /home/ispumaps/public_html/trusur_dashboards/app/Controllers/So.php(284): App\Controllers\So->saving_add()
+#4 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(914): App\Controllers\So->add()
+#5 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(400): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\So))
+#6 /home/ispumaps/public_html/trusur_dashboards/vendor/codeigniter4/framework/system/CodeIgniter.php(308): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/ispumaps/public_html/trusur_dashboards/index.php(45): CodeIgniter\CodeIgniter->run()
+#8 {main}

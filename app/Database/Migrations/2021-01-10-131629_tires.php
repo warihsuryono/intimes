@@ -4,16 +4,23 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class TirePositions extends Migration
+class Tires extends Migration
 {
 	public function up()
 	{
 		$this->forge->addField([
 			'id'			=> ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
 			'name'			=> ['type' => 'VARCHAR', 'constraint' => 100, 'default' => ''],
-			'left_right'	=> ['type' => 'VARCHAR', 'constraint' => 5, 'default' => ''],
-			'front_rear'	=> ['type' => 'VARCHAR', 'constraint' => 5, 'default' => ''],
-			'inner_outter'	=> ['type' => 'VARCHAR', 'constraint' => 6, 'default' => ''],
+			'qrcode'		=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],
+			'serialno'		=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],
+			'is_retread'	=> ['type' => 'SMALLINT', 'constraint' => 1, 'default' => '1'],
+			'tire_size_id'	=> ['type' => 'INT', 'default' => '0'],
+			'tire_brand_id'	=> ['type' => 'INT', 'default' => '0'],
+			'tire_type_id'	=> ['type' => 'INT', 'default' => '0'],
+			'tread_depth'	=> ['type' => 'DOUBLE', 'default' => '0'],
+			'pattern'		=> ['type' => 'VARCHAR', 'constraint' => 30, 'default' => ''],
+			'psi'			=> ['type' => 'DOUBLE', 'default' => '0'],
+			'remark'		=> ['type' => 'VARCHAR', 'constraint' => 255, 'default' => ''],
 			'created_at'	=> ['type' => 'datetime', 'null' => true],
 			'created_by'	=> ['type' => 'VARCHAR', 'constraint' => 100, 'default' => ''],
 			'created_ip'	=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],
@@ -28,17 +35,21 @@ class TirePositions extends Migration
 		]);
 		$this->forge->addKey('id', TRUE);
 		$this->forge->addKey('is_deleted');
+		$this->forge->addKey('qrcode');
+		$this->forge->addKey('serialno');
 		$this->forge->addKey('name');
-		$this->forge->addKey('left_right');
-		$this->forge->addKey('front_rear');
-		$this->forge->addKey('inner_outter');
-		$this->forge->createTable('tire_positions', TRUE);
+		$this->forge->addKey('is_retread');
+		$this->forge->addKey('tire_size_id');
+		$this->forge->addKey('tire_brand_id');
+		$this->forge->addKey('tire_type_id');
+		$this->forge->addKey('pattern');
+		$this->forge->createTable('tires', TRUE);
 	}
 
 	//--------------------------------------------------------------------
 
 	public function down()
 	{
-		$this->forge->dropTable('tire_positions');
+		$this->forge->dropTable('tires');
 	}
 }

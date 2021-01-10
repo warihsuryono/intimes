@@ -4,16 +4,19 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class TirePositions extends Migration
+class TireSizes extends Migration
 {
 	public function up()
 	{
 		$this->forge->addField([
 			'id'			=> ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
 			'name'			=> ['type' => 'VARCHAR', 'constraint' => 100, 'default' => ''],
-			'left_right'	=> ['type' => 'VARCHAR', 'constraint' => 5, 'default' => ''],
-			'front_rear'	=> ['type' => 'VARCHAR', 'constraint' => 5, 'default' => ''],
-			'inner_outter'	=> ['type' => 'VARCHAR', 'constraint' => 6, 'default' => ''],
+			'diameter'		=> ['type' => 'DOUBLE', 'default' => '0'],
+			'width'			=> ['type' => 'DOUBLE', 'default' => '0'],
+			'wheel'			=> ['type' => 'DOUBLE', 'default' => '0'],
+			'sidewall'		=> ['type' => 'DOUBLE', 'default' => '0'],
+			'circumference'	=> ['type' => 'DOUBLE', 'default' => '0'],
+			'revs_mile'		=> ['type' => 'DOUBLE', 'default' => '0'],
 			'created_at'	=> ['type' => 'datetime', 'null' => true],
 			'created_by'	=> ['type' => 'VARCHAR', 'constraint' => 100, 'default' => ''],
 			'created_ip'	=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],
@@ -29,16 +32,13 @@ class TirePositions extends Migration
 		$this->forge->addKey('id', TRUE);
 		$this->forge->addKey('is_deleted');
 		$this->forge->addKey('name');
-		$this->forge->addKey('left_right');
-		$this->forge->addKey('front_rear');
-		$this->forge->addKey('inner_outter');
-		$this->forge->createTable('tire_positions', TRUE);
+		$this->forge->createTable('tire_sizes', TRUE);
 	}
 
 	//--------------------------------------------------------------------
 
 	public function down()
 	{
-		$this->forge->dropTable('tire_positions');
+		$this->forge->dropTable('tire_sizes');
 	}
 }

@@ -46,5 +46,32 @@ class MasterSeeder extends \CodeIgniter\Database\Seeder
             ['name'  => '255/40R13',    'diameter'  =>  '21.0',    'width '  =>  '10.0',   'wheel'  =>  '13',   'sidewall'  =>  '4.0', 'circumference'  =>  '66.0',    'revs_mile'  =>  '959'],
         ];
         $this->db->table('tire_sizes')->insertBatch($data);
+
+        $data = [
+            ['id' => '1',   'seqno'  => '1',    'parent_id'  =>  '0',    'name'  =>  'Home',    'url'  =>  '',   'icon'  =>  'fas fa-home'],
+            ['id' => '2',   'seqno'  => '2',    'parent_id'  =>  '0',    'name'  =>  'Master',    'url'  =>  '#',   'icon'  =>  'fa fa-database'],
+            ['id' => '3',   'seqno'  => '3',    'parent_id'  =>  '0',    'name'  =>  'Process',    'url'  =>  '#',   'icon'  =>  'fas fa-project-diagram'],
+            ['id' => '4',   'seqno'  => '4',    'parent_id'  =>  '0',    'name'  =>  'Reports',    'url'  =>  '#',   'icon'  =>  'fas fa-chart-line'],
+            ['id' => '5',   'seqno'  => '5',    'parent_id'  =>  '0',    'name'  =>  'General',    'url'  =>  '#',   'icon'  =>  'fas fa-bookmark'],
+        ];
+        $this->db->table('a_menu')->insertBatch($data);
+
+        $data = [
+            ['seqno'  => '1',    'parent_id'  =>  '2',    'name'  =>  'Customer',    'url'  =>  'customers',   'icon'  =>  'far fa-address-book'],
+            ['seqno'  => '2',    'parent_id'  =>  '2',    'name'  =>  'Tire Size',    'url'  =>  'tire_sizes',   'icon'  =>  'fas fa-ruler-horizontal'],
+            ['seqno'  => '3',    'parent_id'  =>  '2',    'name'  =>  'Tire Brand',    'url'  =>  'tire_brands',   'icon'  =>  'fa fa-copyright'],
+            ['seqno'  => '4',    'parent_id'  =>  '2',    'name'  =>  'Tire Type',    'url'  =>  'tire_types',   'icon'  =>  'fa fa-list-alt'],
+            ['seqno'  => '5',    'parent_id'  =>  '2',    'name'  =>  'Tires',    'url'  =>  'tires',   'icon'  =>  'far fa-life-ring'],
+            ['seqno'  => '6',    'parent_id'  =>  '2',    'name'  =>  'Vehicle Brand',    'url'  =>  'vehicle_brands',   'icon'  =>  'fas fa-car'],
+            ['seqno'  => '7',    'parent_id'  =>  '2',    'name'  =>  'Vehicle Type',    'url'  =>  'vehicle_types',   'icon'  =>  'fas fa-shuttle-van'],
+            ['seqno'  => '8',    'parent_id'  =>  '2',    'name'  =>  'Vehicles',    'url'  =>  'vehicles',   'icon'  =>  'fas fa-truck'],
+            ['seqno'  => '1',    'parent_id'  =>  '3',    'name'  =>  'QR Code',    'url'  =>  'qrcode',   'icon'  =>  'fa fa-barcode'],
+            ['seqno'  => '2',    'parent_id'  =>  '3',    'name'  =>  'Pemasangan',    'url'  =>  'installations',   'icon'  =>  'fa fa-download'],
+            ['seqno'  => '3',    'parent_id'  =>  '3',    'name'  =>  'Pengecekan',    'url'  =>  'checkings',   'icon'  =>  'fa fa-check'],
+            ['seqno'  => '4',    'parent_id'  =>  '3',    'name'  =>  'Klaim',    'url'  =>  'claims',   'icon'  =>  'fas fa-sync'],
+            ['seqno'  => '1',    'parent_id'  =>  '5',    'name'  =>  'Change Password',    'url'  =>  'changepassword',   'icon'  =>  'fas fa-key'],
+            ['seqno'  => '2',    'parent_id'  =>  '5',    'name'  =>  'Profile',    'url'  =>  'user/profile',   'icon'  =>  'far fa-user-circle'],
+        ];
+        $this->db->table('a_menu')->insertBatch($data);
     }
 }

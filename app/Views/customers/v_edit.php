@@ -115,28 +115,6 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label for="coa">COA</label>
-                                        <select name="coa" class="form-control">
-                                            <option value="" selected>-- Select COA --</option>
-                                            <?php foreach ($coas as $coa) : ?>
-                                                <option value="<?= $coa->coa; ?>"><?= $coa->coa . ' - ' . $coa->description ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="payment_type_id">Customer Payment Type</label>
-                                        <select name="payment_type_id" class="form-control">
-                                            <option value="" selected>-- Customer Payment Type --</option>
-                                            <?php foreach ($payment_types as $p_type) : ?>
-                                                <option value="<?= $p_type->id; ?>"><?= $p_type->name; ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
                                         <label for="bank_id">Banks</label>
                                         <select name="bank_id" class="form-control">
                                             <option value="" selected>-- Select Bank --</option>

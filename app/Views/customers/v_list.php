@@ -55,12 +55,6 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label>COA</label>
-                                                <input name="coa" value="<?= @$_GET["coa"]; ?>" type="text" class="form-control" placeholder="COA ...">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
                                                 <label>AM</label>
                                                 <input name="am_by" value="<?= @$_GET["am_by"]; ?>" type="text" class="form-control" placeholder="AM ...">
                                             </div>
@@ -267,16 +261,6 @@
                                                 <td width="200">TAX Invoice No</td>
                                                 <td width="5">:</td>
                                                 <td><?= $customer->tax_invoice_no ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="200">COA</td>
-                                                <td width="5">:</td>
-                                                <td><?= $customer_detail[$customer->id]["coa"]; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="200">Payment Type</td>
-                                                <td width="5">:</td>
-                                                <td><?= $customer_detail[$customer->id]["payment_type_id"]; ?></td>
                                             </tr>
                                             <tr>
                                                 <td width="200">Bank</td>

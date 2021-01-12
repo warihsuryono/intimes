@@ -3,9 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\m_customer;
-use App\Models\m_payment_type;
 use App\Models\m_bank;
-use App\Models\m_coa;
 use App\Models\m_customer_level;
 use App\Models\m_customer_prospect;
 use App\Models\m_industry_category;
@@ -15,9 +13,7 @@ class Customer extends BaseController
     protected $menu_ids;
     protected $route_name;
     protected $customers;
-    protected $payment_types;
     protected $banks;
-    protected $coas;
     protected $customer_levels;
     protected $customer_prospect;
     protected $industry_categories;
@@ -28,9 +24,7 @@ class Customer extends BaseController
         $this->route_name = "customers";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->customers =  new m_customer();
-        $this->payment_types =  new m_payment_type();
         $this->banks =  new m_bank();
-        $this->coas =  new m_coa();
         $this->customer_levels =  new m_customer_level();
         $this->customer_prospects =  new m_customer_prospect();
         $this->industry_categories =  new m_industry_category();
@@ -60,9 +54,6 @@ class Customer extends BaseController
         if (isset($_GET["pic"]) && $_GET["pic"] != "")
             $wherclause .= " AND pic LIKE '%" . $_GET["pic"] . "%'";
 
-        if (isset($_GET["coa"]) && $_GET["coa"] != "")
-            $wherclause .= " AND coa LIKE '%" . $_GET["coa"] . "%'";
-
         if (isset($_GET["am_by"]) && $_GET["am_by"] != "")
             $wherclause .= " AND (am_by LIKE '%" . $_GET["am_by"] . "%' OR am_by IN (SELECT email FROM a_users WHERE name LIKE '%" . $_GET["am_by"] . "%'))";
 
@@ -71,9 +62,7 @@ class Customer extends BaseController
             $numrow = count($this->customers->where($wherclause)->findAll());
 
             foreach ($customers as $customer) {
-                $customer_detail[$customer->id]["payment_type_id"] = @$this->payment_types->where("id", $customer->payment_type_id)->get()->getResult()[0]->name;
                 $customer_detail[$customer->id]["bank_id"] = @$this->banks->where("id", $customer->bank_id)->get()->getResult()[0]->name;
-                $customer_detail[$customer->id]["coa"] = @$this->coas->where("coa", $customer->coa)->get()->getResult()[0]->coa;
                 $customer_detail[$customer->id]["customer_level_id"] = @$this->customer_levels->where("id", $customer->customer_level_id)->get()->getResult()[0]->name;
                 $customer_detail[$customer->id]["customer_prospect_id"] = @$this->customer_prospects->where("id", $customer->customer_prospect_id)->get()->getResult()[0]->name;
                 $customer_detail[$customer->id]["industry_category_id"] = @$this->industry_categories->where("id", $customer->industry_category_id)->get()->getResult()[0]->name;
@@ -86,9 +75,7 @@ class Customer extends BaseController
         $data["numrow"]         = $numrow;
         $data["maxpage"]        = ceil($numrow / MAX_ROW);
         $data["industry_categories"] = $this->industry_categories->where("is_deleted", 0)->findAll();
-        $data["payment_types"]  = $this->payment_types->where("is_deleted", 0)->findAll();
         $data["banks"]          = $this->banks->where("is_deleted", 0)->findAll();
-        $data["coas"]           = $this->coas->where("is_deleted", 0)->findAll();
         $data["customer_levels"] = $this->customer_levels->where("is_deleted", 0)->findAll();
         $data["customer_prospects"] = $this->customer_prospects->where("is_deleted", 0)->findAll();
         $data["customers"]      = $customers;
@@ -123,8 +110,6 @@ class Customer extends BaseController
                 "npwp"              => @$_POST["npwp"],
                 "nppkp"             => @$_POST["nppkp"],
                 "tax_invoice_no"    => @$_POST["tax_invoice_no"],
-                "coa"               => @$_POST["coa"],
-                "payment_type_id"   => @$_POST["payment_type_id"],
                 "bank_id"           => @$_POST["bank_id"],
                 "bank_account"      => @$_POST["bank_account"],
                 "reg_code"          => @$_POST["reg_code"],
@@ -145,9 +130,7 @@ class Customer extends BaseController
 
         $data["__modulename"]       = "Add Customer";
         $data["industry_categories"] = $this->industry_categories->where("is_deleted", 0)->findAll();
-        $data["payment_types"]      = $this->payment_types->where("is_deleted", 0)->findAll();
         $data["banks"]              = $this->banks->where("is_deleted", 0)->findAll();
-        $data["coas"]               = $this->coas->where("is_deleted", 0)->findAll();
         $data["customer_levels"]    = $this->customer_levels->where("is_deleted", 0)->findAll();
         $data["customer_prospects"] = $this->customer_prospects->where("is_deleted", 0)->findAll();
         $data["am_by"]              = $this->session->get("username");
@@ -181,8 +164,6 @@ class Customer extends BaseController
                 "npwp"              => @$_POST["npwp"],
                 "nppkp"             => @$_POST["nppkp"],
                 "tax_invoice_no"    => @$_POST["tax_invoice_no"],
-                "coa"               => @$_POST["coa"],
-                "payment_type_id"   => @$_POST["payment_type_id"],
                 "bank_id"           => @$_POST["bank_id"],
                 "bank_account"      => @$_POST["bank_account"],
                 "reg_code"          => @$_POST["reg_code"],
@@ -203,9 +184,7 @@ class Customer extends BaseController
 
         $data["__modulename"]       = "Edit Customer";
         $data["industry_categories"] = $this->industry_categories->where("is_deleted", 0)->findAll();
-        $data["payment_types"]      = $this->payment_types->where("is_deleted", 0)->findAll();
         $data["banks"]              = $this->banks->where("is_deleted", 0)->findAll();
-        $data["coas"]               = $this->coas->where("is_deleted", 0)->findAll();
         $data["customer"]           = $this->customers->where("is_deleted", 0)->find([$id])[0];
         $data["customer_levels"]    = $this->customer_levels->where("is_deleted", 0)->findAll();
         $data["customer_prospects"] = $this->customer_prospects->where("is_deleted", 0)->findAll();

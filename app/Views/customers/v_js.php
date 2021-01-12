@@ -17,8 +17,6 @@
         $("[name='npwp']").val("<?= $customer->npwp; ?>");
         $("[name='nppkp']").val("<?= $customer->nppkp; ?>");
         $("[name='tax_invoice_no']").val("<?= $customer->tax_invoice_no; ?>");
-        $("[name='coa']").val("<?= $customer->coa; ?>");
-        $("[name='payment_type_id']").val("<?= $customer->payment_type_id; ?>");
         $("[name='bank_id']").val("<?= $customer->bank_id; ?>");
         $("[name='bank_account']").val("<?= $customer->bank_account; ?>");
         $("[name='reg_code']").val("<?= $customer->reg_code; ?>");

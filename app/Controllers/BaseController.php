@@ -36,7 +36,8 @@ class BaseController extends Controller
 		$this->menus =  new m_a_menu();
 		$this->divisions =  new m_division();
 		$this->session = \Config\Services::session();
-		if ($_SERVER["REQUEST_URI"] != "/login" && !$this->session->get("loggedin")) {
+		$REQUEST_URI = explode("/", $_SERVER["REQUEST_URI"]);
+		if ($REQUEST_URI[count($REQUEST_URI) - 1] != "login" && !$this->session->get("loggedin")) {
 			echo "<script> window.location='" . base_url() . "/login'; </script>";
 			exit();
 		}

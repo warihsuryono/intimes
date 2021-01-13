@@ -22,7 +22,12 @@
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label>QR Code</label>
-                                                <input name="qrcode" value="<?= @$_GET["qrcode"]; ?>" type="text" class="form-control" placeholder="QR Code ...">
+                                                <div class="input-group">
+                                                    <input id="qrcode" name="qrcode" value="<?= @$_GET["qrcode"]; ?>" type="text" class="form-control" placeholder="QR Code ...">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('qrcode');"><i class="fa fa-barcode"></i></button>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">

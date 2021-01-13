@@ -86,6 +86,10 @@
             });
         <?php endif ?>
     });
+
+    function qrcode_reader(elm_id) {
+        window.open("<?= base_url(); ?>/Qr_reader?e=" + elm_id);
+    }
 </script>
 <!-- </body></html> -->
 </body>

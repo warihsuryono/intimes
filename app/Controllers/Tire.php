@@ -174,4 +174,32 @@ class Tire extends BaseController
             $this->session->setFlashdata("flash_message", ["error", "Success deleting tire size"]);
         return redirect()->to(base_url() . '/tires');
     }
+
+    public function get_item($id)
+    {
+        return json_encode($this->tires->where("is_deleted", 0)->find([$id]));
+    }
+
+    public function subwindow()
+    {
+        $wherclause = "is_deleted = '0'";
+
+        if (isset($_GET["keyword"]) && $_GET["keyword"] != "") {
+            $wherclause .= "AND (registration_plate LIKE '%" . $_GET["keyword"] . "%'";
+            $wherclause .= "OR model LIKE '%" . $_GET["keyword"] . "%')";
+        }
+
+        if ($tires = $this->tires->where($wherclause)->findAll(LIMIT_SUBWINDOW, 0)) {
+            foreach ($tires as $tire) {
+                $tire_detail[$tire->id]["tire_size"] = @$this->tire_sizes->where("id", $tire->tire_size_id)->findAll()[0];
+                $tire_detail[$tire->id]["tire_brand"] = @$this->tire_brands->where("id", $tire->tire_brand_id)->findAll()[0];
+                $tire_detail[$tire->id]["tire_type"] = @$this->tire_types->where("id", $tire->tire_type_id)->findAll()[0];
+            }
+        }
+
+        $data["tires"]       = $tires;
+        $data["tire_detail"] = @$tire_detail;
+        $data                   = $data + $this->common();
+        echo view('items/v_subwindow', $data);
+    }
 }

@@ -89,7 +89,7 @@
                             </div>
                         </div>
                         <div class=" card-footer">
-                            <a href="<?= base_url(); ?>/items" class="btn btn-info">Back</a>
+                            <a href="<?= base_url(); ?>/tires" class="btn btn-info">Back</a>
                             <button type="submit" name="Save" value="save" class="btn btn-primary float-right">Save</button>
                         </div>
                     </form>

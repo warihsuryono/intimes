@@ -26,6 +26,7 @@
         function onScanSuccess(qrCodeMessage) {
             try {
                 opener.document.getElementById("<?= @$_GET["e"]; ?>").value = qrCodeMessage;
+                opener.document.getElementById("filter_form").submit();
             } catch (err) {
                 alert(err.message);
             }

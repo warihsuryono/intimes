@@ -171,6 +171,6 @@ class Vehicle extends BaseController
         $data["vehicles"]       = $vehicles;
         $data["vehicle_detail"] = @$vehicle_detail;
         $data                   = $data + $this->common();
-        echo view('items/v_subwindow', $data);
+        echo view('vehicles/v_subwindow', $data);
     }
 }

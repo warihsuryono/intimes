@@ -200,6 +200,6 @@ class Tire extends BaseController
         $data["tires"]       = $tires;
         $data["tire_detail"] = @$tire_detail;
         $data                   = $data + $this->common();
-        echo view('items/v_subwindow', $data);
+        echo view('tires/v_subwindow', $data);
     }
 }

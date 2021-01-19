@@ -10,23 +10,18 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>QR Code</label>
-                                        <input name="qrcode" type="text" class="form-control" placeholder="QR Code ...">
+                                        <div class="input-group">
+                                            <input id="qrcode" name="qrcode" type="text" class="form-control" placeholder="QR Code ...">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('qrcode');"><i class="fa fa-barcode"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Serial No</label>
                                         <input name="serialno" type="text" class="form-control" placeholder="Serial No ...">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Vulkanisir</label>
-                                        <select name="is_retread" class="form-control">
-                                            <option value=""></option>
-                                            <option value="1">Yes</option>
-                                            <option value="2">No</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -64,14 +59,19 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Tread Depth</label>
-                                        <input type="number" step="0.1" name="tread_depth" class="form-control" placeholder="Tread Depth">
+                                        <label>Tire Pattern</label>
+                                        <select name="tire_pattern_id" class="form-control">
+                                            <option value="">-- Select Tire Pattern --</option>
+                                            <?php foreach ($tire_patterns as $tire_pattern) : ?>
+                                                <option value="<?= $tire_pattern->id; ?>"><?= $tire_pattern->name; ?></option>
+                                            <?php endforeach ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Pattern</label>
-                                        <input type="text" name="pattern" class="form-control" placeholder="Pattern">
+                                        <label>Tread Depth</label>
+                                        <input type="number" step="0.1" name="tread_depth" class="form-control" placeholder="Tread Depth">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">

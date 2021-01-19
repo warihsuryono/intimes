@@ -77,6 +77,11 @@ $routes->get('/tire_type/add', 'Tire_type::add');
 $routes->get('/tire_type/edit/(:num)', 'Tire_type::edit/$1');
 $routes->get('/tire_type/delete/(:num)', 'Tire_type::delete/$1');
 
+$routes->get('/tire_patterns', 'Tire_pattern::index');
+$routes->get('/tire_pattern/add', 'Tire_pattern::add');
+$routes->get('/tire_pattern/edit/(:num)', 'Tire_pattern::edit/$1');
+$routes->get('/tire_pattern/delete/(:num)', 'Tire_pattern::delete/$1');
+
 $routes->get('/tires', 'Tire::index');
 $routes->get('/tire/add', 'Tire::add');
 $routes->get('/tire/edit/(:num)', 'Tire::edit/$1');

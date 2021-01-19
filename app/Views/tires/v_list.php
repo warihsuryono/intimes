@@ -38,16 +38,6 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label>Vulkanisir</label>
-                                                <select name="is_retread" class="form-control">
-                                                    <option value=""></option>
-                                                    <option value="1" <?= (@$_GET["is_retread"] == "1") ? "selected" : ""; ?>>Yes</option>
-                                                    <option value="2" <?= (@$_GET["is_retread"] == "2") ? "selected" : ""; ?>>No</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
                                                 <label>Tire Size</label>
                                                 <select name="tire_size_id" class="form-control">
                                                     <option value="">-- Select Tire Size --</option>
@@ -75,6 +65,17 @@
                                                     <option value="">-- Select Tire Type --</option>
                                                     <?php foreach ($tire_types as $tire_type) : ?>
                                                         <option value="<?= $tire_type->id; ?>" <?= (@$_GET["tire_type_id"] == $tire_type->id) ? "selected" : ""; ?>><?= $tire_type->name; ?></option>
+                                                    <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Tire Pattern</label>
+                                                <select name="tire_pattern_id" class="form-control">
+                                                    <option value="">-- Select Tire Pattern --</option>
+                                                    <?php foreach ($tire_patterns as $tire_pattern) : ?>
+                                                        <option value="<?= $tire_pattern->id; ?>" <?= (@$_GET["tire_pattern_id"] == $tire_pattern->id) ? "selected" : ""; ?>><?= $tire_pattern->name; ?></option>
                                                     <?php endforeach ?>
                                                 </select>
                                             </div>

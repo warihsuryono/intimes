@@ -43,8 +43,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Modi No</label>
-                                        <input name="modi_no" type="text" class="form-control" placeholder="Modi No ...">
+                                        <label>Body No</label>
+                                        <input name="body_no" type="text" class="form-control" placeholder="Body No ...">
                                     </div>
                                 </div>
                             </div>

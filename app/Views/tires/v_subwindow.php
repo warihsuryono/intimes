@@ -10,12 +10,11 @@
                                     <th></th>
                                     <th>Id</th>
                                     <th>QrCode</th>
-                                    <th>Vulkanisir</th>
                                     <th>Size</th>
                                     <th>Brand</th>
                                     <th>Type</th>
-                                    <th>Tread Depth</th>
                                     <th>Pattern</th>
+                                    <th>Tread Depth</th>
                                     <th>Psi</th>
                                 </tr>
                             </thead>
@@ -33,12 +32,11 @@
                                         </td>
                                         <td><?= $tire->id; ?></td>
                                         <td><?= $tire->qrcode; ?></td>
-                                        <td><?= ($tire->is_retread == "1") ? "Yes" : "No"; ?></td>
                                         <td><?= $tire_detail[$tire->id]["tire_size"]->name; ?></td>
                                         <td><?= $tire_detail[$tire->id]["tire_brand"]->name; ?></td>
                                         <td><?= $tire_detail[$tire->id]["tire_type"]->name; ?></td>
+                                        <td><?= $tire_detail[$tire->id]["tire_pattern"]->name; ?></td>
                                         <td><?= $tire->tread_depth; ?></td>
-                                        <td><?= $tire->pattern; ?></td>
                                         <td><?= $tire->psi; ?></td>
                                     </tr>
                                 <?php endforeach ?>

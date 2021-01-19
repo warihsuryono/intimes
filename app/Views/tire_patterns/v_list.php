@@ -21,36 +21,8 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label>Registration Plate</label>
-                                                <input name="registration_plate" value="<?= @$_GET["registration_plate"]; ?>" type="text" class="form-control" placeholder="Registration Plate ...">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>Vehicle Brand</label>
-                                                <select name="vehicle_brand_id" class="form-control">
-                                                    <option value="">-- Select Vehicle Brand --</option>
-                                                    <?php foreach ($vehicle_brands as $vehicle_brand) : ?>
-                                                        <option value="<?= $vehicle_brand->id; ?>" <?= (@$_GET["vehicle_brand_id"] == $vehicle_brand->id) ? "selected" : ""; ?>><?= $vehicle_brand->name; ?></option>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>Vehicle Type</label>
-                                                <select name="vehicle_type_id" class="form-control">
-                                                    <option value="">-- Select Vehicle Type --</option>
-                                                    <?php foreach ($vehicle_types as $vehicle_type) : ?>
-                                                        <option value="<?= $vehicle_type->id; ?>" <?= (@$_GET["vehicle_type_id"] == $vehicle_type->id) ? "selected" : ""; ?>><?= $vehicle_type->name; ?></option>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>Model</label>
-                                                <input name="model" value="<?= @$_GET["model"]; ?>" type="text" class="form-control" placeholder="Model ...">
+                                                <label>Tire Pattern</label>
+                                                <input name="name" value="<?= @$_GET["name"]; ?>" type="text" class="form-control" placeholder="Tire Pattern ...">
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +40,7 @@
                 <!--END FILTER -->
                 <div class="row" style="margin-bottom:10px;">
                     <div class="col-2">
-                        <button class="btn btn-primary" onclick="window.location='<?= base_url(); ?>/vehicle/add';"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-primary" onclick="window.location='<?= base_url(); ?>/tire_pattern/add';"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="card">
@@ -97,11 +69,7 @@
                                     <th></th>
                                     <th>No</th>
                                     <th>Id</th>
-                                    <th>Registration Plate</th>
-                                    <th>Brand</th>
-                                    <th>Type</th>
-                                    <th>Model</th>
-                                    <th>Body No</th>
+                                    <th>Tire Pattern</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>
@@ -109,27 +77,23 @@
                             <tbody>
                                 <?php
                                 $no = $startrow;
-                                foreach ($vehicles as $vehicle) :
+                                foreach ($tire_patterns as $tire_pattern) :
                                     $no++;
                                 ?>
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/vehicle/edit/<?= $vehicle->id; ?>">
+                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/tire_pattern/edit/<?= $tire_pattern->id; ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $vehicle->id; ?>);">
+                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $tire_pattern->id; ?>);">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
                                         <td><?= $no; ?></td>
-                                        <td><?= $vehicle->id; ?></td>
-                                        <td><?= $vehicle->registration_plate; ?></td>
-                                        <td><?= $vehicle_detail[$vehicle->id]["vehicle_brand"]->name; ?></td>
-                                        <td><?= $vehicle_detail[$vehicle->id]["vehicle_type"]->name; ?></td>
-                                        <td><?= $vehicle->model; ?></td>
-                                        <td><?= $vehicle->body_no; ?></td>
-                                        <td><?= date("d-m-Y H:i:s", strtotime($vehicle->created_at)); ?></td>
-                                        <td><?= $vehicle->created_by; ?></td>
+                                        <td><?= $tire_pattern->id; ?></td>
+                                        <td><?= $tire_pattern->name; ?></td>
+                                        <td><?= date("d-m-Y H:i:s", strtotime($tire_pattern->created_at)); ?></td>
+                                        <td><?= $tire_pattern->created_by; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
@@ -142,10 +106,10 @@
 </div>
 <script>
     function delete_confirmation(id) {
-        $('#modal_title').html('Delete Vehicle');
+        $('#modal_title').html('Delete Tire Patterns');
         $('#modal_message').html('Are you sure want to delete this data?');
         $('#modal_type').attr("class", 'modal-content bg-danger');
-        $('#modal_ok_link').attr("href", '<?= base_url(); ?>/vehicle/delete/' + id);
+        $('#modal_ok_link').attr("href", '<?= base_url(); ?>/tire_pattern/delete/' + id);
         $('#modal-form').modal();
     }
 </script>

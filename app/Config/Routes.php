@@ -57,6 +57,11 @@ $routes->get('/bank/add', 'Bank::add');
 $routes->get('/bank/edit/(:num)', 'Bank::edit/$1');
 $routes->get('/bank/delete/(:num)', 'Bank::delete/$1');
 
+$routes->get('/tire_positions', 'Tire_position::index');
+$routes->get('/tire_position/add', 'Tire_position::add');
+$routes->get('/tire_position/edit/(:num)', 'Tire_position::edit/$1');
+$routes->get('/tire_position/delete/(:num)', 'Tire_position::delete/$1');
+
 $routes->get('/tire_sizes', 'Tire_size::index');
 $routes->get('/tire_size/add', 'Tire_size::add');
 $routes->get('/tire_size/edit/(:num)', 'Tire_size::edit/$1');

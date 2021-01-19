@@ -10,6 +10,8 @@ class Installations extends Migration
 	{
 		$this->forge->addField([
 			'id'							=> ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
+			'spk_no'						=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],
+			'spk_at'						=> ['type' => 'date'],
 			'installed_at'					=> ['type' => 'date'],
 			'vehicle_id'					=> ['type' => 'INT', 'default' => '0'],
 			'vehicle_registration_plate'	=> ['type' => 'VARCHAR', 'constraint' => 10, 'default' => ''],
@@ -38,6 +40,8 @@ class Installations extends Migration
 		]);
 		$this->forge->addKey('id', TRUE);
 		$this->forge->addKey('is_deleted');
+		$this->forge->addKey('spk_no');
+		$this->forge->addKey('spk_at');
 		$this->forge->addKey('installed_at');
 		$this->forge->addKey('vehicle_id');
 		$this->forge->addKey('vehicle_registration_plate');

@@ -46,8 +46,8 @@ class Vehicle extends BaseController
         if (isset($_GET["model"]) && $_GET["model"] != "")
             $wherclause .= "AND model LIKE '%" . $_GET["model"] . "%'";
 
-        if (isset($_GET["modi_no"]) && $_GET["modi_no"] != "")
-            $wherclause .= "AND modi_no LIKE '%" . $_GET["modi_no"] . "%'";
+        if (isset($_GET["body_no"]) && $_GET["body_no"] != "")
+            $wherclause .= "AND body_no LIKE '%" . $_GET["body_no"] . "%'";
 
         if ($vehicles = $this->vehicles->where($wherclause)->findAll(MAX_ROW, $startrow)) {
 
@@ -83,7 +83,7 @@ class Vehicle extends BaseController
                 "vehicle_type_id"      => @$_POST["vehicle_type_id"],
                 "vehicle_brand_id "    => @$_POST["vehicle_brand_id"],
                 "model"                => @$_POST["model"],
-                "modi_no"              => @$_POST["modi_no"],
+                "body_no"              => @$_POST["body_no"],
             ];
             $vehicle = $vehicle + $this->created_values() + $this->updated_values();
             if ($this->vehicles->save($vehicle))
@@ -114,7 +114,7 @@ class Vehicle extends BaseController
                 "vehicle_type_id"      => @$_POST["vehicle_type_id"],
                 "vehicle_brand_id "    => @$_POST["vehicle_brand_id"],
                 "model"                => @$_POST["model"],
-                "modi_no"              => @$_POST["modi_no"],
+                "body_no"              => @$_POST["body_no"],
             ];
             $vehicle = $vehicle + $this->updated_values();
             if ($this->vehicles->update($id, $vehicle))

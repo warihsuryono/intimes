@@ -9,6 +9,18 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
+                                        <label>SPK No</label>
+                                        <input name="spk_no" type="text" class="form-control" placeholder="SPK No">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>SPK At</label>
+                                        <input name="spk_at" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
                                         <label>Installed At</label>
                                         <input name="installed_at" type="date" class="form-control">
                                     </div>

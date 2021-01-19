@@ -31,6 +31,12 @@ class Installations extends BaseController
 
         $wherclause = "is_deleted = '0'";
 
+        if (isset($_GET["spk_no"]) && $_GET["spk_no"] != "")
+            $wherclause .= "AND spk_no LIKE '%" . $_GET["spk_no"] . "%'";
+
+        if (isset($_GET["spk_at"]) && $_GET["spk_at"] != "")
+            $wherclause .= "AND spk_at = '" . $_GET["spk_at"] . "'";
+
         if (isset($_GET["installed_at"]) && $_GET["installed_at"] != "")
             $wherclause .= "AND installed_at = '" . $_GET["installed_at"] . "'";
 
@@ -69,6 +75,8 @@ class Installations extends BaseController
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
         if (isset($_POST["Save"])) {
             $installation = [
+                "spk_no"                        => @$_POST["spk_no"],
+                "spk_at"                        => @$_POST["spk_at"],
                 "installed_at"                  => @$_POST["installed_at"],
                 "vehicle_id"                    => @$_POST["vehicle_id"],
                 "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
@@ -108,6 +116,8 @@ class Installations extends BaseController
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         if (isset($_POST["Save"])) {
             $installation = [
+                "spk_no"                        => @$_POST["spk_no"],
+                "spk_at"                        => @$_POST["spk_at"],
                 "installed_at"                  => @$_POST["installed_at"],
                 "vehicle_id"                    => @$_POST["vehicle_id"],
                 "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],

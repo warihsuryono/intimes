@@ -122,7 +122,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary navbar-navy elevation-4">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
+    <a href="<?= base_url(); ?>" class="brand-link">
         <img src="<?= base_url(); ?>/dist/img/logo.png" alt="INTIMES" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">INTIMES</span>
     </a>

@@ -14,7 +14,7 @@ class Vehicles extends Migration
 			'vehicle_type_id'		=> ['type' => 'INT', 'default' => '0'],
 			'vehicle_brand_id'		=> ['type' => 'INT', 'default' => '0'],
 			'model'					=> ['type' => 'VARCHAR', 'constraint' => 50, 'default' => ''],
-			'modi_no'				=> ['type' => 'VARCHAR', 'constraint' => 50, 'default' => ''],
+			'body_no'				=> ['type' => 'VARCHAR', 'constraint' => 50, 'default' => ''],
 			'created_at'			=> ['type' => 'datetime', 'null' => true],
 			'created_by'			=> ['type' => 'VARCHAR', 'constraint' => 100, 'default' => ''],
 			'created_ip'			=> ['type' => 'VARCHAR', 'constraint' => 20, 'default' => ''],

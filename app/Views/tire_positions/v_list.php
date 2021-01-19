@@ -21,45 +21,40 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label>QR Code</label>
-                                                <div class="input-group">
-                                                    <input id="tire_qr_code" name="tire_qr_code" value="<?= @$_GET["tire_qr_code"]; ?>" type="text" class="form-control" placeholder="QR Code ...">
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
-                                                    </span>
-                                                </div>
+                                                <label>Position Name</label>
+                                                <input name="name" value="<?= @$_GET["name"]; ?>" type="text" class="form-control" placeholder="Position Name ...">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label>Vehicle Registration Plate</label>
-                                                <input name="vehicle_registration_plate" value="<?= @$_GET["vehicle_registration_plate"]; ?>" type="text" class="form-control" placeholder="Vehicle Registration Plate ...">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>SPK No</label>
-                                                <input name="spk_no" value="<?= @$_GET["spk_no"]; ?>" type="text" class="form-control" placeholder="SPK No ...">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>SPK At</label>
-                                                <input name="SPK At" value="<?= @$_GET["spk_at"]; ?>" type="date" class="form-control" placeholder="SPK At ...">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label>Vulkanisir</label>
-                                                <select name="tire_is_retread" class="form-control">
+                                                <label>Left/Right</label>
+                                                <select class="form-control" name="left_right">
                                                     <option value=""></option>
-                                                    <option value="1" <?= (@$_GET["tire_is_retread"] == "1") ? "selected" : ""; ?>>Yes</option>
-                                                    <option value="2" <?= (@$_GET["tire_is_retread"] == "2") ? "selected" : ""; ?>>No</option>
+                                                    <option value="left" <?= (@$_GET["left_right"] == "left") ? "selected" : ""; ?>>Left</option>
+                                                    <option value="right" <?= (@$_GET["left_right"] == "right") ? "selected" : ""; ?>>Right</option>
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Front/Rear</label>
+                                                <select class="form-control" name="front_rear">
+                                                    <option value=""></option>
+                                                    <option value="front" <?= (@$_GET["front_rear"] == "front") ? "selected" : ""; ?>>Front</option>
+                                                    <option value="rear" <?= (@$_GET["front_rear"] == "rear") ? "selected" : ""; ?>>Rear</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>Inner/Outter</label>
+                                                <select class="form-control" name="inner_outter">
+                                                    <option value=""></option>
+                                                    <option value="inner" <?= (@$_GET["inner_outter"] == "inner") ? "selected" : ""; ?>>Inner</option>
+                                                    <option value="outter" <?= (@$_GET["inner_outter"] == "outter") ? "selected" : ""; ?>>Outter</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-sm-12 text-right">
                                             <input type="reset" onclick="window.location='?';" class="btn btn-default" value="Reset">
                                             <input type="submit" class="btn btn-primary" value="Search">
@@ -73,7 +68,7 @@
                 <!--END FILTER -->
                 <div class="row" style="margin-bottom:10px;">
                     <div class="col-2">
-                        <button class="btn btn-primary" onclick="window.location='<?= base_url(); ?>/installation/add';"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-primary" onclick="window.location='<?= base_url(); ?>/tire_position/add';"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="card">
@@ -102,16 +97,10 @@
                                     <th></th>
                                     <th>No</th>
                                     <th>Id</th>
-                                    <th>SPK No</th>
-                                    <th>SPK Date</th>
-                                    <th>Installed at</th>
-                                    <th>QrCode</th>
-                                    <th>Reg Plate</th>
-                                    <th>Position</th>
-                                    <th>Vulkanisir</th>
-                                    <th>Price</th>
-                                    <th>Km</th>
-                                    <th>Tread Depth</th>
+                                    <th>Position Name</th>
+                                    <th>Left/Right</th>
+                                    <th>Front/Rear</th>
+                                    <th>Inner/Outter</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>
@@ -119,32 +108,26 @@
                             <tbody>
                                 <?php
                                 $no = $startrow;
-                                foreach ($installations as $installation) :
+                                foreach ($tire_positions as $tire_position) :
                                     $no++;
                                 ?>
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/installation/edit/<?= $installation->id; ?>">
+                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/tire_position/edit/<?= $tire_position->id; ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $installation->id; ?>);">
+                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $tire_position->id; ?>);">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
                                         <td><?= $no; ?></td>
-                                        <td><?= $installation->id; ?></td>
-                                        <td><?= $installation->spk_no; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($installation->spk_at)); ?></td>
-                                        <td><?= date("d-m-Y", strtotime($installation->installed_at)); ?></td>
-                                        <td><?= $installation->tire_qr_code; ?></td>
-                                        <td><?= $installation->vehicle_registration_plate; ?></td>
-                                        <td><?= $installation_detail[$installation->id]["tire_position"]->name; ?></td>
-                                        <td><?= ($installation->tire_is_retread == "1") ? "Yes" : "No"; ?></td>
-                                        <td align="right"><?= number_format($installation->price); ?></td>
-                                        <td><?= $installation->km; ?></td>
-                                        <td><?= $installation->tread_depth; ?></td>
-                                        <td><?= date("d-m-Y H:i:s", strtotime($installation->created_at)); ?></td>
-                                        <td><?= $installation->created_by; ?></td>
+                                        <td><?= $tire_position->id; ?></td>
+                                        <td><?= $tire_position->name; ?></td>
+                                        <td><?= $tire_position->left_right; ?></td>
+                                        <td><?= $tire_position->front_rear; ?></td>
+                                        <td><?= $tire_position->inner_outter; ?></td>
+                                        <td><?= date("d-m-Y H:i:s", strtotime($tire_position->created_at)); ?></td>
+                                        <td><?= $tire_position->created_by; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
@@ -157,10 +140,10 @@
 </div>
 <script>
     function delete_confirmation(id) {
-        $('#modal_title').html('Delete Installation');
+        $('#modal_title').html('Delete Tire Position');
         $('#modal_message').html('Are you sure want to delete this data?');
         $('#modal_type').attr("class", 'modal-content bg-danger');
-        $('#modal_ok_link').attr("href", '<?= base_url(); ?>/installation/delete/' + id);
+        $('#modal_ok_link').attr("href", '<?= base_url(); ?>/tire_position/delete/' + id);
         $('#modal-form').modal();
     }
 </script>

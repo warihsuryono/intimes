@@ -41,6 +41,7 @@ class Tires extends Migration
 		$this->forge->addKey('tire_size_id');
 		$this->forge->addKey('tire_brand_id');
 		$this->forge->addKey('tire_type_id');
+		$this->forge->addKey('tire_pattern_id');
 		$this->forge->addKey('pattern');
 		$this->forge->createTable('tires', TRUE);
 	}

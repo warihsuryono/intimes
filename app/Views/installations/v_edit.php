@@ -1,4 +1,10 @@
 <!-- Main content -->
+<style>
+    .pull-right {
+        float: right !important;
+        color: #3c8dbc !important;
+    }
+</style>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -19,6 +25,33 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row" id="tire_descriptions" style="display:none;">
+                                <div class="col-sm-4">
+                                    <ul class="list-group list-group-unbordered">
+                                        <li class="list-group-item">
+                                            <b>Size</b> <a class="pull-right" id="tire_size"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Brand</b> <a class="pull-right" id="tire_brand"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Type</b> <a class="pull-right" id="tire_type"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>PSI</b> <a class="pull-right" id="psi"></a>
+                                        </li>
+                                    </ul>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>SPK No</label>

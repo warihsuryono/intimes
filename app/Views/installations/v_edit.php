@@ -9,6 +9,18 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
+                                        <label>Tire</label>
+                                        <input id="tire_id" name="tire_id" type="hidden">
+                                        <div class="input-group">
+                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
                                         <label>SPK No</label>
                                         <input name="spk_no" type="text" class="form-control" placeholder="SPK No">
                                     </div>
@@ -23,18 +35,6 @@
                                     <div class="form-group">
                                         <label>Installed At</label>
                                         <input name="installed_at" type="date" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Tire</label>
-                                        <input id="tire_id" name="tire_id" type="hidden">
-                                        <div class="input-group">
-                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">

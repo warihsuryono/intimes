@@ -171,6 +171,12 @@ class MasterSeeder extends \CodeIgniter\Database\Seeder
         $this->db->table('a_menu')->insertBatch($data);
 
         $data = [
+            ['registration_plate' => 'B 9001 EEH',   'vehicle_type_id'  => '5',    'vehicle_brand_id'  =>  '2',    'model'  =>  'DC013',    'body_no'  =>  'D71'],
+            ['registration_plate' => 'B 9054 YET',   'vehicle_type_id'  => '2',    'vehicle_brand_id'  =>  '2',    'model'  =>  'DUTRO',    'body_no'  =>  'D254'],
+        ];
+        $this->db->table('vehicles')->insertBatch($data);
+
+        $data = [
             ['seqno'  => '1',    'parent_id'  =>  '2',    'name'  =>  'Customer',    'url'  =>  'customers',   'icon'  =>  'far fa-address-book'],
             ['seqno'  => '2',    'parent_id'  =>  '2',    'name'  =>  'Tire Position',    'url'  =>  'tire_positions',   'icon'  =>  'fas fa-arrows-alt'],
             ['seqno'  => '3',    'parent_id'  =>  '2',    'name'  =>  'Tire Size',    'url'  =>  'tire_sizes',   'icon'  =>  'fas fa-ruler-horizontal'],

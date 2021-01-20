@@ -57,8 +57,20 @@
             var btnStartScanning = $("#qr-reader__dashboard_section_csr").find('button');
             if (btnStartScanning.html() == "Start Scanning") {
                 var cameraSelect = $("#qr-reader__dashboard_section_csr").find('select');
-                alert(cameraSelect.html());
-                // btnStartScanning.click();
+                var cameraOptions = cameraSelect.html().split("value=\"");
+                if (cameraOptions.length == 2) {
+                    btnStartScanning.click();
+                }
+                if (cameraOptions.length > 2) {
+                    var camearaselected = "";
+                    for (var xx = 1; xx < cameraOptions.length; xx++) {
+                        if (cameraOptions[xx].indexOf("back") > 0 || cameraOptions[xx].indexOf("belakang") > 0) {
+                            camearaselected = cameraOptions[xx].split("\"")[0];
+                        }
+                    }
+                    cameraSelect.val(camearaselected);
+                    btnStartScanning.click();
+                }
             } else {
                 waitForStart();
             }

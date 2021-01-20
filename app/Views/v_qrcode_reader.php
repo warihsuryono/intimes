@@ -7,6 +7,12 @@
 </head>
 
 <body>
+    <style>
+        button {
+            margin: 10px 0px 10px 0px;
+            padding: 10px;
+        }
+    </style>
     <center>
         <div id="qr-reader" style="width:250px"></div>
     </center>
@@ -43,7 +49,21 @@
 
         $("#qr-reader").children()[0].style.display = "none";
         $("#qr-reader__dashboard_section_csr").find('button').click();
+        waitForStart();
     });
+
+    function waitForStart() {
+        setTimeout(function() {
+            var btnStartScanning = $("#qr-reader__dashboard_section_csr").find('button');
+            if (btnStartScanning.html() == "Start Scanning") {
+                var cameraSelect = $("#qr-reader__dashboard_section_csr").find('select');
+                alert(cameraSelect.html());
+                // btnStartScanning.click();
+            } else {
+                waitForStart();
+            }
+        }, 10);
+    }
 </script>
 
 </html>

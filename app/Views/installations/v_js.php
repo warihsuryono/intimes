@@ -1,4 +1,9 @@
 <script>
+    <?php if (@$_GET["qrcode"] != "" && $__mode == "add") : ?>
+        $("[name='tire_qr_code']").val("<?= @$_GET["qrcode"]; ?>");
+        on_qr_success("<?= @$_GET["qrcode"]; ?>");
+    <?php endif ?>
+
     <?php if (isset($installation)) : ?>
         $("[name='tire_qr_code']").val("<?= $installation->tire_qr_code; ?>");
         on_qr_success("<?= $installation->tire_qr_code; ?>");

@@ -19,7 +19,7 @@ class Qr_reader extends BaseController
     public function qrcode_menu($qrcode)
     {
         $this->privilege_check($this->menu_ids);
-        $data["__modulename"] = "QR Code Reader";
+        $data["__modulename"] = "QR Code Result";
         $data["qrcode"] = $qrcode;
         $data = $data + $this->common();
         echo view('v_header', $data);

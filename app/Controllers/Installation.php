@@ -184,6 +184,15 @@ class Installation extends BaseController
         return json_encode($this->installations->where("is_deleted", 0)->find([$id]));
     }
 
+    public function get_item_by_qrcode($qrcode)
+    {
+        $installation = $this->installations->where(["is_deleted" => 0, "tire_qr_code" => $qrcode])->findAll()[0];
+        $installation->tire_position = @$this->tire_positions->where("id", $installation->tire_position_id)->findAll()[0];
+        $installation->spk_at = $this->format_tanggal($installation->spk_at);
+        $installation->installed_at = $this->format_tanggal($installation->installed_at);
+        return json_encode($installation);
+    }
+
     public function subwindow()
     {
         $wherclause = "is_deleted = '0'";

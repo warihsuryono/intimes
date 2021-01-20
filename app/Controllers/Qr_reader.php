@@ -13,4 +13,9 @@ class Qr_reader extends BaseController
     {
         echo view('v_qrcode_reader');
     }
+
+    public function qrcode_menu($qrCodeMessage)
+    {
+        echo $qrCodeMessage;
+    }
 }

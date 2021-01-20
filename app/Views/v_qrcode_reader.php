@@ -39,7 +39,12 @@
             try {
                 opener.on_qr_success(qrCodeMessage);
             } catch (e) {}
-            window.close();
+            try {
+                window.close();
+                window.location = "<?= base_url(); ?>/Qr_reader/qrcode_menu/" + qrCodeMessage;
+            } catch (e) {
+                window.location = "<?= base_url(); ?>/Qr_reader/qrcode_menu/" + qrCodeMessage;
+            }
         }
         var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
             fps: 10,

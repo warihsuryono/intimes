@@ -239,6 +239,8 @@ $routes->get('/maintenance_item/add', 'Maintenance_item::add');
 $routes->get('/maintenance_item/edit/(:num)', 'Maintenance_item::edit/$1');
 $routes->get('/maintenance_item/delete/(:num)', 'Maintenance_item::delete/$1');
 
+$routes->get('/qrcode', 'Qr_reader::index');
+
 $routes->get('/installations', 'Installation::index');
 $routes->get('/installation/add', 'Installation::add');
 $routes->get('/installation/view/(:num)', 'Installation::view/$1');

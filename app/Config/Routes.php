@@ -239,11 +239,11 @@ $routes->get('/maintenance_item/add', 'Maintenance_item::add');
 $routes->get('/maintenance_item/edit/(:num)', 'Maintenance_item::edit/$1');
 $routes->get('/maintenance_item/delete/(:num)', 'Maintenance_item::delete/$1');
 
-$routes->get('/installations', 'Installations::index');
-$routes->get('/installation/add', 'Installations::add');
-$routes->get('/installation/view/(:num)', 'Installations::view/$1');
-$routes->get('/installation/edit/(:num)', 'Installations::edit/$1');
-$routes->get('/installation/delete/(:num)', 'Installations::delete/$1');
+$routes->get('/installations', 'Installation::index');
+$routes->get('/installation/add', 'Installation::add');
+$routes->get('/installation/view/(:num)', 'Installation::view/$1');
+$routes->get('/installation/edit/(:num)', 'Installation::edit/$1');
+$routes->get('/installation/delete/(:num)', 'Installation::delete/$1');
 
 $routes->get('/subwindow/suppliers', 'Supplier::subwindow');
 $routes->get('/subwindow/customers', 'Customer::subwindow');

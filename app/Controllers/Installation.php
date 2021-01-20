@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\m_installation;
 use App\Models\m_tire_position;
 
-class Installations extends BaseController
+class Installation extends BaseController
 {
     protected $menu_ids;
     protected $route_name;
@@ -52,7 +52,7 @@ class Installations extends BaseController
         if ($installations = $this->installations->where($wherclause)->findAll(MAX_ROW, $startrow)) {
             $numrow = count($this->installations->where($wherclause)->findAll());
             foreach ($installations as $installation) {
-                $installation_detail[$installation->id]["tire_position"] = $this->tire_positions->where("id", $installation->tire_position_id)->findAll()[0];
+                $installation_detail[$installation->id]["tire_position"] = @$this->tire_positions->where("id", $installation->tire_position_id)->findAll()[0];
             }
         } else {
             $numrow = 0;
@@ -90,12 +90,20 @@ class Installations extends BaseController
                 "disassembled_tire"             => @$_POST["disassembled_tire"],
                 "km"                            => @$_POST["km"],
                 "tread_depth"                   => @$_POST["tread_depth"],
-                "photo"                         => @$_POST["photo"],
             ];
             $installation = $installation + $this->created_values() + $this->updated_values();
-            if ($this->installations->save($installation))
+            if ($this->installations->save($installation)) {
+                $id = $this->installations->insertID();
+                $photo = "";
+                if ($img = @$this->request->getFiles()['photo'])
+                    if ($img->isValid() && !$img->hasMoved()) {
+                        $photo = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . date("YmdHis") . "_" . $id . "." . pathinfo($img->getName(), PATHINFO_EXTENSION);
+                        $img->move('dist/upload/installations', $photo);
+                        $this->installations->update($id, ["photo" => $photo]);
+                    }
+
                 $this->session->setFlashdata("flash_message", ["success", "Success adding Installation"]);
-            else
+            } else
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding Installation"]);
             return redirect()->to(base_url() . '/installations');
         }
@@ -131,18 +139,28 @@ class Installations extends BaseController
                 "disassembled_tire"             => @$_POST["disassembled_tire"],
                 "km"                            => @$_POST["km"],
                 "tread_depth"                   => @$_POST["tread_depth"],
-                "photo"                         => @$_POST["photo"],
             ];
             $installation = $installation + $this->updated_values();
-            if ($this->installations->update($id, $installation))
+            if ($this->installations->update($id, $installation)) {
+                $old_photo = $this->installations->find([$id])[0]->photo;
+                unlink('dist/upload/installations/' . basename($old_photo));
+                $photo = "";
+                if ($img = @$this->request->getFiles()['photo'])
+                    if ($img->isValid() && !$img->hasMoved()) {
+                        $photo = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . date("YmdHis") . "_" . $id . "." . pathinfo($img->getName(), PATHINFO_EXTENSION);
+                        $img->move('dist/upload/installations', $photo);
+                        $this->installations->update($id, ["photo" => $photo]);
+                    }
                 $this->session->setFlashdata("flash_message", ["success", "Success editing Installation"]);
-            else
+            } else
                 $this->session->setFlashdata("flash_message", ["error", "Failed editing Installation"]);
             return redirect()->to(base_url() . '/installations');
         }
 
         $data["__modulename"] = "Edit Installation";
         $data["__mode"] = "edit";
+        $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
+        $data["installation"] = $this->installations->where("is_deleted", "0")->find([$id])[0];
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');

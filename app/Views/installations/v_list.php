@@ -138,7 +138,7 @@
                                         <td><?= date("d-m-Y", strtotime($installation->installed_at)); ?></td>
                                         <td><?= $installation->tire_qr_code; ?></td>
                                         <td><?= $installation->vehicle_registration_plate; ?></td>
-                                        <td><?= $installation_detail[$installation->id]["tire_position"]->name; ?></td>
+                                        <td><?= (is_object($installation_detail[$installation->id]["tire_position"])) ? $installation_detail[$installation->id]["tire_position"]->name : ""; ?></td>
                                         <td><?= ($installation->tire_is_retread == "1") ? "Yes" : "No"; ?></td>
                                         <td align="right"><?= number_format($installation->price); ?></td>
                                         <td><?= $installation->km; ?></td>

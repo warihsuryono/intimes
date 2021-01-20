@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <form role="form" method="POST">
+                    <form role="form" method="POST" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -96,7 +96,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Vulkanisir</label>
-                                        <select name="is_retread" class="form-control">
+                                        <select name="tire_is_retread" class="form-control">
                                             <option value=""></option>
                                             <option value="1">Yes</option>
                                             <option value="2">No</option>
@@ -142,7 +142,10 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Photo</label>
-                                        <input name="tread_depth" type="file" class="form-control" capture="camera">
+                                        <input name="photo" type="file" class="form-control" capture="camera">
+                                        <?php if ($__mode == "edit" && file_exists("dist/upload/installations/" . $installation->photo) && $installation->photo != "") : ?>
+                                            <img src="<?= base_url(); ?>/dist/upload/installations/<?= $installation->photo; ?>" height="150">
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>
@@ -192,5 +195,33 @@
         $('#modal_ok_link').attr("href", 'javascript:$(\'#modal-form\').modal(\'toggle\');');
         $('#modal-form').modal();
         reload_subwindow_vehicles_area("");
+    }
+
+    function on_qr_success(qrcode) {
+        $.get("<?= base_url(); ?>/tire/get_item_by_qrcode/" + qrcode, function(result) {
+            var tire = JSON.parse(result.replace("[", "").replace("]", ""));
+            try {
+                $("#tire_id").val(tire.id);
+            } catch (e) {}
+            try {
+                $("#tire_size").html(tire.size.name);
+            } catch (e) {}
+            try {
+                $("#tire_brand").html(tire.brand.name);
+            } catch (e) {}
+            try {
+                $("#tire_type").html(tire._type.name);
+            } catch (e) {}
+            try {
+                $("#tire_pattern").html(tire.pattern.name);
+            } catch (e) {}
+            try {
+                $("#tread_depth").html(tire.tread_depth);
+            } catch (e) {}
+            try {
+                $("#psi").html(tire.psi);
+            } catch (e) {}
+            $("#tire_descriptions").fadeIn();
+        });
     }
 </script>

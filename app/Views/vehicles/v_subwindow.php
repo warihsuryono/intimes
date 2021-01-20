@@ -13,7 +13,7 @@
                                     <th>Brand</th>
                                     <th>Type</th>
                                     <th>Model</th>
-                                    <th>Modi No</th>
+                                    <th>Body No</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,7 +33,7 @@
                                         <td><?= $vehicle_detail[$vehicle->id]["vehicle_brand"]->name; ?></td>
                                         <td><?= $vehicle_detail[$vehicle->id]["vehicle_type"]->name; ?></td>
                                         <td><?= $vehicle->model; ?></td>
-                                        <td><?= $vehicle->modi_no; ?></td>
+                                        <td><?= $vehicle->body_no; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>

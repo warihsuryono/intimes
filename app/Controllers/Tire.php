@@ -182,6 +182,16 @@ class Tire extends BaseController
         return json_encode($this->tires->where("is_deleted", 0)->find([$id]));
     }
 
+    public function get_item_by_qrcode($qrcode)
+    {
+        $tire = $this->tires->where(["is_deleted" => 0, "qrcode" => $qrcode])->findAll()[0];
+        $tire->size = @$this->tire_sizes->where("id", $tire->tire_size_id)->findAll()[0];
+        $tire->brand = @$this->tire_brands->where("id", $tire->tire_brand_id)->findAll()[0];
+        $tire->_type = @$this->tire_types->where("id", $tire->tire_type_id)->findAll()[0];
+        $tire->pattern = @$this->tire_patterns->where("id", $tire->tire_pattern_id)->findAll()[0];
+        return json_encode($tire);
+    }
+
     public function subwindow()
     {
         $wherclause = "is_deleted = '0'";

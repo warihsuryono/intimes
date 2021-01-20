@@ -26,12 +26,13 @@
         function onScanSuccess(qrCodeMessage) {
             try {
                 opener.document.getElementById("<?= @$_GET["e"]; ?>").value = qrCodeMessage;
-                try {
-                    opener.document.getElementById("filter_form").submit();
-                } catch (e) {}
-            } catch (err) {
-                alert(err.message);
-            }
+            } catch (e) {}
+            try {
+                opener.document.getElementById("filter_form").submit();
+            } catch (e) {}
+            try {
+                opener.on_qr_success(qrCodeMessage);
+            } catch (e) {}
             window.close();
         }
         var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {

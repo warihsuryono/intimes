@@ -55,27 +55,35 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>SPK/PO Number</label>
-                                        <input name="spk_no" type="text" class="form-control" placeholder="SPK No" required>
+                                        <?= $_form->input("spk_no", "", "required"); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>SPK/PO Date</label>
-                                        <input name="spk_at" type="date" class="form-control" required>
+                                        <?= $_form->input("spk_at", "", "type='date' required"); ?>
                                     </div>
                                 </div>
+                                <?php if (@$installations_office_only) : ?>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>PO Price</label>
+                                            <?= $_form->input("po_price", "", "type='number' required"); ?>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Installed Date</label>
-                                        <input name="installed_at" type="date" class="form-control" required>
+                                        <?= $_form->input("installed_at", "", "type='date' required"); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Vehicle No</label>
-                                        <input id="vehicle_id" name="vehicle_id" type="hidden" required>
+                                        <?= $_form->hidden("vehicle_id", "", "required"); ?>
                                         <div class="input-group">
-                                            <input id="vehicle_registration_plate" name="vehicle_registration_plate" type="text" class="form-control" placeholder="Vehicle registration plate ..." required>
+                                            <?= $_form->input("vehicle_registration_plate", "", "required placeholder='Vehicle registration plate ...' readonly"); ?>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info btn-flat" onclick="browse_vehicles('vehicle_id','vehicle_registration_plate');"><i class="fas fa-search"></i></button>
                                             </span>
@@ -85,69 +93,71 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Position</label>
-                                        <select name="tire_position_id" class="form-control" required>
-                                            <option value="">-- Select Tire Position --</option>
-                                            <?php foreach ($tire_positions as $tire_position) : ?>
-                                                <option value="<?= $tire_position->id; ?>"><?= $tire_position->name; ?></option>
-                                            <?php endforeach ?>
-                                        </select>
+                                        <?= $_form->select("tire_position_id", $tire_positions, ""); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Item</label>
-                                        <select name="tire_is_retread" class="form-control" required>
-                                            <option value=""></option>
-                                            <option value="1">Yes</option>
-                                            <option value="2">No</option>
-                                        </select>
+                                        <?= $_form->select("tire_type_id", $tire_types, ""); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Price</label>
-                                        <input name="price" type="number" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Flap Installation</label>
-                                        <input name="flap_installation" type="text" class="form-control" placeholder="Flap Installation">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Flap Price</label>
-                                        <input name="flap_price" type="number" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Disassembled Tire</label>
-                                        <input name="disassembled_tire" type="text" class="form-control" placeholder="Disassembled Tire">
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>KM</label>
-                                        <input name="km" type="text" class="form-control" placeholder="KM">
+                                        <label>KM Install</label>
+                                        <?= $_form->input("km_install", "", "required"); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Original Tread Depth</label>
-                                        <input name="tread_depth" type="text" class="form-control" placeholder="Original Tread Depth">
+                                        <?= $_form->input("original_tread_depth", "", "required"); ?>
                                     </div>
                                 </div>
+
+                                <!-- <div class='col-sm-4'><br>
+                                    <div class="form-group">
+                                        <label>Tire Installation Pictures</label>
+                                        <img id='img_before[" + ii + "]'><br>
+                                        <label>
+                                            <h2><i class='fa fa-trash' onclick='remove_img(" + ii + ")'></i></h2>
+                                        </label>
+                                        <label for='before_[<?= @$maintenance_id; ?>][" + ii + "]'>
+                                            <h2><i class='fa fa-camera' aria-hidden='true'></i></h2>
+                                        </label>
+                                        <input onchange='loadImg(this,\"before\"," + ii + ");' type='file' capture='camera' name='before_[<?= @$maintenance_id; ?>][" + ii + "]' id='before_[<?= @$maintenance_id; ?>][" + ii + "]' style='display:none;'>
+                                        <input type='text' value='" + scopes[ii].notes_before + "' name='notes_before[<?= @$maintenance_id; ?>][" + ii + "]' id='notes_before[<?= @$maintenance_id; ?>][" + ii + "]' class='form-control'>
+                                    </div>
+                                </div> -->
+
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Photo</label>
-                                        <input name="photo" type="file" class="form-control" capture="camera">
-                                        <?php if ($__mode == "edit" && file_exists("dist/upload/installations/" . $installation->photo) && $installation->photo != "") : ?>
-                                            <img src="<?= base_url(); ?>/dist/upload/installations/<?= $installation->photo; ?>" height="150">
-                                        <?php endif ?>
+                                        <label>Flap Installation</label>
+                                        <?= $_form->select("is_flap", $yesnooption); ?>
                                     </div>
                                 </div>
+                                <?php if (@$installations_office_only) : ?>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Flap Price</label>
+                                            <input name="flap_price" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Tube Installation</label>
+                                        <?= $_form->select("is_tube", $yesnooption); ?>
+                                    </div>
+                                </div>
+                                <?php if (@$installations_office_only) : ?>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Tube Price</label>
+                                            <input name="tube_price" type="number" class="form-control">
+                                        </div>
+                                    </div>
+                                <?php endif ?>
                             </div>
                         </div>
                         <div class=" card-footer">
@@ -226,5 +236,64 @@
             } catch (e) {}
             $("#tire_descriptions").fadeIn();
         });
+    }
+
+    function loadImg(input, before_after, ii) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('img_' + before_after + '[' + ii + ']').src = e.target.result;
+                document.getElementById('img_' + before_after + '[' + ii + ']').height = 400;
+
+                $("#btnSave").html('<img src="<?= base_url(); ?>/dist/img/loader.gif" />');
+                $("#btnSave").prop('disabled', true);
+                try {
+                    navigator.geolocation.getCurrentPosition(
+                        function showPosition(position) {
+                            $.ajax({
+                                type: 'PUT',
+                                url: '<?= base_url(); ?>/maintenance/put_image/<?= date("ymdhis"); ?>_' + before_after + '_<?= @$maintenance_id; ?>_' + current_scope_group_id + '_' + ii + "/" + position.coords.latitude + ";" + position.coords.longitude,
+                                data: e.target.result
+                            }).done(function(result) {
+                                if (result != "0") {
+                                    document.getElementById('img_' + before_after + '[' + ii + ']').src = "<?= base_url(); ?>/dist/upload/maintenance_photo/" + result;
+                                }
+                                $("#btnSave").html('Save');
+                                $("#btnSave").prop('disabled', false);
+                            });
+                        }
+                    );
+                } catch (e) {
+                    $.ajax({
+                        type: 'PUT',
+                        url: '<?= base_url(); ?>/maintenance/put_image/<?= date("ymdhis"); ?>_' + before_after + '_<?= @$maintenance_id; ?>_' + current_scope_group_id + '_' + ii + "/0;0",
+                        data: e.target.result
+                    }).done(function(result) {
+                        console.log(result);
+                        $("#btnSave").html('Save');
+                        $("#btnSave").prop('disabled', false);
+                    });
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function remove_img(ii) {
+        if (confirm("Are you sure want to delete this photo?")) {
+            filename = document.getElementById("img_before[" + ii + "]").src;
+            console.log(filename);
+            $("#btnSave").html('<img src="<?= base_url(); ?>/dist/img/loader.gif" />');
+            $("#btnSave").prop('disabled', true);
+            $.ajax({
+                type: 'PUT',
+                url: '<?= base_url(); ?>/maintenance/delete_image',
+                data: filename
+            }).done(function(result) {
+                document.getElementById('img_' + document.getElementById("beforeafter").value + '[' + ii + ']').src = "";
+                $("#btnSave").html('Save');
+                $("#btnSave").prop('disabled', false);
+            });
+        }
     }
 </script>

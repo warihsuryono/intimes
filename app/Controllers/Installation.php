@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\m_installation;
 use App\Models\m_tire_position;
+use App\Models\m_tire_type;
 
 class Installation extends BaseController
 {
@@ -11,6 +12,7 @@ class Installation extends BaseController
     protected $route_name;
     protected $installations;
     protected $tire_positions;
+    protected $tire_types;
 
     public function __construct()
     {
@@ -19,6 +21,17 @@ class Installation extends BaseController
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->installations =  new m_installation();
         $this->tire_positions =  new m_tire_position();
+        $this->tire_types =  new m_tire_type();
+    }
+
+    public function get_reference_data()
+    {
+        $data = [];
+        @$data["yesnooption"][0]->id = 0;
+        @$data["yesnooption"][0]->name = "No";
+        @$data["yesnooption"][1]->id = 1;
+        @$data["yesnooption"][1]->name = "Yes";
+        return $data;
     }
 
     public function index()
@@ -70,48 +83,55 @@ class Installation extends BaseController
         echo view('v_footer');
     }
 
+    public function saving_data($mode)
+    {
+        if ($mode == "add") {
+            $data = [
+                "tire_id"                       => @$_POST["tire_id"],
+                "tire_qr_code"                  => @$_POST["tire_qr_code"],
+            ];
+        }
+        $data = [
+            "spk_no"                        => @$_POST["spk_no"],
+            "spk_at"                        => @$_POST["spk_at"],
+            "po_price"                      => @$_POST["po_price"],
+            "installed_at"                  => @$_POST["installed_at"],
+            "vehicle_id"                    => @$_POST["vehicle_id"],
+            "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
+            "tire_position_id"              => @$_POST["tire_position_id"],
+            "tire_type_id "                 => @$_POST["tire_type_id"],
+            "km_install"                    => @$_POST["km_install"],
+            "original_tread_depth"          => @$_POST["original_tread_depth"],
+            "is_flap"                       => @$_POST["is_flap"],
+            "flap_price"                    => @$_POST["flap_price"],
+            "is_tube"                       => @$_POST["is_tube"],
+            "tube_price"                    => @$_POST["tube_price"],
+        ];
+
+        return $data;
+    }
+
     public function add()
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
         if (isset($_POST["Save"])) {
-            $installation = [
-                "spk_no"                        => @$_POST["spk_no"],
-                "spk_at"                        => @$_POST["spk_at"],
-                "installed_at"                  => @$_POST["installed_at"],
-                "vehicle_id"                    => @$_POST["vehicle_id"],
-                "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
-                "tire_id"                       => @$_POST["tire_id"],
-                "tire_qr_code"                  => @$_POST["tire_qr_code"],
-                "tire_position_id"              => @$_POST["tire_position_id"],
-                "tire_is_retread"               => @$_POST["tire_is_retread"],
-                "price"                         => @$_POST["price"],
-                "flap_installation"             => @$_POST["flap_installation"],
-                "flap_price"                    => @$_POST["flap_price"],
-                "disassembled_tire"             => @$_POST["disassembled_tire"],
-                "km"                            => @$_POST["km"],
-                "tread_depth"                   => @$_POST["tread_depth"],
-            ];
+            $installation = $this->saving_data("add");
             $installation = $installation + $this->created_values() + $this->updated_values();
             if ($this->installations->save($installation)) {
                 $id = $this->installations->insertID();
-                $photo = "";
-                if ($img = @$this->request->getFiles()['photo'])
-                    if ($img->isValid() && !$img->hasMoved()) {
-                        $photo = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . date("YmdHis") . "_" . $id . "." . pathinfo($img->getName(), PATHINFO_EXTENSION);
-                        $img->move('dist/upload/installations', $photo);
-                        $this->installations->update($id, ["photo" => $photo]);
-                    }
-
                 $this->session->setFlashdata("flash_message", ["success", "Success adding Installation"]);
+                return redirect()->to(base_url() . '/installation/edit/' . $id);
             } else
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding Installation"]);
-            return redirect()->to(base_url() . '/installations');
         }
 
         $data["__modulename"] = "Add Installation";
         $data["__mode"] = "add";
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
+        $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
+        $data["installations_office_only"] = false;
         $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('installations/v_edit');
@@ -123,38 +143,13 @@ class Installation extends BaseController
     {
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         if (isset($_POST["Save"])) {
-            $installation = [
-                "spk_no"                        => @$_POST["spk_no"],
-                "spk_at"                        => @$_POST["spk_at"],
-                "installed_at"                  => @$_POST["installed_at"],
-                "vehicle_id"                    => @$_POST["vehicle_id"],
-                "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
-                "tire_id"                       => @$_POST["tire_id"],
-                "tire_qr_code"                  => @$_POST["tire_qr_code"],
-                "tire_position_id"              => @$_POST["tire_position_id"],
-                "tire_is_retread"               => @$_POST["tire_is_retread"],
-                "price"                         => @$_POST["price"],
-                "flap_installation"             => @$_POST["flap_installation"],
-                "flap_price"                    => @$_POST["flap_price"],
-                "disassembled_tire"             => @$_POST["disassembled_tire"],
-                "km"                            => @$_POST["km"],
-                "tread_depth"                   => @$_POST["tread_depth"],
-            ];
+            $installation = $this->saving_data("edit");
             $installation = $installation + $this->updated_values();
             if ($this->installations->update($id, $installation)) {
-                $old_photo = $this->installations->find([$id])[0]->photo;
-                unlink('dist/upload/installations/' . basename($old_photo));
-                $photo = "";
-                if ($img = @$this->request->getFiles()['photo'])
-                    if ($img->isValid() && !$img->hasMoved()) {
-                        $photo = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . date("YmdHis") . "_" . $id . "." . pathinfo($img->getName(), PATHINFO_EXTENSION);
-                        $img->move('dist/upload/installations', $photo);
-                        $this->installations->update($id, ["photo" => $photo]);
-                    }
                 $this->session->setFlashdata("flash_message", ["success", "Success editing Installation"]);
+                return redirect()->to(base_url() . '/installation/edit/' . $id);
             } else
                 $this->session->setFlashdata("flash_message", ["error", "Failed editing Installation"]);
-            return redirect()->to(base_url() . '/installations');
         }
 
         $data["__modulename"] = "Edit Installation";

@@ -108,10 +108,9 @@
                                     <th>QrCode</th>
                                     <th>Reg Plate</th>
                                     <th>Position</th>
-                                    <th>Vulkanisir</th>
-                                    <th>Price</th>
-                                    <th>Km</th>
-                                    <th>Tread Depth</th>
+                                    <th>Item</th>
+                                    <th>Km Install</th>
+                                    <th>OTD</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>

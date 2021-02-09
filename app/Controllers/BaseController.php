@@ -28,6 +28,7 @@ class BaseController extends Controller
 	protected $menus;
 	protected $divisions;
 	protected $session;
+	protected $_form;
 
 	public function __construct()
 	{
@@ -41,6 +42,7 @@ class BaseController extends Controller
 			echo "<script> window.location='" . base_url() . "/login'; </script>";
 			exit();
 		}
+		$this->_form =  new A_form();
 	}
 	/**
 	 * An array of helpers to be loaded automatically upon
@@ -98,6 +100,7 @@ class BaseController extends Controller
 		$data["__mainmenu"] = $__mainmenu;
 		$data["__submenu"] = $__submenu;
 		$data["__menu_ids"] = @$this->get_menu_ids(explode("/", $_SERVER["PATH_INFO"])[1]);
+		$data["_form"] = $this->_form;
 		return $data;
 	}
 

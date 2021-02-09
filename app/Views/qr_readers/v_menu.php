@@ -16,6 +16,9 @@
                                 <h4><b>Tire Info:</b></h4><br>
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
+                                        <b>Tire Uniq code</b> <a class="pull-right" id="qrcode"></a>
+                                    </li>
+                                    <li class="list-group-item">
                                         <b>Size</b> <a class="pull-right" id="tire_size"></a>
                                     </li>
                                     <li class="list-group-item">
@@ -89,6 +92,9 @@
             var tire = JSON.parse(result.replace("[", "").replace("]", ""));
             try {
                 $("#tire_id").val(tire.id);
+            } catch (e) {}
+            try {
+                $("#qrcode").html("<?= $qrcode; ?>");
             } catch (e) {}
             try {
                 $("#tire_size").html(tire.size.name);

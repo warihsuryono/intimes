@@ -15,10 +15,10 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Tire</label>
-                                        <input id="tire_id" name="tire_id" type="hidden">
+                                        <label>Tire Uniq Code</label>
+                                        <input id="tire_id" name="tire_id" type="hidden" required>
                                         <div class="input-group">
-                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control">
+                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" required>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
                                             </span>
@@ -54,28 +54,28 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>SPK No</label>
-                                        <input name="spk_no" type="text" class="form-control" placeholder="SPK No">
+                                        <label>SPK/PO Number</label>
+                                        <input name="spk_no" type="text" class="form-control" placeholder="SPK No" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>SPK At</label>
-                                        <input name="spk_at" type="date" class="form-control">
+                                        <label>SPK/PO Date</label>
+                                        <input name="spk_at" type="date" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Installed At</label>
-                                        <input name="installed_at" type="date" class="form-control">
+                                        <label>Installed Date</label>
+                                        <input name="installed_at" type="date" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Vehicle</label>
-                                        <input id="vehicle_id" name="vehicle_id" type="hidden">
+                                        <label>Vehicle No</label>
+                                        <input id="vehicle_id" name="vehicle_id" type="hidden" required>
                                         <div class="input-group">
-                                            <input id="vehicle_registration_plate" name="vehicle_registration_plate" type="text" class="form-control" placeholder="vehicle_registration_plate ...">
+                                            <input id="vehicle_registration_plate" name="vehicle_registration_plate" type="text" class="form-control" placeholder="Vehicle registration plate ..." required>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info btn-flat" onclick="browse_vehicles('vehicle_id','vehicle_registration_plate');"><i class="fas fa-search"></i></button>
                                             </span>
@@ -85,7 +85,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Position</label>
-                                        <select name="tire_position_id" class="form-control">
+                                        <select name="tire_position_id" class="form-control" required>
                                             <option value="">-- Select Tire Position --</option>
                                             <?php foreach ($tire_positions as $tire_position) : ?>
                                                 <option value="<?= $tire_position->id; ?>"><?= $tire_position->name; ?></option>
@@ -95,8 +95,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Vulkanisir</label>
-                                        <select name="tire_is_retread" class="form-control">
+                                        <label>Item</label>
+                                        <select name="tire_is_retread" class="form-control" required>
                                             <option value=""></option>
                                             <option value="1">Yes</option>
                                             <option value="2">No</option>
@@ -135,8 +135,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Tread Depth</label>
-                                        <input name="tread_depth" type="text" class="form-control" placeholder="Tread Depth">
+                                        <label>Original Tread Depth</label>
+                                        <input name="tread_depth" type="text" class="form-control" placeholder="Original Tread Depth">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -220,6 +220,9 @@
             } catch (e) {}
             try {
                 $("#psi").html(tire.psi);
+            } catch (e) {}
+            try {
+                $("[name='tread_depth']").val(tire.tread_depth);
             } catch (e) {}
             $("#tire_descriptions").fadeIn();
         });

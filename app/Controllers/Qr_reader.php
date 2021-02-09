@@ -27,7 +27,7 @@ class Qr_reader extends BaseController
         $this->privilege_check($this->menu_ids);
         $data["__modulename"] = "QR Code Result";
         $data["qrcode"] = $qrcode;
-        $data["installation"] = $this->installations->where(["is_deleted" => 0, "tire_qr_code" => $qrcode])->orderBy("installed_at DESC")->findAll()[0];
+        $data["installation"] = @$this->installations->where(["is_deleted" => 0, "tire_qr_code" => $qrcode])->orderBy("installed_at DESC")->findAll()[0];
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');

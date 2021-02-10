@@ -31,6 +31,11 @@ class Installation extends BaseController
         @$data["yesnooption"][0]->name = "No";
         @$data["yesnooption"][1]->id = 1;
         @$data["yesnooption"][1]->name = "Yes";
+
+        $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
+        $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
+        $data["installations_office_only"] = false;
+
         return $data;
     }
 
@@ -85,13 +90,14 @@ class Installation extends BaseController
 
     public function saving_data($mode)
     {
+        $data = [];
         if ($mode == "add") {
             $data = [
                 "tire_id"                       => @$_POST["tire_id"],
                 "tire_qr_code"                  => @$_POST["tire_qr_code"],
             ];
         }
-        $data = [
+        $data = $data + [
             "spk_no"                        => @$_POST["spk_no"],
             "spk_at"                        => @$_POST["spk_at"],
             "po_price"                      => @$_POST["po_price"],
@@ -103,9 +109,9 @@ class Installation extends BaseController
             "km_install"                    => @$_POST["km_install"],
             "original_tread_depth"          => @$_POST["original_tread_depth"],
             "is_flap"                       => @$_POST["is_flap"],
-            "flap_price"                    => @$_POST["flap_price"],
+            "flap_price"                    => @$_POST["flap_price"] * 1,
             "is_tube"                       => @$_POST["is_tube"],
-            "tube_price"                    => @$_POST["tube_price"],
+            "tube_price"                    => @$_POST["tube_price"] * 1,
         ];
 
         return $data;
@@ -127,9 +133,6 @@ class Installation extends BaseController
 
         $data["__modulename"] = "Add Installation";
         $data["__mode"] = "add";
-        $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
-        $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
-        $data["installations_office_only"] = false;
         $data = $data + $this->common();
         $data = $data + $this->get_reference_data();
         echo view('v_header', $data);
@@ -154,12 +157,30 @@ class Installation extends BaseController
 
         $data["__modulename"] = "Edit Installation";
         $data["__mode"] = "edit";
-        $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
+        $data["id"] = $id;
         $data["installation"] = $this->installations->where("is_deleted", "0")->find([$id])[0];
         $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('installations/v_edit');
+        echo view('v_footer');
+        echo view('installations/v_js');
+    }
+
+    public function takepictures($id)
+    {
+        $this->privilege_check($this->menu_ids, 2, $this->route_name);
+
+        $data["__modulename"] = "Take Pictures of Tire Installations";
+        $data["__mode"] = "takepictures";
+        $data["id"] = $id;
+        $data["installation"] = $this->installations->where("is_deleted", "0")->find([$id])[0];
+        $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
+        echo view('v_header', $data);
+        echo view('v_menu');
+        echo view('installations/v_takepictures');
         echo view('v_footer');
         echo view('installations/v_js');
     }

@@ -9,18 +9,19 @@
         on_qr_success("<?= $installation->tire_qr_code; ?>");
         $("[name='spk_no']").val("<?= $installation->spk_no; ?>");
         $("[name='spk_at']").val("<?= $installation->spk_at; ?>");
+        $("[name='po_price']").val("<?= $installation->po_price; ?>");
         $("[name='installed_at']").val("<?= $installation->installed_at; ?>");
         $("[name='vehicle_id']").val("<?= $installation->vehicle_id; ?>");
         $("[name='vehicle_registration_plate']").val("<?= $installation->vehicle_registration_plate; ?>");
         $("[name='tire_id']").val("<?= $installation->tire_id; ?>");
         $("[name='tire_position_id']").val("<?= $installation->tire_position_id; ?>");
-        $("[name='tire_is_retread']").val("<?= $installation->tire_is_retread; ?>");
-        $("[name='price']").val("<?= $installation->price; ?>");
-        $("[name='flap_installation']").val("<?= $installation->flap_installation; ?>");
+        $("[name='tire_type_id']").val("<?= $installation->tire_type_id; ?>");
+        $("[name='km_install']").val("<?= $installation->km_install; ?>");
+        $("[name='original_tread_depth']").val("<?= $installation->original_tread_depth; ?>");
+        $("[name='is_flap']").val("<?= $installation->is_flap; ?>");
         $("[name='flap_price']").val("<?= $installation->flap_price; ?>");
-        $("[name='disassembled_tire']").val("<?= $installation->disassembled_tire; ?>");
-        $("[name='km']").val("<?= $installation->km; ?>");
-        $("[name='tread_depth']").val("<?= $installation->tread_depth; ?>");
+        $("[name='is_tube']").val("<?= $installation->is_tube; ?>");
+        $("[name='tube_price']").val("<?= $installation->tube_price; ?>");
     <?php else : ?>
         $("[name='spk_at']").val("<?= date("Y-m-d"); ?>");
         $("[name='installed_at']").val("<?= date("Y-m-d"); ?>");

@@ -114,22 +114,6 @@
                                         <?= $_form->input("original_tread_depth", "", "required"); ?>
                                     </div>
                                 </div>
-
-                                <!-- <div class='col-sm-4'><br>
-                                    <div class="form-group">
-                                        <label>Tire Installation Pictures</label>
-                                        <img id='img_before[" + ii + "]'><br>
-                                        <label>
-                                            <h2><i class='fa fa-trash' onclick='remove_img(" + ii + ")'></i></h2>
-                                        </label>
-                                        <label for='before_[<?= @$maintenance_id; ?>][" + ii + "]'>
-                                            <h2><i class='fa fa-camera' aria-hidden='true'></i></h2>
-                                        </label>
-                                        <input onchange='loadImg(this,\"before\"," + ii + ");' type='file' capture='camera' name='before_[<?= @$maintenance_id; ?>][" + ii + "]' id='before_[<?= @$maintenance_id; ?>][" + ii + "]' style='display:none;'>
-                                        <input type='text' value='" + scopes[ii].notes_before + "' name='notes_before[<?= @$maintenance_id; ?>][" + ii + "]' id='notes_before[<?= @$maintenance_id; ?>][" + ii + "]' class='form-control'>
-                                    </div>
-                                </div> -->
-
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Flap Installation</label>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\m_installation;
+use App\Models\m_installation_picture;
 use App\Models\m_tire_position;
 use App\Models\m_tire_type;
 
@@ -11,6 +12,7 @@ class Installation extends BaseController
     protected $menu_ids;
     protected $route_name;
     protected $installations;
+    protected $installation_pictures;
     protected $tire_positions;
     protected $tire_types;
 
@@ -20,6 +22,7 @@ class Installation extends BaseController
         $this->route_name = "installations";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->installations =  new m_installation();
+        $this->installation_pictures =  new m_installation_picture();
         $this->tire_positions =  new m_tire_position();
         $this->tire_types =  new m_tire_type();
     }
@@ -178,11 +181,13 @@ class Installation extends BaseController
         $data["installation"] = $this->installations->where("is_deleted", "0")->find([$id])[0];
         $data = $data + $this->common();
         $data = $data + $this->get_reference_data();
+        $data["installation_pictures"]["tire"] = $this->installation_pictures->where(["is_deleted" => 0, "installation_id" => $id, "mode" => "tire"])->findAll();
+        $data["installation_pictures"]["flap"] = $this->installation_pictures->where(["is_deleted" => 0, "installation_id" => $id, "mode" => "flap"])->findAll();
+        $data["installation_pictures"]["tube"] = $this->installation_pictures->where(["is_deleted" => 0, "installation_id" => $id, "mode" => "tube"])->findAll();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('installations/v_takepictures');
         echo view('v_footer');
-        echo view('installations/v_js');
     }
 
     public function delete($id)
@@ -223,5 +228,22 @@ class Installation extends BaseController
         $data["installations"]       = @$installations;
         $data                       = $data + $this->common();
         echo view('installations/v_subwindow', $data);
+    }
+
+    public function put_image($id, $mode)
+    {
+        $img = file_get_contents('php://input');
+        $img = explode(";base64,", $img);
+        $ext = explode("/", $img[0])[1];
+        $img = base64_decode(str_replace(' ', '+', $img[1]));
+        $filename = date("ymdhis") . "_" . rand(0, 9) . rand(0, 9) . rand(0, 9) . "_" . $id . "_" . $mode . "." . $ext;
+        if (file_put_contents('dist/upload/installations/' . $filename, $img)) {
+            $this->resizeImage('dist/upload/installations/' . $filename);
+            $data = ["installation_id" => $id, "mode" => $mode, "filename" => $filename]  + $this->created_values() + $this->updated_values();
+            $this->installation_pictures->save($data);
+            echo json_encode($this->installation_pictures->where(["is_deleted" => 0, "installation_id" => $id, "mode" => $mode])->findAll());
+        } else {
+            echo "0";
+        }
     }
 }

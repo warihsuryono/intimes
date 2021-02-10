@@ -108,7 +108,6 @@
                                     <th>QrCode</th>
                                     <th>Reg Plate</th>
                                     <th>Position</th>
-                                    <th>Item</th>
                                     <th>Km Install</th>
                                     <th>OTD</th>
                                     <th>Created At</th>
@@ -138,10 +137,8 @@
                                         <td><?= $installation->tire_qr_code; ?></td>
                                         <td><?= $installation->vehicle_registration_plate; ?></td>
                                         <td><?= (is_object($installation_detail[$installation->id]["tire_position"])) ? $installation_detail[$installation->id]["tire_position"]->name : ""; ?></td>
-                                        <td><?= ($installation->tire_is_retread == "1") ? "Yes" : "No"; ?></td>
-                                        <td align="right"><?= number_format($installation->price); ?></td>
-                                        <td><?= $installation->km; ?></td>
-                                        <td><?= $installation->tread_depth; ?></td>
+                                        <td><?= $installation->km_install; ?></td>
+                                        <td><?= $installation->original_tread_depth; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($installation->created_at)); ?></td>
                                         <td><?= $installation->created_by; ?></td>
                                     </tr>

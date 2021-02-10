@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class m_installation extends Model
+class m_checking extends Model
 {
     protected $DBGroup = 'default';
-    protected $table = 'installations';
+    protected $table = 'checkings';
     protected $primaryKey = 'id';
     protected $returnType = 'object';
     protected $useTimestamps = false;

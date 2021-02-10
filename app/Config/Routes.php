@@ -247,6 +247,8 @@ $routes->get('/installation/view/(:num)', 'Installation::view/$1');
 $routes->get('/installation/edit/(:num)', 'Installation::edit/$1');
 $routes->get('/installation/delete/(:num)', 'Installation::delete/$1');
 
+$routes->get('/checkings', 'Checking::index');
+
 $routes->get('/subwindow/suppliers', 'Supplier::subwindow');
 $routes->get('/subwindow/customers', 'Customer::subwindow');
 $routes->get('/subwindow/items', 'Item::subwindow');

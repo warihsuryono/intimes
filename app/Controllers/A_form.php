@@ -14,6 +14,11 @@ class A_form
         return "<input type='hidden' id='" . $name . "' name='" . $name . "' value='" . $value . "' class='form-control' " . $attr . ">";
     }
 
+    public function textarea($name, $value = "", $attr = "")
+    {
+        return "<textarea id='" . $name . "' name='" . $name . "' class='form-control' " . $attr . "> " . $value . " </textarea>";
+    }
+
     public function select($name, $values, $selected = "",  $id = "id", $caption = "name", $startempty = true, $attr = "")
     {
         $return = "<select id='" . $name . "' name='" . $name . "' class='form-control' " . $attr . ">";

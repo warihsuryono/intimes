@@ -116,7 +116,7 @@
                             </div>
                         </div>
                         <div class=" card-footer">
-                            <a href="<?= base_url(); ?>/tires" class="btn btn-info">Back</a>
+                            <a href="<?= base_url(); ?>/checkings" class="btn btn-info">Back</a>
                             <?php if ($__mode == "edit") : ?>
                                 <a href="<?= base_url(); ?>/checking/takepictures/<?= $id; ?>" class="btn btn-info"><i class="fa fa-camera"></i>&nbsp;Take Pictures</a>
                             <?php endif ?>

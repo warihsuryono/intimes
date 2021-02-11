@@ -64,9 +64,6 @@
                                         <b>Tread Depth</b> <a class="pull-right" id="tread_depth_installation"></a>
                                     </li>
                                     <li class="list-group-item">
-                                        <img id="photo" height="150">
-                                    </li>
-                                    <li class="list-group-item">
                                         <button onclick="window.location='<?= base_url(); ?>/installation/edit/<?= @$installation->id; ?>';" class="btn btn-block btn-primary btn-lg"><i class="fa fa-search"></i></button>
                                     </li>
                                 </ul>
@@ -139,9 +136,6 @@
             } catch (e) {}
             try {
                 $("#tread_depth_installation").html(installation.tread_depth);
-            } catch (e) {}
-            try {
-                $("#photo").attr("src", "<?= base_url(); ?>/dist/upload/installations/" + installation.photo);
             } catch (e) {}
             $("#installation_info").fadeIn();
             $("#btn_installation").fadeOut();

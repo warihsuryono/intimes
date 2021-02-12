@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="tire_descriptions" Xstyle="display:none;">
+                            <div class="row" id="tire_descriptions" style="display:none;">
                                 <div class="col-sm-4">
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
@@ -57,9 +57,17 @@
                                         </li>
                                         <li class="list-group-item">
                                             <b>Position Changed ?</b>
-                                            <div class="pull-right"><?= $_form->input("tire_position_changed", "", "type='checkbox'"); ?> Yes</div>
+                                            <div class="pull-right"><?= $_form->input("tire_position_changed", "1", "type='checkbox' onchange='changing_tire_position(this)'"); ?> Yes</div>
                                         </li>
-                                        <li class="list-group-item">
+                                        <script>
+                                            function changing_tire_position(elm) {
+                                                if (elm.checked)
+                                                    $("#tire_position_remark_area").fadeIn();
+                                                else
+                                                    $("#tire_position_remark_area").fadeOut();
+                                            }
+                                        </script>
+                                        <li class="list-group-item" id="tire_position_remark_area" style="display:none;">
                                             <b>Remark</b>
                                             <?= $_form->textarea("tire_position_remark"); ?>
                                         </li>
@@ -157,6 +165,15 @@
                 $("[name='tread_depth']").val(tire.tread_depth);
             } catch (e) {}
             $("#tire_descriptions").fadeIn();
+            $.get("<?= base_url(); ?>/checking/get_last_checking/" + tire.id, function(result) {
+                var last_checking = JSON.parse(result.replace("[", "").replace("]", ""));
+                try {
+                    $("#old_position").html(last_checking.tire_position.name);
+                    $("#km_install").html(last_checking.km_install);
+                    $("#check_km_last").html(last_checking.check_km);
+                    $("#remain_tread_depth_last").html(last_checking.remain_tread_depth);
+                } catch (e) {}
+            });
         });
     }
 </script>

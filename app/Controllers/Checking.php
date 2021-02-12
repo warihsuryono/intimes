@@ -94,15 +94,15 @@ class Checking extends BaseController
             ];
         }
         $data = $data + [
-            "old_tire_position_id"  => @$_POST["spk_no"],
-            "tire_position_id"      => @$_POST["spk_at"],
-            "tire_position_changed" => @$_POST["po_price"],
-            "tire_position_remark"  => @$_POST["installed_at"],
-            "check_km"              => @$_POST["vehicle_id"],
-            "check_at"              => @$_POST["vehicle_registration_plate"],
-            "remain_tread_depth"    => @$_POST["tire_position_id"],
-            "psi"                   => @$_POST["tire_type_id"],
-            "notes"                 => @$_POST["km_install"],
+            "old_tire_position_id"  => @$_POST["old_tire_position_id"],
+            "tire_position_id"      => @$_POST["tire_position_id"],
+            "tire_position_changed" => @$_POST["tire_position_changed"],
+            "tire_position_remark"  => @$_POST["tire_position_remark"],
+            "check_km"              => @$_POST["check_km"],
+            "check_at"              => @$_POST["check_at"],
+            "remain_tread_depth"    => @$_POST["remain_tread_depth"],
+            "psi"                   => @$_POST["psi"],
+            "notes"                 => @$_POST["notes"],
         ];
 
         return $data;
@@ -111,7 +111,27 @@ class Checking extends BaseController
     public function add()
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
+        $installation = @$this->installations->where(["is_deleted" => 0, "tire_qr_code" => $_GET["qrcode"]])->orderBy("installed_at DESC")->findAll();
+        if (count($installation) <= 0 && @$_GET["qrcode"] != "") {
+            $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . $_GET["qrcode"] . "` has never been installed"]);
+            return redirect()->to(base_url() . '/checkings');
+            exit();
+        }
+        $data["installation"] = @$installation[0];
+
         if (isset($_POST["Save"])) {
+            $installation = @$this->installations->where(["is_deleted" => 0, "tire_qr_code" => @$_POST["tire_qr_code"]])->orderBy("installed_at DESC")->findAll()[0];
+            if (@$installation->id <= 0) {
+                $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . @$_POST["tire_qr_code"] . "` has never been installed"]);
+                return redirect()->to(base_url() . '/checking/add');
+                exit();
+            }
+            $_POST["installation_id"] = $installation->id;
+            $_POST["old_tire_position_id"] = $installation->tire_position_id;
+            $_POST["tire_id"] = $installation->tire_id;
+            $_POST["tire_qr_code"] = $installation->tire_qr_code;
+            $checking = @$this->checkings->where(["is_deleted" => 0, "tire_qr_code" => @$_POST["tire_qr_code"]])->orderBy("check_at DESC")->findAll()[0];
+            if (@$checking->id > 0) $_POST["old_tire_position_id"] = $checking->tire_position_id;
             $checking = $this->saving_data("add");
             $checking = $checking + $this->created_values() + $this->updated_values();
             if ($this->checkings->save($checking)) {
@@ -232,5 +252,24 @@ class Checking extends BaseController
         } else {
             echo "0";
         }
+    }
+
+    public function get_last_checking($tire_id)
+    {
+        $data = [];
+        $checking = @$this->checkings->where(["is_deleted" => 0, "tire_id" => $tire_id])->orderBy("check_at DESC")->findAll()[0];
+        $installation = @$this->installations->where(["is_deleted" => 0, "tire_id" => $tire_id])->orderBy("installed_at DESC")->findAll()[0];
+        if (@$checking->id > 0) {
+            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $checking->tire_position_id])->findAll()[0];
+            $data["km_install"] = @$installation->km_install;
+            $data["check_km"] = @$checking->check_km;
+            $data["remain_tread_depth"] = @$checking->remain_tread_depth;
+        } else {
+            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $installation->tire_position_id])->findAll()[0];
+            $data["km_install"] = @$installation->km_install;
+            $data["check_km"] = 0;
+            $data["remain_tread_depth"] = @$installation->original_tread_depth;
+        }
+        echo json_encode($data);
     }
 }

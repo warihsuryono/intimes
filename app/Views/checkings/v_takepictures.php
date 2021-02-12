@@ -62,13 +62,13 @@
             reader.onload = function(e) {
                 $.ajax({
                     type: 'PUT',
-                    url: '<?= base_url(); ?>/installation/put_image/<?= $id; ?>/' + mode,
+                    url: '<?= base_url(); ?>/checking/put_image/<?= $id; ?>/' + mode,
                     data: e.target.result
                 }).done(function(result) {
                     var pictures = JSON.parse(result);
                     imgs = "";
                     for (var ii = 0; ii < pictures.length; ii++) {
-                        imgs = imgs + "<img style='margin:10px;' height='200' src='<?= base_url(); ?>/dist/upload/installations/" + pictures[ii].filename + "'>";
+                        imgs = imgs + "<img style='margin:10px;' height='200' src='<?= base_url(); ?>/dist/upload/checkings/" + pictures[ii].filename + "'>";
                     }
                     $("#" + mode + "_pictures").html(imgs);
                 });

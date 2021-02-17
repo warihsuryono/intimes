@@ -2,6 +2,7 @@
     <?php if (isset($customer)) : ?>
         $("[name='industry_category_id']").val("<?= $customer->industry_category_id; ?>");
         $("[name='company_name']").val("<?= str_replace([chr(13) . chr(10), "\n"], "<br>", $customer->company_name); ?>".replace("<br>", "\n"));
+        $("[name='pool']").val("<?= str_replace([chr(13) . chr(10), "\n"], "<br>", $customer->pool); ?>".replace("<br>", "\n"));
         $("[name='pic']").val("<?= str_replace([chr(13) . chr(10), "\n"], "<br>", $customer->pic); ?>".replace("<br>", "\n"));
         $("[name='pic_phone']").val("<?= str_replace([chr(13) . chr(10), "\n"], "<br>", $customer->pic_phone); ?>".replace("<br>", "\n"));
         $("[name='email']").val("<?= str_replace([chr(13) . chr(10), "\n"], "<br>", $customer->email); ?>".replace("<br>", "\n"));

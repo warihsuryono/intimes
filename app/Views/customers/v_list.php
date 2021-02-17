@@ -49,6 +49,12 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
+                                                <label>Pool</label>
+                                                <input name="pool" value="<?= @$_GET["pool"]; ?>" type="text" class="form-control" placeholder="Pool ...">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
                                                 <label>PIC</label>
                                                 <input name="pic" value="<?= @$_GET["pic"]; ?>" type="text" class="form-control" placeholder="PIC ...">
                                             </div>
@@ -106,6 +112,7 @@
                                     <th>Id</th>
                                     <th>Industry Category</th>
                                     <th>Company Name</th>
+                                    <th>Pool</th>
                                     <th>Status</th>
                                     <th>PIC</th>
                                     <th>PIC Phone</th>
@@ -141,6 +148,7 @@
                                         <td><?= $customer->id; ?></td>
                                         <td><?= $customer_detail[$customer->id]["industry_category_id"]; ?></td>
                                         <td><?= $customer->company_name; ?></td>
+                                        <td><?= $customer->pool; ?></td>
                                         <td><?= $customer_detail[$customer->id]["customer_level_id"]; ?></td>
                                         <td><?= $customer->pic; ?></td>
                                         <td><?= $customer->pic_phone; ?></td>

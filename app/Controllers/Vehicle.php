@@ -79,6 +79,8 @@ class Vehicle extends BaseController
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
         if (isset($_POST["Save"])) {
             $vehicle = [
+                "customer_id"          => @$_POST["customer_id"],
+                "customer_name"        => @$_POST["customer_name"],
                 "registration_plate"   => @$_POST["registration_plate"],
                 "vehicle_type_id"      => @$_POST["vehicle_type_id"],
                 "vehicle_brand_id "    => @$_POST["vehicle_brand_id"],
@@ -110,6 +112,8 @@ class Vehicle extends BaseController
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         if (isset($_POST["Save"])) {
             $vehicle = [
+                "customer_id"          => @$_POST["customer_id"],
+                "customer_name"        => @$_POST["customer_name"],
                 "registration_plate"   => @$_POST["registration_plate"],
                 "vehicle_type_id"      => @$_POST["vehicle_type_id"],
                 "vehicle_brand_id "    => @$_POST["vehicle_brand_id"],

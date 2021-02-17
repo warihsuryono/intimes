@@ -21,6 +21,12 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
+                                                <label>Customer</label>
+                                                <input name="customer_name" value="<?= @$_GET["customer_name"]; ?>" type="text" class="form-control" placeholder="Customer Name ...">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
                                                 <label>Registration Plate</label>
                                                 <input name="registration_plate" value="<?= @$_GET["registration_plate"]; ?>" type="text" class="form-control" placeholder="Registration Plate ...">
                                             </div>
@@ -97,6 +103,7 @@
                                     <th></th>
                                     <th>No</th>
                                     <th>Id</th>
+                                    <th>Customer</th>
                                     <th>Registration Plate</th>
                                     <th>Brand</th>
                                     <th>Type</th>
@@ -123,6 +130,7 @@
                                         </td>
                                         <td><?= $no; ?></td>
                                         <td><?= $vehicle->id; ?></td>
+                                        <td><?= $vehicle->customer_name; ?></td>
                                         <td><?= $vehicle->registration_plate; ?></td>
                                         <td><?= $vehicle_detail[$vehicle->id]["vehicle_brand"]->name; ?></td>
                                         <td><?= $vehicle_detail[$vehicle->id]["vehicle_type"]->name; ?></td>

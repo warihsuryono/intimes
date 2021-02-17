@@ -51,6 +51,9 @@ class Customer extends BaseController
         if (isset($_GET["company_name"]) && $_GET["company_name"] != "")
             $wherclause .= " AND company_name LIKE '%" . $_GET["company_name"] . "%'";
 
+        if (isset($_GET["pool"]) && $_GET["pool"] != "")
+            $wherclause .= " AND pool LIKE '%" . $_GET["pool"] . "%'";
+
         if (isset($_GET["pic"]) && $_GET["pic"] != "")
             $wherclause .= " AND pic LIKE '%" . $_GET["pic"] . "%'";
 
@@ -95,6 +98,7 @@ class Customer extends BaseController
             $customer = [
                 "industry_category_id" => @$_POST["industry_category_id"],
                 "company_name"      => @$_POST["company_name"],
+                "pool"              => @$_POST["pool"],
                 "pic"               => @$_POST["pic"],
                 "pic_phone"         => @$_POST["pic_phone"],
                 "email"             => @$_POST["email"],
@@ -149,6 +153,7 @@ class Customer extends BaseController
             $customer = [
                 "industry_category_id" => @$_POST["industry_category_id"],
                 "company_name"      => @$_POST["company_name"],
+                "pool"              => @$_POST["pool"],
                 "pic"               => @$_POST["pic"],
                 "pic_phone"         => @$_POST["pic_phone"],
                 "email"             => @$_POST["email"],

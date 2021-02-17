@@ -25,6 +25,12 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
+                                        <label for="pool">Pool</label>
+                                        <input type="text" name="pool" class="form-control" placeholder="Pool">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
                                         <label for="pic">PIC</label>
                                         <input type="text" name="pic" class="form-control" placeholder="PIC">
                                     </div>

@@ -30,9 +30,9 @@
                                             </button>
                                         </td>
                                         <td><?= $customer->id; ?></td>
-                                        <td><?= $customer_detail[$customer->id]["industry_category_id"]; ?></td>
+                                        <td><?= @$customer_detail[$customer->id]["industry_category_id"]; ?></td>
                                         <td><?= $customer->company_name; ?></td>
-                                        <td><?= $customer_detail[$customer->id]["customer_prospect_id"]; ?></td>
+                                        <td><?= @$customer_detail[$customer->id]["customer_prospect_id"]; ?></td>
                                         <td><?= $customer->pic; ?></td>
                                         <td><?= $customer->pic_phone; ?></td>
                                         <td><?= $customer->email; ?></td>

@@ -180,6 +180,7 @@ class BaseController extends Controller
 
 	public function format_tanggal($tanggal, $mode = "d Fi Y")
 	{
+		if (substr($tanggal, 0, 10) == "0000-00-00" || $tanggal == "") return "";
 		if ($mode == "d Fi Y")
 			return date("d", strtotime($tanggal)) . " " . $this->namabulan(date("m", strtotime($tanggal))) . " " . date("Y", strtotime($tanggal));
 		else return date($mode, strtotime($tanggal));

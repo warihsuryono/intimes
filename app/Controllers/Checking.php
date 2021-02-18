@@ -96,7 +96,7 @@ class Checking extends BaseController
         $data = $data + [
             "old_tire_position_id"  => @$_POST["old_tire_position_id"],
             "tire_position_id"      => @$_POST["tire_position_id"],
-            "tire_position_changed" => @$_POST["tire_position_changed"],
+            "tire_position_changed" => @$_POST["tire_position_changed"] * 1,
             "tire_position_remark"  => @$_POST["tire_position_remark"],
             "check_km"              => @$_POST["check_km"],
             "check_at"              => @$_POST["check_at"],

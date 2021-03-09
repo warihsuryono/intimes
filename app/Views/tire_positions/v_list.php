@@ -27,6 +27,12 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
+                                                <label>Position Code</label>
+                                                <input name="code" value="<?= @$_GET["code"]; ?>" type="text" class="form-control" placeholder="Position Code ...">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
                                                 <label>Left/Right</label>
                                                 <select class="form-control" name="left_right">
                                                     <option value=""></option>
@@ -96,8 +102,8 @@
                                 <tr>
                                     <th></th>
                                     <th>No</th>
-                                    <th>Id</th>
                                     <th>Position Name</th>
+                                    <th>Code</th>
                                     <th>Left/Right</th>
                                     <th>Front/Rear</th>
                                     <th>Inner/Outter</th>
@@ -121,8 +127,8 @@
                                             </a>
                                         </td>
                                         <td><?= $no; ?></td>
-                                        <td><?= $tire_position->id; ?></td>
                                         <td><?= $tire_position->name; ?></td>
+                                        <td><?= $tire_position->code; ?></td>
                                         <td><?= $tire_position->left_right; ?></td>
                                         <td><?= $tire_position->front_rear; ?></td>
                                         <td><?= $tire_position->inner_outter; ?></td>

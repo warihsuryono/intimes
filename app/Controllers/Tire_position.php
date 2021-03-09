@@ -31,6 +31,9 @@ class Tire_position extends BaseController
         if (isset($_GET["name"]) && $_GET["name"] != "")
             $wherclause .= "AND name LIKE '%" . $_GET["name"] . "%'";
 
+        if (isset($_GET["code"]) && $_GET["code"] != "")
+            $wherclause .= "AND code LIKE '%" . $_GET["code"] . "%'";
+
         if (isset($_GET["left_right"]) && $_GET["left_right"] != "")
             $wherclause .= "AND left_right = '" . $_GET["left_right"] . "'";
 
@@ -64,6 +67,7 @@ class Tire_position extends BaseController
         if (isset($_POST["Save"])) {
             $tire_position = [
                 "name"          => @$_POST["name"],
+                "code"          => @$_POST["code"],
                 "left_right"    => @$_POST["left_right"],
                 "front_rear"    => @$_POST["front_rear"],
                 "inner_outter"  => @$_POST["inner_outter"],
@@ -91,6 +95,7 @@ class Tire_position extends BaseController
         if (isset($_POST["Save"])) {
             $tire_position = [
                 "name"          => @$_POST["name"],
+                "code"          => @$_POST["code"],
                 "left_right"    => @$_POST["left_right"],
                 "front_rear"    => @$_POST["front_rear"],
                 "inner_outter"  => @$_POST["inner_outter"],

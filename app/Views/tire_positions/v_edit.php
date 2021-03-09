@@ -15,6 +15,12 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
+                                        <label>Position Code</label>
+                                        <input name="code" value="<?= @$_GET["code"]; ?>" type="text" class="form-control" placeholder="Position Code ...">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
                                         <label>Left/Right</label>
                                         <select class="form-control" name="left_right">
                                             <option value=""></option>

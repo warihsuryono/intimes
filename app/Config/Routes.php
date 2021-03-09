@@ -249,6 +249,9 @@ $routes->get('/installation/delete/(:num)', 'Installation::delete/$1');
 
 $routes->get('/checkings', 'Checking::index');
 
+$routes->get('/tube_brands', 'Tube_brand::index');
+$routes->get('/flap_brands', 'Flap_brand::index');
+
 $routes->get('/subwindow/suppliers', 'Supplier::subwindow');
 $routes->get('/subwindow/customers', 'Customer::subwindow');
 $routes->get('/subwindow/items', 'Item::subwindow');

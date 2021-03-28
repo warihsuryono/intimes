@@ -42,6 +42,9 @@ class Mounting extends BaseController
         if (isset($_GET["mounting_at"]) && $_GET["mounting_at"] != "")
             $wherclause .= " AND mounting_at = '" . $_GET["mounting_at"] . "'";
 
+        if (isset($_GET["customer_name"]) && $_GET["customer_name"] != "")
+            $wherclause .= " AND customer_name LIKE '%" . $_GET["customer_name"] . "%'";
+
         if (isset($_GET["vehicle_registration_plate"]) && $_GET["vehicle_registration_plate"] != "")
             $wherclause .= " AND vehicle_registration_plate LIKE '%" . $_GET["vehicle_registration_plate"] . "%'";
 

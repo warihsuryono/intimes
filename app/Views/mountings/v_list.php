@@ -32,6 +32,12 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
+                                                <label>Customer Name</label>
+                                                <input name="customer_name" value="<?= @$_GET["customer_name"]; ?>" type="text" class="form-control" placeholder="Customer Name ...">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
                                                 <label>Vehicle Registration Plate</label>
                                                 <input name="vehicle_registration_plate" value="<?= @$_GET["vehicle_registration_plate"]; ?>" type="text" class="form-control" placeholder="Vehicle Registration Plate ...">
                                             </div>
@@ -94,12 +100,9 @@
                                     <th>Id</th>
                                     <th>SPK No</th>
                                     <th>SPK Date</th>
+                                    <th>Customer</th>
                                     <th>Mounting at</th>
-                                    <th>QrCode</th>
                                     <th>Reg Plate</th>
-                                    <th>Position</th>
-                                    <th>Km Mounting</th>
-                                    <th>OTD</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>
@@ -123,12 +126,10 @@
                                         <td><?= $mounting->id; ?></td>
                                         <td><?= $mounting->spk_no; ?></td>
                                         <td><?= date("d-m-Y", strtotime($mounting->spk_at)); ?></td>
-                                        <td><?= date("d-m-Y", strtotime($mounting->installed_at)); ?></td>
+                                        <td><?= $mounting->customer_name; ?></td>
+                                        <td><?= date("d-m-Y", strtotime($mounting->mounting_at)); ?></td>
                                         <td><?= $mounting->code; ?></td>
                                         <td><?= $mounting->vehicle_registration_plate; ?></td>
-                                        <td><?= (is_object($mounting_detail[$mounting->id]["tire_position"])) ? $mounting_detail[$mounting->id]["tire_position"]->name : ""; ?></td>
-                                        <td><?= $mounting->km_install; ?></td>
-                                        <td><?= $mounting->original_tread_depth; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($mounting->created_at)); ?></td>
                                         <td><?= $mounting->created_by; ?></td>
                                     </tr>

@@ -14,5 +14,6 @@ class seedall extends Seeder
         $this->call('s_20210309_tube_brands');
         $this->call('s_20210309_tire_sizes');
         $this->call('s_20210309_tire_positions');
+        $this->call('s_20210401_vehicle_types');
     }
 }

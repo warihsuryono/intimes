@@ -15,71 +15,6 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Tire Uniq Code</label>
-                                        <input id="tire_id" name="tire_id" type="hidden" required>
-                                        <div class="input-group">
-                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" required>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" id="tire_descriptions" style="display:none;">
-                                <div class="col-sm-4">
-                                    <ul class="list-group list-group-unbordered">
-                                        <li class="list-group-item">
-                                            <b>Size</b> <a class="pull-right" id="tire_size"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Brand</b> <a class="pull-right" id="tire_brand"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Type</b> <a class="pull-right" id="tire_type"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>PSI</b> <a class="pull-right" id="psi"></a>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>SPK/PO Number</label>
-                                        <?= $_form->input("spk_no", "", "required"); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>SPK/PO Date</label>
-                                        <?= $_form->input("spk_at", "", "type='date' required"); ?>
-                                    </div>
-                                </div>
-                                <?php if (@$installations_office_only) : ?>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>PO Price</label>
-                                            <?= $_form->input("po_price", "", "type='number' required"); ?>
-                                        </div>
-                                    </div>
-                                <?php endif ?>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Installed Date</label>
-                                        <?= $_form->input("installed_at", "", "type='date' required"); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
                                         <label>Vehicle No</label>
                                         <?= $_form->hidden("vehicle_id", "", "required"); ?>
                                         <div class="input-group">
@@ -90,58 +25,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Position</label>
-                                        <?= $_form->select("tire_position_id", $tire_positions, ""); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Item</label>
-                                        <?= $_form->select("tire_type_id", $tire_types, ""); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>KM Install</label>
-                                        <?= $_form->input("km_install", "", "required"); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Original Tread Depth</label>
-                                        <?= $_form->input("original_tread_depth", "", "required"); ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Flap Installation</label>
-                                        <?= $_form->select("is_flap", $yesnooption); ?>
-                                    </div>
-                                </div>
-                                <?php if (@$installations_office_only) : ?>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>Flap Price</label>
-                                            <input name="flap_price" type="number" class="form-control">
-                                        </div>
-                                    </div>
-                                <?php endif ?>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Tube Installation</label>
-                                        <?= $_form->select("is_tube", $yesnooption); ?>
-                                    </div>
-                                </div>
-                                <?php if (@$installations_office_only) : ?>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>Tube Price</label>
-                                            <input name="tube_price" type="number" class="form-control">
-                                        </div>
-                                    </div>
-                                <?php endif ?>
+                            </div>
+                            <div class="row" id="tires_map" style="display:none;">
                             </div>
                         </div>
                         <div class=" card-footer">
@@ -162,6 +47,18 @@
         try {
             document.getElementById("vehicle_id").value = id;
             document.getElementById("vehicle_registration_plate").value = vehicle_registration_plate;
+            document.getElementById("tires_map").style.display = "block";
+            $.get("<?= base_url(); ?>/vehicle/get_tires_map/" + id, function(result) {
+                var tires_map = "<div class='col-sm-4'>" + result + "</div>";
+                $("#tires_map").html(tires_map);
+                if ($("#tiresrow").val() == "1") $("#tires_map").height(100);
+                if ($("#tiresrow").val() == "2") $("#tires_map").height(200);
+                if ($("#tiresrow").val() == "3") $("#tires_map").height(300);
+                if ($("#tiresrow").val() == "4") $("#tires_map").height(440);
+                if ($("#tiresrow").val() == "5") $("#tires_map").height(550);
+                if ($("#tiresrow").val() == "6") $("#tires_map").height(650);
+            });
+
         } catch (e) {}
         $('#modal-form').modal('toggle');
     }

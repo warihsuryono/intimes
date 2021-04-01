@@ -128,7 +128,6 @@
                                         <td><?= date("d-m-Y", strtotime($mounting->spk_at)); ?></td>
                                         <td><?= $mounting->customer_name; ?></td>
                                         <td><?= date("d-m-Y", strtotime($mounting->mounting_at)); ?></td>
-                                        <td><?= $mounting->code; ?></td>
                                         <td><?= $mounting->vehicle_registration_plate; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($mounting->created_at)); ?></td>
                                         <td><?= $mounting->created_by; ?></td>

@@ -107,4 +107,9 @@ class Vehicle_type extends BaseController
             $this->session->setFlashdata("flash_message", ["error", "Success deleting vehicle type"]);
         return redirect()->to(base_url() . '/vehicle_types');
     }
+
+    public function get_vehicle_type($id)
+    {
+        return json_encode($this->vehicle_types->where(["is_deleted" => 0, "id" => $id])->findAll()[0]);
+    }
 }

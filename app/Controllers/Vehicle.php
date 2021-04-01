@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\m_tire_position;
 use App\Models\m_vehicle;
 use App\Models\m_vehicle_brand;
 use App\Models\m_vehicle_type;
@@ -13,6 +14,7 @@ class Vehicle extends BaseController
     protected $vehicles;
     protected $vehicle_brands;
     protected $vehicle_types;
+    protected $tire_positions;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class Vehicle extends BaseController
         $this->vehicles =  new m_vehicle();
         $this->vehicle_brands =  new m_vehicle_brand();
         $this->vehicle_types =  new m_vehicle_type();
+        $this->tire_positions =  new m_tire_position();
     }
 
     public function index()
@@ -176,5 +179,61 @@ class Vehicle extends BaseController
         $data["vehicle_detail"] = @$vehicle_detail;
         $data                   = $data + $this->common();
         echo view('vehicles/v_subwindow', $data);
+    }
+
+    public function get_tire_positions($vehicle_id)
+    {
+        $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $vehicle_id])->findAll()[0];
+        $vehicle_type = @$this->vehicle_types->where(["is_deleted" => 0, "id" => @$vehicle->vehicle_type_id])->findAll()[0];
+        if (@$vehicle_type->tire_position_ids != "")
+            return @$this->tire_positions->where("is_deleted", 0)->where("id IN (" . @$vehicle_type->tire_position_ids . ")")->findAll();
+        return null;
+    }
+
+    public function get_tires_map($vehicle_id)
+    {
+        $tires_map = "";
+        $tire_positions = $this->get_tire_positions($vehicle_id);
+        if ($tire_positions) {
+            $tire_position_ids = [];
+            $tires_map = "
+                <style>
+                    .btn-tire {
+                        position: absolute;
+                        height: 70px;
+                        width: 40px;
+                    }
+                </style>";
+            foreach ($tire_positions as $tire_position) {
+                $tires_map .= "<button class='btn btn-info btn-tire' style='" . $tire_position->styles . "'></button>";
+                $tire_position_ids[] = $tire_position->id;
+            }
+            if (in_array(1, $tire_position_ids) || in_array(2, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:32px;left:85px;'></button>";
+                $tiresrow = 1;
+            }
+            if (in_array(3, $tire_position_ids) || in_array(4, $tire_position_ids) || in_array(5, $tire_position_ids) || in_array(6, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:132px;left:85px;'></button>";
+                $tiresrow = 2;
+            }
+            if (in_array(7, $tire_position_ids) || in_array(8, $tire_position_ids) || in_array(9, $tire_position_ids) || in_array(10, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:232px;left:85px;'></button>";
+                $tiresrow = 3;
+            }
+            if (in_array(11, $tire_position_ids) || in_array(12, $tire_position_ids) || in_array(13, $tire_position_ids) || in_array(14, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:382px;left:85px;'></button>";
+                $tiresrow = 4;
+            }
+            if (in_array(15, $tire_position_ids) || in_array(16, $tire_position_ids) || in_array(17, $tire_position_ids) || in_array(18, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:482px;left:85px;'></button>";
+                $tiresrow = 5;
+            }
+            if (in_array(19, $tire_position_ids) || in_array(20, $tire_position_ids) || in_array(21, $tire_position_ids) || in_array(22, $tire_position_ids)) {
+                $tires_map .= "<button class='btn-info' style='position:absolute;width:65px;height:1px;top:582px;left:85px;'></button>";
+                $tiresrow = 6;
+            }
+            $tires_map .= "<input type='hidden' id='tiresrow' value='" . $tiresrow . "'>";
+        }
+        return $tires_map;
     }
 }

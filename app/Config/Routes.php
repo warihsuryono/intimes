@@ -247,6 +247,8 @@ $routes->get('/installation/view/(:num)', 'Installation::view/$1');
 $routes->get('/installation/edit/(:num)', 'Installation::edit/$1');
 $routes->get('/installation/delete/(:num)', 'Installation::delete/$1');
 
+$routes->get('/mountings', 'Mounting::index');
+$routes->get('/demountings', 'Demounting::index');
 $routes->get('/checkings', 'Checking::index');
 
 $routes->get('/tube_brands', 'Tube_brand::index');

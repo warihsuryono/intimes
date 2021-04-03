@@ -117,7 +117,7 @@ class Mounting extends BaseController
         echo view('v_footer');
     }
 
-    public function saving_data($masterdetail = "master", $id = null, $key = null)
+    public function saving_data($masterdetail = "master", $id = null)
     {
         if ($masterdetail == "master") {
             $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => @$_POST["vehicle_id"]])->findAll()[0];
@@ -136,13 +136,14 @@ class Mounting extends BaseController
         if ($masterdetail == "detail")
             return [
                 "mounting_id"       => $id,
-                "code"              => @$_POST["code"][$key],
-                "tire_type_id"      => @$_POST["tire_type_id"][$key],
-                "tire_position_id"  => @$_POST["tire_position_id"][$key],
-                "km"                => @$_POST["km"][$key],
-                "otd"               => @$_POST["otd"][$key],
-                "price"             => @$_POST["price"][$key],
-                "remark"            => @$_POST["remark"][$key],
+                "tire_id"           => @$_POST["tire_id"],
+                "code"              => @$_POST["tire_qr_code"],
+                "tire_type_id"      => @$_POST["tire_type_id"],
+                "tire_position_id"  => @$_POST["tire_position_id"],
+                "km"                => @$_POST["km"],
+                "otd"               => @$_POST["otd"],
+                "price"             => 0,
+                "remark"            => @$_POST["remark"],
             ];
     }
 
@@ -158,19 +159,13 @@ class Mounting extends BaseController
             } else
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting"]);
         }
-        if (isset($_POST["Save"])) {
-            $mounting = $this->saving_data();
-            $mounting = $mounting + $this->created_values() + $this->updated_values();
-            if ($this->mountings->save($mounting)) {
-                $id = $this->mountings->insertID();
-                foreach ($_POST["code"] as $key => $code) {
-                    $mounting_detail = $this->saving_data("detail", $id, $key) + $this->created_values() + $this->updated_values();
-                    $this->mounting_details->save($mounting_detail);
-                }
-                $this->session->setFlashdata("flash_message", ["success", "Success adding Mounting"]);
-                return redirect()->to(base_url() . '/mounting/edit/' . $id);
-            } else
-                $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting"]);
+
+        if (isset($_POST["saving_page_2"])) {
+            $mounting_detail = $this->saving_data("detail", $id) + $this->created_values() + $this->updated_values();
+            if ($this->mounting_details->save($mounting_detail))
+                return redirect()->to(base_url() . '/mounting/add/' . $id);
+            else
+                $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting detail"]);
         }
 
         $data["__modulename"] = "Add Mounting";

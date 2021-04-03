@@ -12,6 +12,7 @@
                 <div class="card">
                     <div class="card">
                         <form role="form" id="mainform" method="POST">
+                            <?= $_form->hidden("saving_page_2"); ?>
                             <?= $_form->hidden("tire_position_id"); ?>
                             <div class="card-body">
                                 <div class="row">
@@ -52,31 +53,68 @@
                                             <li class="list-group-item">
                                                 <b>Tire Position</b> <a class="pull-right" id="tire_position"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_tire_size">
                                                 <b>Size</b> <a class="pull-right" id="tire_size"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_tire_brand">
                                                 <b>Brand</b> <a class="pull-right" id="tire_brand"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_tire_type">
                                                 <b>Type</b> <a class="pull-right" id="tire_type"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_tire_pattern">
                                                 <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_tread_depth">
                                                 <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
                                             </li>
-                                            <li class="list-group-item">
+                                            <li class="list-group-item" style="display:none;" id="li_psi">
                                                 <b>PSI</b> <a class="pull-right" id="psi"></a>
                                             </li>
                                         </ul>
                                         <br>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Type</label><?= $_form->select("tire_type_id", $tire_types); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>KM</label><?= $_form->input("km"); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>OTD</label><?= $_form->input("otd"); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Remark</label><?= $_form->input("remark"); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <button name="save" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class=" card-footer">
                                     <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
-                                    <button type="submit" name="Save" value="save" class="btn btn-primary float-right">Save</button>
+                                    <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>
                                 </div>
                             </div>
                         </form>
@@ -107,21 +145,27 @@
                 } catch (e) {}
                 try {
                     $("#tire_size").html(tire.size.name);
+                    $("#li_tire_size").css("display", "block");
                 } catch (e) {}
                 try {
                     $("#tire_brand").html(tire.brand.name);
+                    $("#li_tire_brand").css("display", "block");
                 } catch (e) {}
                 try {
                     $("#tire_type").html(tire._type.name);
+                    $("#li_tire_type").css("display", "block");
                 } catch (e) {}
                 try {
                     $("#tire_pattern").html(tire.pattern.name);
+                    $("#li_tire_pattern").css("display", "block");
                 } catch (e) {}
                 try {
                     $("#tread_depth").html(tire.tread_depth);
+                    $("#li_tread_depth").css("display", "block");
                 } catch (e) {}
                 try {
                     $("#psi").html(tire.psi);
+                    $("#li_psi").css("display", "block");
                 } catch (e) {}
             });
         }

@@ -85,7 +85,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label>KM</label><?= $_form->input("km"); ?>
+                                                    <label>KM</label><?= $_form->input("km", @$mounting_details[0]->km); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,10 +112,38 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" card-footer">
-                                    <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
-                                    <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>
-                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="height: 700px;">
+                                <table class="table table-head-fixed text-nowrap table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Code</th>
+                                            <th>Type</th>
+                                            <th>Position</th>
+                                            <th>KM</th>
+                                            <th>OTD</th>
+                                            <th>Remark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($mounting_details as $key => $mounting_detail) : ?>
+                                            <tr>
+                                                <td></td>
+                                                <td><?= $mounting_detail->code; ?></td>
+                                                <td><?= $mounting_detail->tire_type->name; ?></td>
+                                                <td><?= $mounting_detail->tire_position->name; ?> (<?= $mounting_detail->tire_position->code; ?>)</td>
+                                                <td><?= $mounting_detail->km; ?></td>
+                                                <td><?= $mounting_detail->otd; ?></td>
+                                                <td><?= $mounting_detail->remark; ?></td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class=" card-footer">
+                                <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
+                                <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>
                             </div>
                         </form>
                     </div>
@@ -166,6 +194,9 @@
                 try {
                     $("#psi").html(tire.psi);
                     $("#li_psi").css("display", "block");
+                } catch (e) {}
+                try {
+                    $("#tire_type_id").val(tire._type.id);
                 } catch (e) {}
             });
         }

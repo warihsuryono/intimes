@@ -61,10 +61,17 @@ class Mounting extends BaseController
     public function get_saved_data($id)
     {
         $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+        $data["mounting_details"] = @$this->mounting_details->where(["is_deleted" => 0, "mounting_id" => $id])->findAll();
         $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
         $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
         $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
         $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
+        if (isset($data["mounting_details"]))
+            foreach ($data["mounting_details"] as $key => $mounting_detail) {
+                $data["mounting_details"][$key]->tire_type = @$this->tire_types->where(["is_deleted" => 0, "id" => $mounting_detail->tire_type_id])->findAll()[0];
+                $data["mounting_details"][$key]->tire_position = @$this->tire_positions->where(["is_deleted" => 0, "id" => $mounting_detail->tire_position_id])->findAll()[0];
+            }
+
         return $data;
     }
 
@@ -161,6 +168,15 @@ class Mounting extends BaseController
         }
 
         if (isset($_POST["saving_page_2"])) {
+            if ($_POST["tire_position_id"] == "") {
+                $this->session->setFlashdata("flash_message", ["error", "Please choose tire position"]);
+                return redirect()->to(base_url() . '/mounting/add/' . $id);
+            }
+            if ($_POST["km"] == "") {
+                $this->session->setFlashdata("flash_message", ["error", "Please fill km"]);
+                return redirect()->to(base_url() . '/mounting/add/' . $id);
+            }
+
             $mounting_detail = $this->saving_data("detail", $id) + $this->created_values() + $this->updated_values();
             if ($this->mounting_details->save($mounting_detail))
                 return redirect()->to(base_url() . '/mounting/add/' . $id);

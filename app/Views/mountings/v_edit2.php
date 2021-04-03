@@ -10,150 +10,154 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card">
-                        <form role="form" id="mainform" method="POST">
-                            <?= $_form->hidden("saving_page_2"); ?>
-                            <?= $_form->hidden("tire_position_id"); ?>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <ul class="list-group list-group-unbordered">
-                                            <li class="list-group-item">
-                                                <b>Customer Name</b> <a class="pull-right"><?= $mounting->customer_name; ?></a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Vehicle Registration Plate</b> <a class="pull-right"><?= $vehicle->registration_plate; ?></a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Vehicle Type</b> <a class="pull-right"><?= $vehicle_type; ?></a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Vehicle Brand</b> <a class="pull-right"><?= $vehicle_brand; ?></a>
-                                            </li>
-                                        </ul>
-                                        <br>
-                                    </div>
+                    <form role="form" id="mainform" method="POST">
+                        <?= $_form->hidden("saving_page_2"); ?>
+                        <?= $_form->hidden("tire_position_id"); ?>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ul class="list-group list-group-unbordered">
+                                        <li class="list-group-item">
+                                            <b>SPK/PO Number</b> <a class="pull-right"><?= $mounting->spk_no; ?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>SPK/PO Date</b> <a class="pull-right"><?= date("d F Y", strtotime($mounting->spk_at)); ?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Customer Name</b> <a class="pull-right"><?= $mounting->customer_name; ?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Vehicle Registration Plate</b> <a class="pull-right"><?= $vehicle->registration_plate; ?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Vehicle Type</b> <a class="pull-right"><?= $vehicle_type; ?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Vehicle Brand</b> <a class="pull-right"><?= $vehicle_brand; ?></a>
+                                        </li>
+                                    </ul>
+                                    <br>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="form-group" id="tires_map"><?= $tires_map; ?></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group" id="tires_map"><?= $tires_map; ?></div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Add Tire Code</label>
+                                        <?= $_form->hidden("tire_id"); ?>
+                                        <div class="input-group">
+                                            <?= $_form->input("tire_qr_code", "", "required"); ?>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>Add Tire Code</label>
-                                            <?= $_form->hidden("tire_id"); ?>
-                                            <div class="input-group">
-                                                <?= $_form->input("tire_qr_code", "", "required"); ?>
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
-                                                </span>
+                                    <ul class="list-group list-group-unbordered">
+                                        <li class="list-group-item">
+                                            <b>Tire Position</b> <a class="pull-right" id="tire_position"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_tire_size">
+                                            <b>Size</b> <a class="pull-right" id="tire_size"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_tire_brand">
+                                            <b>Brand</b> <a class="pull-right" id="tire_brand"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_tire_type">
+                                            <b>Type</b> <a class="pull-right" id="tire_type"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_tire_pattern">
+                                            <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_tread_depth">
+                                            <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
+                                        </li>
+                                        <li class="list-group-item" style="display:none;" id="li_psi">
+                                            <b>PSI</b> <a class="pull-right" id="psi"></a>
+                                        </li>
+                                    </ul>
+                                    <br>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Type</label><?= $_form->select("tire_type_id", $tire_types); ?>
                                             </div>
                                         </div>
-                                        <ul class="list-group list-group-unbordered">
-                                            <li class="list-group-item">
-                                                <b>Tire Position</b> <a class="pull-right" id="tire_position"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_tire_size">
-                                                <b>Size</b> <a class="pull-right" id="tire_size"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_tire_brand">
-                                                <b>Brand</b> <a class="pull-right" id="tire_brand"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_tire_type">
-                                                <b>Type</b> <a class="pull-right" id="tire_type"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_tire_pattern">
-                                                <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_tread_depth">
-                                                <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
-                                            </li>
-                                            <li class="list-group-item" style="display:none;" id="li_psi">
-                                                <b>PSI</b> <a class="pull-right" id="psi"></a>
-                                            </li>
-                                        </ul>
-                                        <br>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Type</label><?= $_form->select("tire_type_id", $tire_types); ?>
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>KM</label><?= $_form->input("km", @$mounting_details[0]->km); ?>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>KM</label><?= $_form->input("km", @$mounting_details[0]->km); ?>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>OTD</label><?= $_form->input("otd"); ?>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>OTD</label><?= $_form->input("otd"); ?>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Remark</label><?= $_form->input("remark"); ?>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Remark</label><?= $_form->input("remark"); ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <button name="save" class="btn btn-primary">Add</button>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <button name="save" class="btn btn-primary">Add</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body table-responsive p-0" style="height: 700px;">
-                                <table class="table table-head-fixed text-nowrap table-striped">
-                                    <thead>
+                        </div>
+                        <div class="card-body table-responsive p-0" style="height: 700px;">
+                            <table class="table table-head-fixed text-nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Position</th>
+                                        <th>KM</th>
+                                        <th>OTD</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($mounting_details as $key => $mounting_detail) : ?>
                                         <tr>
-                                            <th></th>
-                                            <th>Code</th>
-                                            <th>Type</th>
-                                            <th>Position</th>
-                                            <th>KM</th>
-                                            <th>OTD</th>
-                                            <th>Remark</th>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/photos/<?= $mounting_detail->id; ?>">
+                                                    <i class="fa fa-camera"></i>
+                                                </a>
+                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting_detail->id; ?>);">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                            <td><?= $mounting_detail->code; ?></td>
+                                            <td><?= $mounting_detail->tire_type->name; ?></td>
+                                            <td><?= $mounting_detail->tire_position->name; ?> (<?= $mounting_detail->tire_position->code; ?>)</td>
+                                            <td><?= $mounting_detail->km; ?></td>
+                                            <td><?= $mounting_detail->otd; ?></td>
+                                            <td><?= $mounting_detail->remark; ?></td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($mounting_details as $key => $mounting_detail) : ?>
-                                            <tr>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/photos/<?= $mounting_detail->id; ?>">
-                                                        <i class="fa fa-camera"></i>
-                                                    </a>
-                                                    <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting_detail->id; ?>);">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                                <td><?= $mounting_detail->code; ?></td>
-                                                <td><?= $mounting_detail->tire_type->name; ?></td>
-                                                <td><?= $mounting_detail->tire_position->name; ?> (<?= $mounting_detail->tire_position->code; ?>)</td>
-                                                <td><?= $mounting_detail->km; ?></td>
-                                                <td><?= $mounting_detail->otd; ?></td>
-                                                <td><?= $mounting_detail->remark; ?></td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class=" card-footer">
-                                <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
-                                <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>
-                            </div>
-                        </form>
-                    </div>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class=" card-footer">
+                            <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
+                            <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

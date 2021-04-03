@@ -184,7 +184,7 @@ class Mounting extends BaseController
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting detail"]);
         }
 
-        $data["__modulename"] = "Add Mounting";
+        $data["__modulename"] = "Mounting";
         $data["__mode"] = "add";
         if ($id > 0 && $page == 1) $page = 2;
         $data = $data + $this->common();

@@ -115,7 +115,7 @@
                                 ?>
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/edit/<?= $mounting->id; ?>">
+                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/add/<?= $mounting->id; ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting->id; ?>);">

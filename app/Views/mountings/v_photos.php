@@ -29,6 +29,9 @@
                             </div>
                         </div>
                     </form>
+                    <div class=" card-footer">
+                        <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
+                    </div>
                 </div>
             </div>
         </div>

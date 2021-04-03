@@ -7,6 +7,7 @@ use App\Models\m_mounting_detail;
 use App\Models\m_mounting_photo;
 use App\Models\m_tire_position;
 use App\Models\m_tire_type;
+use App\Models\m_vehicle;
 
 class Mounting extends BaseController
 {
@@ -16,6 +17,7 @@ class Mounting extends BaseController
     protected $mounting_photos;
     protected $tire_positions;
     protected $tire_types;
+    protected $vehicles;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ class Mounting extends BaseController
         $this->mounting_photos =  new m_mounting_photo();
         $this->tire_positions =  new m_tire_position();
         $this->tire_types =  new m_tire_type();
+        $this->vehicles =  new m_vehicle();
     }
 
     public function get_reference_data()
@@ -39,6 +42,15 @@ class Mounting extends BaseController
 
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
+
+        $data["page"] = 1;
+
+        if (isset($_POST["vehicle_id"]))
+            $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $_POST["vehicle_id"]])->findAll()[0];
+        if (isset($_POST["tire_position_id"]))
+            $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
+        if (isset($_POST["vehicle_id"]) && isset($_POST["tire_position_id"]))
+            $data["page"] = 2;
 
         return $data;
     }
@@ -143,7 +155,10 @@ class Mounting extends BaseController
         $data = $data + $this->get_reference_data();
         echo view('v_header', $data);
         echo view('v_menu');
-        echo view('mountings/v_edit');
+        if ($data["page"] == 1)
+            echo view('mountings/v_edit1');
+        if ($data["page"] == 2)
+            echo view('mountings/v_edit2');
         echo view('v_footer');
         echo view('mountings/v_js');
     }

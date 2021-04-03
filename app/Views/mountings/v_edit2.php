@@ -10,33 +10,43 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <form role="form" method="POST" enctype="multipart/form-data">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Vehicle No</label>
-                                        <?= $_form->hidden("vehicle_id", "", "required"); ?>
-                                        <div class="input-group">
-                                            <?= $_form->input("vehicle_registration_plate", "", "required placeholder='Vehicle registration plate ...' readonly"); ?>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info btn-flat" onclick="browse_vehicles('vehicle_id','vehicle_registration_plate');"><i class="fas fa-search"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Tire Uniq Code</label>
+                                <?= $_form->hidden("tire_id"); ?>
+                                <div class="input-group">
+                                    <?= $_form->input("tire_qr_code", "", "required"); ?>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="row" id="tires_map" style="display:none;">
-                            </div>
                         </div>
-                        <div class=" card-footer">
-                            <a href="<?= base_url(); ?>/installations" class="btn btn-info">Back</a>
-                            <?php if ($__mode == "edit") : ?>
-                                <a href="<?= base_url(); ?>/installation/takepictures/<?= $id; ?>" class="btn btn-info"><i class="fa fa-camera"></i>&nbsp;Take Pictures</a>
-                            <?php endif ?>
-                            <button type="submit" name="Save" value="save" class="btn btn-primary float-right">Save</button>
+                    </div>
+                    <div class="row" id="tire_descriptions">
+                        <div class="col-sm-4">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Vehicle Registration Plate</b> <a class="pull-right" id="vehicle_registration_plate"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Vehicle Type</b> <a class="pull-right" id="vehicle_type"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Vehicle Brand</b> <a class="pull-right" id="vehicle_brand"></a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Tire Position</b> <a class="pull-right" id="tire_position"></a>
+                                </li>
+                            </ul>
+                            <br>
                         </div>
-                    </form>
+                    </div>
+                    <div class=" card-footer">
+                        <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
+                        <button type="submit" name="Save" value="save" class="btn btn-primary float-right">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,5 +130,9 @@
             } catch (e) {}
             $("#tire_descriptions").fadeIn();
         });
+    }
+
+    function tire_position_clicked(tire_position_id) {
+        $("#tire_position_id").val(tire_position_id);
     }
 </script>

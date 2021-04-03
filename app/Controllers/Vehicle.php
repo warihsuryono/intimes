@@ -205,7 +205,7 @@ class Vehicle extends BaseController
                     }
                 </style>";
             foreach ($tire_positions as $tire_position) {
-                $tires_map .= "<button class='btn btn-info btn-tire' style='" . $tire_position->styles . "'></button>";
+                $tires_map .= "<button class='btn btn-info btn-tire' style='" . $tire_position->styles . "' onclick=\"tire_position_clicked('" . $tire_position->id . "');\"></button>";
                 $tire_position_ids[] = $tire_position->id;
             }
             if (in_array(1, $tire_position_ids) || in_array(2, $tire_position_ids)) {

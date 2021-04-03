@@ -19,14 +19,19 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="form-group" id="tires_map" style="display:none;">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row" id="tires_map" style="display:none;">
+
+                                <div class="col-sm-4">
+
+                                </div>
                             </div>
                         </div>
                     </form>
                     <div class=" card-footer">
                         <a href="<?= base_url(); ?>/mountings" class="btn btn-info">Back</a>
+                        <button type="submit" name="Next" class="btn btn-primary float-right">Next</button>
                     </div>
                 </div>
             </div>
@@ -42,12 +47,30 @@
             $.get("<?= base_url(); ?>/vehicle/get_tires_map/" + id, function(result) {
                 var tires_map = "<div class='col-sm-4'>" + result + "</div>";
                 $("#tires_map").html(tires_map);
-                if ($("#tiresrow").val() == "1") $("#tires_map").height(100);
-                if ($("#tiresrow").val() == "2") $("#tires_map").height(200);
-                if ($("#tiresrow").val() == "3") $("#tires_map").height(300);
-                if ($("#tiresrow").val() == "4") $("#tires_map").height(440);
-                if ($("#tiresrow").val() == "5") $("#tires_map").height(550);
-                if ($("#tiresrow").val() == "6") $("#tires_map").height(650);
+                if ($("#tiresrow").val() == "1") {
+                    $("#tires_map").height(150);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:160px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
+                if ($("#tiresrow").val() == "2") {
+                    $("#tires_map").height(250);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:260px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
+                if ($("#tiresrow").val() == "3") {
+                    $("#tires_map").height(350);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:360px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
+                if ($("#tiresrow").val() == "4") {
+                    $("#tires_map").height(490);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:500px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
+                if ($("#tiresrow").val() == "5") {
+                    $("#tires_map").height(600);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:610px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
+                if ($("#tiresrow").val() == "6") {
+                    $("#tires_map").height(700);
+                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:710px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
+                }
             });
 
         } catch (e) {}
@@ -82,38 +105,15 @@
         reload_subwindow_vehicles_area("");
     }
 
-    function on_qr_success(qrcode) {
-        $.get("<?= base_url(); ?>/tire/get_item_by_qrcode/" + qrcode, function(result) {
-            var tire = JSON.parse(result.replace("[", "").replace("]", ""));
-            try {
-                $("#tire_id").val(tire.id);
-            } catch (e) {}
-            try {
-                $("#tire_size").html(tire.size.name);
-            } catch (e) {}
-            try {
-                $("#tire_brand").html(tire.brand.name);
-            } catch (e) {}
-            try {
-                $("#tire_type").html(tire._type.name);
-            } catch (e) {}
-            try {
-                $("#tire_pattern").html(tire.pattern.name);
-            } catch (e) {}
-            try {
-                $("#tread_depth").html(tire.tread_depth);
-            } catch (e) {}
-            try {
-                $("#psi").html(tire.psi);
-            } catch (e) {}
-            try {
-                $("[name='tread_depth']").val(tire.tread_depth);
-            } catch (e) {}
-            $("#tire_descriptions").fadeIn();
-        });
-    }
-
     function tire_position_clicked(tire_position_id) {
         $("#tire_position_id").val(tire_position_id);
+        for (var i = 1; i < 30; i++) {
+            try {
+                $("#tires_map_" + i).addClass("btn-info");
+                $("#tires_map_" + i).removeClass("btn-success");
+            } catch (ex) {}
+        }
+        $("#tires_map_" + tire_position_id).addClass("btn-success");
+        $("#tires_map_" + tire_position_id).removeClass("btn-info");
     }
 </script>

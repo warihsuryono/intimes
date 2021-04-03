@@ -8,6 +8,8 @@ use App\Models\m_mounting_photo;
 use App\Models\m_tire_position;
 use App\Models\m_tire_type;
 use App\Models\m_vehicle;
+use App\Models\m_vehicle_brand;
+use App\Models\m_vehicle_type;
 
 class Mounting extends BaseController
 {
@@ -18,6 +20,8 @@ class Mounting extends BaseController
     protected $tire_positions;
     protected $tire_types;
     protected $vehicles;
+    protected $vehicle_types;
+    protected $vehicle_brands;
 
     public function __construct()
     {
@@ -30,6 +34,8 @@ class Mounting extends BaseController
         $this->tire_positions =  new m_tire_position();
         $this->tire_types =  new m_tire_type();
         $this->vehicles =  new m_vehicle();
+        $this->vehicle_types =  new m_vehicle_type();
+        $this->vehicle_brands =  new m_vehicle_brand();
     }
 
     public function get_reference_data()
@@ -45,8 +51,11 @@ class Mounting extends BaseController
 
         $data["page"] = 1;
 
-        if (isset($_POST["vehicle_id"]))
+        if (isset($_POST["vehicle_id"])) {
             $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $_POST["vehicle_id"]])->findAll()[0];
+            $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
+            $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
+        }
         if (isset($_POST["tire_position_id"]))
             $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
         if (isset($_POST["vehicle_id"]) && isset($_POST["tire_position_id"]))

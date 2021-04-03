@@ -202,6 +202,69 @@ class Mounting extends BaseController
         echo view('mountings/v_js');
     }
 
+    public function photos($id)
+    {
+        $this->privilege_check($this->menu_ids, 2, $this->route_name);
+
+        $data["__modulename"] = "Take Photos";
+        $data["__mode"] = "takephotos";
+        $data["id"] = $id;
+        $data["mounting_detail"] = $this->mounting_details->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+        $data["mountings"] = $this->mountings->where("is_deleted", "0")->find([$data["mounting_detail"]->mounting_id])[0];
+        $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
+        $data["mounting_photos"] = $this->mounting_photos->where(["is_deleted" => 0, "mounting_detail_id" => $id])->findAll();
+        echo view('v_header', $data);
+        echo view('v_menu');
+        echo view('mountings/v_photos');
+        echo view('v_footer');
+    }
+
+    public function put_photo($id)
+    {
+        $mounting_detail = $this->mounting_details->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+
+        $img = file_get_contents('php://input');
+        $img = explode(";base64,", $img);
+        $ext = explode("/", $img[0])[1];
+        $img = base64_decode(str_replace(' ', '+', $img[1]));
+        $filename = date("ymdhis") . "_" . rand(0, 9) . rand(0, 9) . rand(0, 9) . "_" . $id . "." . $ext;
+        if (file_put_contents('dist/upload/mountings/' . $filename, $img)) {
+            $this->resizeImage('dist/upload/mountings/' . $filename);
+            $data = ["mounting_id" => $mounting_detail->mounting_id, "mounting_detail_id" => $id, "tire_type_id" => $mounting_detail->tire_type_id, "filename" => $filename]  + $this->created_values() + $this->updated_values();
+            $this->mounting_photos->save($data);
+            echo json_encode($this->mounting_photos->where(["is_deleted" => 0, "mounting_detail_id" => $id])->findAll());
+        } else {
+            echo "0";
+        }
+    }
+
+    public function delete_detail($id)
+    {
+        $this->privilege_check($this->menu_ids, 1, $this->route_name);
+        if ($this->mounting_details->update($id, ["is_deleted " => 1] + $this->deleted_values()))
+            $this->session->setFlashdata("flash_message", ["success", "Success deleting mounting"]);
+        else
+            $this->session->setFlashdata("flash_message", ["error", "Success deleting mounting"]);
+        return redirect()->to(base_url() . '/mounting/add/' . $id);
+    }
+
+    public function delete($id)
+    {
+        $this->privilege_check($this->menu_ids, 8, $this->route_name);
+        if ($this->mountings->update($id, ["is_deleted " => 1] + $this->deleted_values()))
+            $this->session->setFlashdata("flash_message", ["success", "Success deleting mounting"]);
+        else
+            $this->session->setFlashdata("flash_message", ["error", "Success deleting mounting"]);
+        return redirect()->to(base_url() . '/mountings');
+    }
+
+    public function delete_photo()
+    {
+        $filename = file_get_contents('php://input');
+        return unlink('dist/upload/mounting/' . basename($filename));
+    }
+
     public function get_tires_map($vehicle_type_id)
     {
         $vehicle_type = @$this->vehicle_types->where(["is_deleted" => 0, "id" => $vehicle_type_id])->findAll()[0];

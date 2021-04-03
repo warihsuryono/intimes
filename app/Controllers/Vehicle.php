@@ -184,6 +184,12 @@ class Vehicle extends BaseController
         echo view('vehicles/v_subwindow', $data);
     }
 
+    public function get_customer($vehicle_id)
+    {
+        $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $vehicle_id])->findAll()[0];
+        return json_encode(@$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0]);
+    }
+
     public function get_tires_map($vehicle_id)
     {
         $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $vehicle_id])->findAll()[0];

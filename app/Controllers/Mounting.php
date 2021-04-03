@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\m_customer;
 use App\Models\m_mounting;
 use App\Models\m_mounting_detail;
 use App\Models\m_mounting_photo;
@@ -22,6 +23,7 @@ class Mounting extends BaseController
     protected $vehicles;
     protected $vehicle_types;
     protected $vehicle_brands;
+    protected $customers;
 
     public function __construct()
     {
@@ -36,9 +38,10 @@ class Mounting extends BaseController
         $this->vehicles =  new m_vehicle();
         $this->vehicle_types =  new m_vehicle_type();
         $this->vehicle_brands =  new m_vehicle_brand();
+        $this->customers =  new m_customer();
     }
 
-    public function get_reference_data()
+    public function get_reference_data($id = 0)
     {
         $data = [];
         @$data["yesnooption"][0]->id = 0;
@@ -49,17 +52,16 @@ class Mounting extends BaseController
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
 
-        $data["page"] = 1;
-
-        if (isset($_POST["vehicle_id"])) {
-            $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $_POST["vehicle_id"]])->findAll()[0];
+        if ($id > 0) {
+            $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+            $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
+            $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
             $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
             $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
         }
+
         if (isset($_POST["tire_position_id"]))
             $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
-        if (isset($_POST["vehicle_id"]) && isset($_POST["tire_position_id"]))
-            $data["page"] = 2;
 
         return $data;
     }
@@ -115,18 +117,20 @@ class Mounting extends BaseController
 
     public function saving_data($masterdetail = "master", $id = null, $key = null)
     {
-        if ($masterdetail == "master")
+        if ($masterdetail == "master") {
+            $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => @$_POST["vehicle_id"]])->findAll()[0];
+            $customer = @$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0];
             return  [
                 "spk_no"                        => @$_POST["spk_no"],
                 "spk_at"                        => @$_POST["spk_at"],
-                "customer_id"                   => @$_POST["customer_id"],
-                "customer_name"                 => @$_POST["customer_name"],
+                "customer_id"                   => @$customer->id,
+                "customer_name"                 => @$customer->company_name,
                 "mounting_at"                   => @$_POST["mounting_at"],
                 "vehicle_id"                    => @$_POST["vehicle_id"],
                 "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
                 "notes"                         => @$_POST["notes"],
             ];
-
+        }
         if ($masterdetail == "detail")
             return [
                 "mounting_id"       => $id,
@@ -140,11 +144,17 @@ class Mounting extends BaseController
             ];
     }
 
-    public function add()
+    public function add($id = 0, $page = 1)
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
         if (isset($_POST["saving_page_1"])) {
-            echo "ssssss";
+            $mounting = $this->saving_data();
+            $mounting = $mounting + $this->created_values() + $this->updated_values();
+            if ($this->mountings->save($mounting)) {
+                $id = $this->mountings->insertID();
+                return redirect()->to(base_url() . '/mounting/add/' . $id);
+            } else
+                $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting"]);
         }
         if (isset($_POST["Save"])) {
             $mounting = $this->saving_data();
@@ -163,15 +173,67 @@ class Mounting extends BaseController
 
         $data["__modulename"] = "Add Mounting";
         $data["__mode"] = "add";
+        if ($id > 0 && $page == 1) $page = 2;
         $data = $data + $this->common();
-        $data = $data + $this->get_reference_data();
+        $data = $data + $this->get_reference_data($id);
         echo view('v_header', $data);
         echo view('v_menu');
-        if ($data["page"] == 1)
+        if ($page == 1)
             echo view('mountings/v_edit1');
-        if ($data["page"] == 2)
+        if ($page == 2)
             echo view('mountings/v_edit2');
         echo view('v_footer');
         echo view('mountings/v_js');
+    }
+
+    public function get_tires_map($vehicle_type_id)
+    {
+        $vehicle_type = @$this->vehicle_types->where(["is_deleted" => 0, "id" => $vehicle_type_id])->findAll()[0];
+        if (@$vehicle_type->tire_position_ids != "") {
+            $tire_positions = @$this->tire_positions->where("is_deleted", 0)->where("id IN (" . @$vehicle_type->tire_position_ids . ")")->findAll();
+            $tires_map = "";
+            if (isset($tire_positions)) {
+                $tire_position_ids = [];
+                $tires_map = "
+                    <style>
+                        .btn-tire {
+                            position: absolute;
+                            height: 70px;
+                            width: 40px;
+                        }
+                    </style>";
+
+                foreach ($tire_positions as $tire_position) {
+                    $tires_map .= "<div class='btn btn-info btn-tire' id=\"tires_map_" . $tire_position->id . "\" style='" . $tire_position->styles . "' onclick=\"tire_position_clicked('" . $tire_position->id . "');\"></div>";
+                    $tire_position_ids[] = $tire_position->id;
+                }
+                if (in_array(1, $tire_position_ids) || in_array(2, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:32px;left:85px;'></div>";
+                    $tiresrow = 1;
+                }
+                if (in_array(3, $tire_position_ids) || in_array(4, $tire_position_ids) || in_array(5, $tire_position_ids) || in_array(6, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:132px;left:85px;'></div>";
+                    $tiresrow = 2;
+                }
+                if (in_array(7, $tire_position_ids) || in_array(8, $tire_position_ids) || in_array(9, $tire_position_ids) || in_array(10, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:232px;left:85px;'></div>";
+                    $tiresrow = 3;
+                }
+                if (in_array(11, $tire_position_ids) || in_array(12, $tire_position_ids) || in_array(13, $tire_position_ids) || in_array(14, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:382px;left:85px;'></div>";
+                    $tiresrow = 4;
+                }
+                if (in_array(15, $tire_position_ids) || in_array(16, $tire_position_ids) || in_array(17, $tire_position_ids) || in_array(18, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:482px;left:85px;'></div>";
+                    $tiresrow = 5;
+                }
+                if (in_array(19, $tire_position_ids) || in_array(20, $tire_position_ids) || in_array(21, $tire_position_ids) || in_array(22, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:582px;left:85px;'></div>";
+                    $tiresrow = 6;
+                }
+                $tires_map .= "<input type='hidden' id='tiresrow' value='" . $tiresrow . "'>";
+            }
+        }
+        return $tires_map;
     }
 }

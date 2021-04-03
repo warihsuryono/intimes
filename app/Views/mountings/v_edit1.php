@@ -6,7 +6,6 @@
                 <div class="card">
                     <form role="form" id="mainform" method="POST">
                         <?= $_form->hidden("saving_page_1"); ?>
-                        <?= $_form->hidden("tire_position_id"); ?>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -20,12 +19,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="form-group" id="tires_map" style="display:none;">
-                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Customer</label>
@@ -58,11 +52,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class=" card-footer">
+                            <a href="<?= base_url(); ?>/mountings" class="btn btn-info">Back</a>
+                            <button type="submit" name="Next" class="btn btn-primary float-right">Next</button>
+                        </div>
                     </form>
-                    <div class=" card-footer">
-                        <a href="<?= base_url(); ?>/mountings" class="btn btn-info">Back</a>
-                        <button type="submit" name="Next" class="btn btn-primary float-right">Next</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -73,37 +67,11 @@
         try {
             document.getElementById("vehicle_id").value = id;
             document.getElementById("vehicle_registration_plate").value = vehicle_registration_plate;
-            document.getElementById("tires_map").style.display = "block";
-            $.get("<?= base_url(); ?>/vehicle/get_tires_map/" + id, function(result) {
-                var tires_map = "<div class='col-sm-4'>" + result + "</div>";
-                $("#tires_map").html(tires_map);
-                if ($("#tiresrow").val() == "1") {
-                    $("#tires_map").height(150);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:160px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                if ($("#tiresrow").val() == "2") {
-                    $("#tires_map").height(250);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:260px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                if ($("#tiresrow").val() == "3") {
-                    $("#tires_map").height(350);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:360px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                if ($("#tiresrow").val() == "4") {
-                    $("#tires_map").height(490);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:500px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                if ($("#tiresrow").val() == "5") {
-                    $("#tires_map").height(600);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:610px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                if ($("#tiresrow").val() == "6") {
-                    $("#tires_map").height(700);
-                    $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:710px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
-                }
-                $("#customer_name").val($("#customer_company_name").val());
+            $.get("<?= base_url(); ?>/vehicle/get_customer/" + id, function(result) {
+                var customer = JSON.parse(result.replace("[", "").replace("]", ""));
+                $("#customer_name").val(customer.company_name);
+                $("#mounting_at").val("<?= date("Y-m-d"); ?>");
             });
-
         } catch (e) {}
         $('#modal-form').modal('toggle');
     }
@@ -134,17 +102,5 @@
         $('#modal_ok_link').attr("href", 'javascript:$(\'#modal-form\').modal(\'toggle\');');
         $('#modal-form').modal();
         reload_subwindow_vehicles_area("");
-    }
-
-    function tire_position_clicked(tire_position_id) {
-        $("#tire_position_id").val(tire_position_id);
-        for (var i = 1; i < 30; i++) {
-            try {
-                $("#tires_map_" + i).addClass("btn-info");
-                $("#tires_map_" + i).removeClass("btn-success");
-            } catch (ex) {}
-        }
-        $("#tires_map_" + tire_position_id).addClass("btn-success");
-        $("#tires_map_" + tire_position_id).removeClass("btn-info");
     }
 </script>

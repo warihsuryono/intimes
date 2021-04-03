@@ -143,6 +143,9 @@ class Mounting extends BaseController
     public function add()
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
+        if (isset($_POST["saving_page_1"])) {
+            echo "ssssss";
+        }
         if (isset($_POST["Save"])) {
             $mounting = $this->saving_data();
             $mounting = $mounting + $this->created_values() + $this->updated_values();

@@ -127,4 +127,9 @@ class Tire_position extends BaseController
             $this->session->setFlashdata("flash_message", ["error", "Success deleting tire position"]);
         return redirect()->to(base_url() . '/tire_positions');
     }
+
+    public function get_data($id)
+    {
+        return json_encode($this->tire_positions->where(["is_deleted" => 0, "id" => $id])->findAll()[0]);
+    }
 }

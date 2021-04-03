@@ -50,6 +50,9 @@
                                         </div>
                                         <ul class="list-group list-group-unbordered">
                                             <li class="list-group-item">
+                                                <b>Tire Position</b> <a class="pull-right" id="tire_position"></a>
+                                            </li>
+                                            <li class="list-group-item">
                                                 <b>Size</b> <a class="pull-right" id="tire_size"></a>
                                             </li>
                                             <li class="list-group-item">
@@ -133,5 +136,9 @@
             }
             $("#tires_map_" + tire_position_id).addClass("btn-success");
             $("#tires_map_" + tire_position_id).removeClass("btn-info");
+            $.get("<?= base_url(); ?>/tire_position/get_data/" + tire_position_id, function(result) {
+                var tire_position = JSON.parse(result.replace("[", "").replace("]", ""));
+                $("#tire_position").html(tire_position.name + " (" + tire_position.code + ")");
+            });
         }
     </script>

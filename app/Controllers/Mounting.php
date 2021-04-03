@@ -52,17 +52,19 @@ class Mounting extends BaseController
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
 
-        if ($id > 0) {
-            $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
-            $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
-            $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
-            $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
-            $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
-        }
-
         if (isset($_POST["tire_position_id"]))
             $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
 
+        return $data;
+    }
+
+    public function get_saved_data($id)
+    {
+        $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+        $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
+        $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
+        $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
+        $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
         return $data;
     }
 
@@ -176,6 +178,9 @@ class Mounting extends BaseController
         if ($id > 0 && $page == 1) $page = 2;
         $data = $data + $this->common();
         $data = $data + $this->get_reference_data($id);
+        if ($id > 0)
+            $data = $data + $this->get_saved_data($id);
+
         echo view('v_header', $data);
         echo view('v_menu');
         if ($page == 1)

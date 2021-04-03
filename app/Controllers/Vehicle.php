@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\m_customer;
 use App\Models\m_tire_position;
 use App\Models\m_vehicle;
 use App\Models\m_vehicle_brand;
@@ -15,6 +16,7 @@ class Vehicle extends BaseController
     protected $vehicle_brands;
     protected $vehicle_types;
     protected $tire_positions;
+    protected $customers;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class Vehicle extends BaseController
         $this->vehicle_brands =  new m_vehicle_brand();
         $this->vehicle_types =  new m_vehicle_type();
         $this->tire_positions =  new m_tire_position();
+        $this->customers =  new m_customer();
     }
 
     public function index()
@@ -184,6 +187,7 @@ class Vehicle extends BaseController
     public function get_tires_map($vehicle_id)
     {
         $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $vehicle_id])->findAll()[0];
+        $customer = @$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0];
         $vehicle_type = @$this->vehicle_types->where(["is_deleted" => 0, "id" => @$vehicle->vehicle_type_id])->findAll()[0];
         if (@$vehicle_type->tire_position_ids != "") {
             $tire_positions = @$this->tire_positions->where("is_deleted", 0)->where("id IN (" . @$vehicle_type->tire_position_ids . ")")->findAll();
@@ -229,6 +233,7 @@ class Vehicle extends BaseController
                 }
                 $tires_map .= "<input type='hidden' id='tiresrow' value='" . $tiresrow . "'>";
                 $tires_map .= "<input type='hidden' id='vehicle_type_name' value='" . $vehicle_type->name . "'>";
+                $tires_map .= "<input type='hidden' id='customer_company_name' value='" . @$customer->company_name . "'>";
             }
         }
         return $tires_map;

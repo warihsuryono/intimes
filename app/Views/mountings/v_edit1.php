@@ -22,9 +22,38 @@
                                     <div class="form-group" id="tires_map" style="display:none;">
                                     </div>
                                 </div>
+                            </div>
 
+                            <div class="row">
                                 <div class="col-sm-4">
-
+                                    <div class="form-group">
+                                        <label>Customer</label>
+                                        <?= $_form->input("customer_name", "", "readonly"); ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>SPK/PO Number</label>
+                                        <?= $_form->input("spk_no", "", "required"); ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>SPK/PO Date</label>
+                                        <?= $_form->input("spk_at", "", "type='date' required"); ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Mounting Date</label>
+                                        <?= $_form->input("mounting_at", "", "type='date' required"); ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Notes</label>
+                                        <?= $_form->textarea("notes"); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,6 +100,7 @@
                     $("#tires_map").height(700);
                     $("#tires_map").html(tires_map + "<h3 style='position:absolute;top:710px;'><b>" + $("#vehicle_type_name").val() + "</b></h3>");
                 }
+                $("#customer_name").val($("#customer_company_name").val());
             });
 
         } catch (e) {}

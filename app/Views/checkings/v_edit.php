@@ -28,6 +28,9 @@
                             </div>
                             <div class="row" id="tire_descriptions" style="display:none;">
                                 <div class="col-sm-4">
+                                    <div class="form-group" id="tires_map"></div>
+                                </div>
+                                <div class="col-sm-4">
                                     <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
                                             <b>Size</b> <a class="pull-right" id="tire_size"></a>
@@ -173,6 +176,9 @@
                     $("#check_km_last").html(last_checking.check_km);
                     $("#remain_tread_depth_last").html(last_checking.remain_tread_depth);
                 } catch (e) {}
+            });
+            $.get("<?= base_url(); ?>/checking/get_tires_map/" + qrcode, function(result) {
+                $("#tires_map").html(result);
             });
         });
     }

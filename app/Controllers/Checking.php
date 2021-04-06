@@ -3,20 +3,28 @@
 namespace App\Controllers;
 
 use App\Models\m_checking;
-use App\Models\m_checking_picture;
-use App\Models\m_installation;
+use App\Models\m_checking_detail;
+use App\Models\m_checking_photo;
+use App\Models\m_mounting;
+use App\Models\m_mounting_detail;
 use App\Models\m_tire_position;
 use App\Models\m_tire_type;
+use App\Models\m_vehicle;
+use App\Models\m_vehicle_type;
 
 class Checking extends BaseController
 {
     protected $menu_ids;
     protected $route_name;
     protected $checkings;
-    protected $checking_pictures;
-    protected $installations;
+    protected $checking_details;
+    protected $checking_photos;
+    protected $mountings;
+    protected $mounting_details;
     protected $tire_positions;
     protected $tire_types;
+    protected $vehicles;
+    protected $vehicle_types;
 
     public function __construct()
     {
@@ -24,10 +32,14 @@ class Checking extends BaseController
         $this->route_name = "checkings";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->checkings =  new m_checking();
-        $this->checking_pictures =  new m_checking_picture();
-        $this->installations =  new m_installation();
+        $this->checking_details =  new m_checking_detail();
+        $this->checking_photos =  new m_checking_photo();
+        $this->mountings =  new m_mounting();
+        $this->mounting_details =  new m_mounting_detail();
         $this->tire_positions =  new m_tire_position();
         $this->tire_types =  new m_tire_type();
+        $this->vehicles =  new m_vehicle();
+        $this->vehicle_types =  new m_vehicle_type();
     }
 
     public function get_reference_data()
@@ -55,17 +67,16 @@ class Checking extends BaseController
 
         $wherclause = "is_deleted = '0'";
 
-        if (isset($_GET["check_at"]) && $_GET["check_at"] != "")
-            $wherclause .= "AND check_at = '" . $_GET["check_at"] . "'";
+        if (isset($_GET["checking_at"]) && $_GET["checking_at"] != "")
+            $wherclause .= "AND checking_at = '" . $_GET["checking_at"] . "'";
 
         if (isset($_GET["tire_qr_code"]) && $_GET["tire_qr_code"] != "")
-            $wherclause .= "AND tire_qr_code LIKE '%" . $_GET["tire_qr_code"] . "%'";
+            $wherclause .= "AND id IN (SELECT checking_id FROM checking_details WHERE code LIKE '%" . $_GET["tire_qr_code"] . "%')";
 
         if ($checkings = $this->checkings->where($wherclause)->findAll(MAX_ROW, $startrow)) {
             $numrow = count($this->checkings->where($wherclause)->findAll());
             foreach ($checkings as $checking) {
-                $checking_detail[$checking->id]["old_tire_position"] = @$this->tire_positions->where("id", $checking->old_tire_position_id)->findAll()[0];
-                $checking_detail[$checking->id]["tire_position"] = @$this->tire_positions->where("id", $checking->tire_position_id)->findAll()[0];
+                $checking_detail[$checking->id] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => $checking->id])->findAll()[0];
             }
         } else {
             $numrow = 0;
@@ -83,59 +94,82 @@ class Checking extends BaseController
         echo view('v_footer');
     }
 
-    public function saving_data($mode)
+    public function saving_data($mode, $masterdetail = "master", $id = null)
     {
-        $data = [];
-        if ($mode == "add") {
-            $data = [
-                "installation_id"   => @$_POST["installation_id"],
-                "tire_id"           => @$_POST["tire_id"],
-                "tire_qr_code"      => @$_POST["tire_qr_code"],
-            ];
-        }
-        $data = $data + [
-            "old_tire_position_id"  => @$_POST["old_tire_position_id"],
-            "tire_position_id"      => @$_POST["tire_position_id"],
-            "tire_position_changed" => @$_POST["tire_position_changed"] * 1,
-            "tire_position_remark"  => @$_POST["tire_position_remark"],
-            "check_km"              => @$_POST["check_km"],
-            "check_at"              => @$_POST["check_at"],
-            "remain_tread_depth"    => @$_POST["remain_tread_depth"],
-            "psi"                   => @$_POST["psi"],
-            "notes"                 => @$_POST["notes"],
-        ];
+        if ($masterdetail == "master") {
+            $data = [];
+            if ($mode == "add")
+                $data = ["mounting_id"   => @$_POST["mounting_id "],];
 
-        return $data;
+            $data = $data + [
+                "spk_no"                        => @$_POST["spk_no"],
+                "spk_at"                        => @$_POST["spk_at"],
+                "customer_id"                   => @$_POST["customer_id"],
+                "customer_name"                 => @$_POST["company_name"],
+                "checking_at"                   => @$_POST["checking_at"],
+                "vehicle_id"                    => @$_POST["vehicle_id"],
+                "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
+                "notes"                         => @$_POST["notes"],
+            ];
+            return $data;
+        }
+
+        if ($masterdetail == "detail")
+            return [
+                "checking_id"           => $id,
+                "tire_id"               => @$_POST["tire_id"],
+                "code"                  => @$_POST["tire_qr_code"],
+                "tire_type_id"          => @$_POST["tire_type_id"],
+                "tire_position_id"      => @$_POST["tire_position_id"],
+                "old_tire_position_id"  => @$_POST["old_tire_position_id"],
+                "km"                    => @$_POST["km"],
+                "rtd1"                  => @$_POST["rtd1"],
+                "rtd2"                  => @$_POST["rtd2"],
+                "rtd3"                  => @$_POST["rtd3"],
+                "rtd4"                  => @$_POST["rtd4"],
+                "remark"                => @$_POST["remark"],
+            ];
     }
 
     public function add()
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
-        $installation = @$this->installations->where(["is_deleted" => 0, "tire_qr_code" => $_GET["qrcode"]])->orderBy("installed_at DESC")->findAll();
-        if (count($installation) <= 0 && @$_GET["qrcode"] != "") {
+        $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_GET["qrcode"] . "')")->orderBy("mounting_at DESC")->findAll();
+        if (count($mounting) <= 0 && @$_GET["qrcode"] != "") {
             $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . $_GET["qrcode"] . "` has never been installed"]);
             return redirect()->to(base_url() . '/checkings');
             exit();
         }
-        $data["installation"] = @$installation[0];
+        $data["mounting"] = @$mounting[0];
 
         if (isset($_POST["Save"])) {
-            $installation = @$this->installations->where(["is_deleted" => 0, "tire_qr_code" => @$_POST["tire_qr_code"]])->orderBy("installed_at DESC")->findAll()[0];
-            if (@$installation->id <= 0) {
+            $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_GET["tire_qr_code"] . "')")->orderBy("mounting_at DESC")->findAll()[0];
+            if (@$mounting->id <= 0) {
                 $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . @$_POST["tire_qr_code"] . "` has never been installed"]);
                 return redirect()->to(base_url() . '/checking/add');
                 exit();
             }
-            $_POST["installation_id"] = $installation->id;
-            $_POST["old_tire_position_id"] = $installation->tire_position_id;
-            $_POST["tire_id"] = $installation->tire_id;
-            $_POST["tire_qr_code"] = $installation->tire_qr_code;
-            $checking = @$this->checkings->where(["is_deleted" => 0, "tire_qr_code" => @$_POST["tire_qr_code"]])->orderBy("check_at DESC")->findAll()[0];
-            if (@$checking->id > 0) $_POST["old_tire_position_id"] = $checking->tire_position_id;
-            $checking = $this->saving_data("add");
-            $checking = $checking + $this->created_values() + $this->updated_values();
+            $mounting_detail = @$this->mounting_details->where(["mounting_id" => $mounting->id, "code" => @$_POST["tire_qr_code"]])->findAll()[0];
+            $_POST["mounting_id"] = $mounting->id;
+            $_POST["customer_id"] = $mounting->customer_id;
+            $_POST["company_name"] = $mounting->company_name;
+            $_POST["vehicle_id"] = $mounting->vehicle_id;
+            $_POST["vehicle_registration_plate"] = $mounting->vehicle_registration_plate;
+            $_POST["old_tire_position_id"] = $mounting_detail->tire_position_id;
+            $_POST["tire_id"] = $mounting_detail->tire_id;
+            $_POST["tire_qr_code"] = $mounting_detail->code;
+            $_POST["tire_type_id"] = $mounting_detail->tire_type_id;
+
+            $checking = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting->id])->orderBy("id DESC")->findAll()[0];
+            if (@$checking->id > 0) {
+                $checking_detail = @$this->checking_details->where(["checking_id" => $checking->id, "code" => $_POST["tire_qr_code"]])->findAll()[0];
+                $_POST["old_tire_position_id"] = $checking_detail->tire_position_id;
+            }
+            $checking = $this->saving_data("add") + $this->created_values() + $this->updated_values();
             if ($this->checkings->save($checking)) {
                 $id = $this->checkings->insertID();
+                $checking_detail = $this->saving_data("add", "detail", $id) + $this->created_values() + $this->updated_values();
+                $this->checking_details->save($checking_detail);
                 $this->session->setFlashdata("flash_message", ["success", "Success adding checking"]);
                 return redirect()->to(base_url() . '/checking/edit/' . $id);
             } else
@@ -257,19 +291,82 @@ class Checking extends BaseController
     public function get_last_checking($tire_id)
     {
         $data = [];
-        $checking = @$this->checkings->where(["is_deleted" => 0, "tire_id" => $tire_id])->orderBy("check_at DESC")->findAll()[0];
-        $installation = @$this->installations->where(["is_deleted" => 0, "tire_id" => $tire_id])->orderBy("installed_at DESC")->findAll()[0];
-        if (@$checking->id > 0) {
-            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $checking->tire_position_id])->findAll()[0];
-            $data["km_install"] = @$installation->km_install;
-            $data["check_km"] = @$checking->check_km;
-            $data["remain_tread_depth"] = @$checking->remain_tread_depth;
+        $checking_detail = @$this->checking_details->join("checkings", "checking_details.checking_id = checkings.id")->where(["checkings.is_deleted" => 0, "tire_id" => $tire_id])->orderBy("checking_at DESC")->findAll()[0];
+        $mounting_detail = @$this->mounting_details->join("mountings", "mounting_details.mounting_id = mountings.id")->where(["mountings.is_deleted" => 0, "tire_id" => $tire_id])->orderBy("mounting_at DESC")->findAll()[0];
+        if (@$checking_detail->id > 0) {
+            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $checking_detail->tire_position_id])->findAll()[0];
+            $data["km_install"] = @$mounting_detail->km;
+            $data["check_km"] = @$checking_detail->km;
+            $data["remain_tread_depth"] = @$checking_detail->rtd1 . "," . @$checking_detail->rtd2 . "," . @$checking_detail->rtd3 . "," . @$checking_detail->rtd4;
         } else {
-            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $installation->tire_position_id])->findAll()[0];
-            $data["km_install"] = @$installation->km_install;
+            $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $mounting_detail->tire_position_id])->findAll()[0];
+            $data["km_install"] = @$mounting_detail->km;
             $data["check_km"] = 0;
-            $data["remain_tread_depth"] = @$installation->original_tread_depth;
+            $data["remain_tread_depth"] = @$mounting_detail->otd;
         }
         echo json_encode($data);
+    }
+
+    public function get_tires_map($qrcode)
+    {
+        $tires_map = "";
+        $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $qrcode . "')")->orderBy("mounting_at DESC")->findAll()[0];
+        if (@$mounting->id <= 0) return $tires_map;
+
+        $checking = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting->id])->orderBy("id DESC")->findAll()[0];
+        if (@$checking->id > 0)
+            $mounted_tire_position_id = @$this->checking_details->where(["checking_id" => $checking->id, "code" => $qrcode])->findAll()[0]->tire_position_id;
+        else
+            $mounted_tire_position_id = @$this->mounting_details->where(["mounting_id" => $mounting->id, "code" => $qrcode])->findAll()[0]->tire_position_id;
+
+        $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $mounting->vehicle_id])->findAll()[0];
+        $vehicle_type = @$this->vehicle_types->where(["is_deleted" => 0, "id" => $vehicle->vehicle_type_id])->findAll()[0];
+        if (@$vehicle_type->tire_position_ids != "") {
+            $tire_positions = @$this->tire_positions->where("is_deleted", 0)->where("id IN (" . @$vehicle_type->tire_position_ids . ")")->findAll();
+            if (isset($tire_positions)) {
+                $tire_position_ids = [];
+                $tires_map = "
+                    <style>
+                        .btn-tire {
+                            position: absolute;
+                            height: 70px;
+                            width: 40px;
+                        }
+                    </style>";
+
+                foreach ($tire_positions as $tire_position) {
+                    $btn_color = "btn-info";
+                    if ($mounted_tire_position_id == $tire_position->id) $btn_color = "btn-danger";
+                    $tires_map .= "<div class='btn " . $btn_color . " btn-tire' id=\"tires_map_" . $tire_position->id . "\" style='" . $tire_position->styles . "' onclick=\"tire_position_clicked('" . $tire_position->id . "');\"></div>";
+                    $tire_position_ids[] = $tire_position->id;
+                }
+                if (in_array(1, $tire_position_ids) || in_array(2, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:32px;left:85px;'></div>";
+                    $tiresrow = 1;
+                }
+                if (in_array(3, $tire_position_ids) || in_array(4, $tire_position_ids) || in_array(5, $tire_position_ids) || in_array(6, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:132px;left:85px;'></div>";
+                    $tiresrow = 2;
+                }
+                if (in_array(7, $tire_position_ids) || in_array(8, $tire_position_ids) || in_array(9, $tire_position_ids) || in_array(10, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:232px;left:85px;'></div>";
+                    $tiresrow = 3;
+                }
+                if (in_array(11, $tire_position_ids) || in_array(12, $tire_position_ids) || in_array(13, $tire_position_ids) || in_array(14, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:382px;left:85px;'></div>";
+                    $tiresrow = 4;
+                }
+                if (in_array(15, $tire_position_ids) || in_array(16, $tire_position_ids) || in_array(17, $tire_position_ids) || in_array(18, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:482px;left:85px;'></div>";
+                    $tiresrow = 5;
+                }
+                if (in_array(19, $tire_position_ids) || in_array(20, $tire_position_ids) || in_array(21, $tire_position_ids) || in_array(22, $tire_position_ids)) {
+                    $tires_map .= "<div class='btn-info' style='position:absolute;width:65px;height:3px;top:582px;left:85px;'></div>";
+                    $tiresrow = 6;
+                }
+                $tires_map .= "<input type='hidden' id='tiresrow' value='" . $tiresrow . "'>";
+            }
+        }
+        return $tires_map;
     }
 }

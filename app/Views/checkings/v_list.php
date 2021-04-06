@@ -73,13 +73,10 @@
                                 <tr>
                                     <th></th>
                                     <th>No</th>
-                                    <th>Id</th>
+                                    <th>SPK No</th>
+                                    <th>SPK Date</th>
                                     <th>Checked at</th>
-                                    <th>QrCode</th>
-                                    <th>Position Before</th>
-                                    <th>Current Position</th>
                                     <th>Km Check</th>
-                                    <th>RTD</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>
@@ -100,13 +97,10 @@
                                             </a>
                                         </td>
                                         <td><?= $no; ?></td>
-                                        <td><?= $checking->id; ?></td>
+                                        <td><?= $checking->spk_no; ?></td>
+                                        <td><?= date("d-m-Y", strtotime($checking->spk_at)); ?></td>
                                         <td><?= date("d-m-Y", strtotime($checking->check_at)); ?></td>
-                                        <td><?= $checking->tire_qr_code; ?></td>
-                                        <td><?= @$checking->old_tire_position->name; ?></td>
-                                        <td><?= @$checking->tire_position->name; ?></td>
-                                        <td><?= $checking->check_km; ?></td>
-                                        <td><?= $checking->remain_tread_depth; ?></td>
+                                        <td><?= $checking_detail[$checking->id]->km; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($checking->created_at)); ?></td>
                                         <td><?= $checking->created_by; ?></td>
                                     </tr>

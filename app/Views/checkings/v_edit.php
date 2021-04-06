@@ -179,7 +179,25 @@
             });
             $.get("<?= base_url(); ?>/checking/get_tires_map/" + qrcode, function(result) {
                 $("#tires_map").html(result);
+                if ($("#tiresrow").val() == 1) $("#tires_map").height(200);
+                if ($("#tiresrow").val() == 2) $("#tires_map").height(300);
+                if ($("#tiresrow").val() == 3) $("#tires_map").height(400);
+                if ($("#tiresrow").val() == 4) $("#tires_map").height(500);
+                if ($("#tiresrow").val() == 5) $("#tires_map").height(600);
+                if ($("#tiresrow").val() == 6) $("#tires_map").height(700);
             });
         });
+    }
+
+    function tire_position_clicked(tire_position_id) {
+        $("#tire_position_id").val(tire_position_id);
+        for (var i = 1; i < 30; i++) {
+            try {
+                $("#tires_map_" + i).addClass("btn-info");
+                $("#tires_map_" + i).removeClass("btn-warning");
+            } catch (ex) {}
+        }
+        $("#tires_map_" + tire_position_id).addClass("btn-warning");
+        $("#tires_map_" + tire_position_id).removeClass("btn-info");
     }
 </script>

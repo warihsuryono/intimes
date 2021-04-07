@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\m_tire_position;
 use App\Models\m_vehicle_type;
 
 class Vehicle_type extends BaseController
@@ -9,6 +10,7 @@ class Vehicle_type extends BaseController
     protected $menu_ids;
     protected $route_name;
     protected $vehicle_types;
+    protected $tire_positions;
 
     public function __construct()
     {
@@ -16,6 +18,20 @@ class Vehicle_type extends BaseController
         $this->route_name = "vehicle_types";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->vehicle_types =  new m_vehicle_type();
+        $this->tire_positions =  new m_tire_position();
+    }
+
+    public function get_reference_data()
+    {
+        $data["tire_positions"] = $this->tire_positions->where(["is_deleted" => 0])->findAll();
+        return $data;
+    }
+
+    public function get_saved_data($id)
+    {
+        $data["vehicle_type"] = $this->vehicle_types->where("is_deleted", 0)->find([$id])[0];
+        $data["tire_position_ids"] = explode(",", $data["vehicle_type"]->tire_position_ids);
+        return $data;
     }
 
     public function index()
@@ -31,12 +47,10 @@ class Vehicle_type extends BaseController
         if (isset($_GET["name"]) && $_GET["name"] != "")
             $wherclause .= "AND name LIKE '%" . $_GET["name"] . "%'";
 
-        if ($vehicle_types = $this->vehicle_types->where($wherclause)->findAll(MAX_ROW, $startrow)) {
-
+        $numrow = 0;
+        if ($vehicle_types = $this->vehicle_types->where($wherclause)->findAll(MAX_ROW, $startrow))
             $numrow = count($this->vehicle_types->where($wherclause)->findAll());
-        } else {
-            $numrow = 0;
-        }
+
 
         $data["startrow"] = $startrow;
         $data["numrow"] = $numrow;
@@ -49,14 +63,29 @@ class Vehicle_type extends BaseController
         echo view('v_footer');
     }
 
+
+
+    public function saving_data()
+    {
+        $tire_position_ids = "";
+        foreach ($_POST["tire_position_id"] as $tire_position_id => $value) {
+            $tire_position_ids .= $tire_position_id . ",";
+        }
+
+        if ($tire_position_ids != "")
+            $tire_position_ids = substr($tire_position_ids, 0, -1);
+
+        return [
+            "name"              => @$_POST["name"],
+            "tire_position_ids" => $tire_position_ids,
+        ];
+    }
+
     public function add()
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
         if (isset($_POST["Save"])) {
-            $vehicle_type = [
-                "name"          => @$_POST["name"],
-            ];
-            $vehicle_type = $vehicle_type + $this->created_values() + $this->updated_values();
+            $vehicle_type = $this->saving_data() + $this->created_values() + $this->updated_values();
             if ($this->vehicle_types->save($vehicle_type))
                 $this->session->setFlashdata("flash_message", ["success", "Success adding Vehicle type"]);
             else
@@ -65,7 +94,8 @@ class Vehicle_type extends BaseController
         }
 
         $data["__modulename"] = "Add Vehicle Type";
-        $data = $data + $this->common();
+        $data["tire_position_ids"] = [];
+        $data = $data + $this->get_reference_data() + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('vehicle_types/v_edit');
@@ -77,10 +107,7 @@ class Vehicle_type extends BaseController
     {
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         if (isset($_POST["Save"])) {
-            $vehicle_type = [
-                "name"          => @$_POST["name"],
-            ];
-            $vehicle_type = $vehicle_type + $this->updated_values();
+            $vehicle_type = $this->saving_data() + $this->updated_values();
             if ($this->vehicle_types->update($id, $vehicle_type))
                 $this->session->setFlashdata("flash_message", ["success", "Success editing vehicle type"]);
             else
@@ -89,8 +116,7 @@ class Vehicle_type extends BaseController
         }
 
         $data["__modulename"] = "Edit Vehicle Type";
-        $data["vehicle_type"] = $this->vehicle_types->where("is_deleted", 0)->find([$id])[0];
-        $data = $data + $this->common();
+        $data = $data + $this->get_saved_data($id) + $this->get_reference_data() + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('vehicle_types/v_edit');

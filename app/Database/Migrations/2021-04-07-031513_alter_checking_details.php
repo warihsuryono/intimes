@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AlterCheckingDetails extends Migration
+class AlterCheckingDetails031513 extends Migration
 {
 	public function up()
 	{

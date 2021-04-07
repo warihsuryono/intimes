@@ -18,10 +18,12 @@
                                         <label>Tire Uniq Code</label>
                                         <input id="tire_id" name="tire_id" type="hidden" required>
                                         <div class="input-group">
-                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" required>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
-                                            </span>
+                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" required <?= ($__mode == "add") ? "" : "readonly"; ?>>
+                                            <?php if ($__mode == "add") : ?>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
+                                                </span>
+                                            <?php endif ?>
                                         </div>
                                     </div>
                                 </div>

@@ -10,6 +10,7 @@ use App\Models\m_mounting_detail;
 use App\Models\m_tire_position;
 use App\Models\m_tire_type;
 use App\Models\m_vehicle;
+use App\Models\m_vehicle_brand;
 use App\Models\m_vehicle_type;
 
 class Checking extends BaseController
@@ -25,6 +26,7 @@ class Checking extends BaseController
     protected $tire_types;
     protected $vehicles;
     protected $vehicle_types;
+    protected $vehicle_brands;
 
     public function __construct()
     {
@@ -40,6 +42,7 @@ class Checking extends BaseController
         $this->tire_types =  new m_tire_type();
         $this->vehicles =  new m_vehicle();
         $this->vehicle_types =  new m_vehicle_type();
+        $this->vehicle_brands =  new m_vehicle_brand();
     }
 
     public function get_reference_data()
@@ -53,6 +56,23 @@ class Checking extends BaseController
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
         $data["checkings_office_only"] = false;
+
+        return $data;
+    }
+
+    public function get_saved_data($id)
+    {
+        $data["checking"] = @$this->checkings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+        $data["checking_detail"] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => $id])->orderBy("id DESC")->findAll()[0];
+        $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["checking"]->vehicle_id])->findAll()[0];
+        $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
+        $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
+        $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
+        if (isset($data["checking_details"]))
+            foreach ($data["checking_details"] as $key => $checking_detail) {
+                $data["checking_details"][$key]->tire_type = @$this->tire_types->where(["is_deleted" => 0, "id" => $checking_detail->tire_type_id])->findAll()[0];
+                $data["checking_details"][$key]->tire_position = @$this->tire_positions->where(["is_deleted" => 0, "id" => $checking_detail->tire_position_id])->findAll()[0];
+            }
 
         return $data;
     }
@@ -100,29 +120,37 @@ class Checking extends BaseController
         if ($masterdetail == "master") {
             $data = [];
             if ($mode == "add")
-                $data = ["mounting_id"   => @$_POST["mounting_id"]];
+                $data = [
+                    "mounting_id"   => @$_POST["mounting_id"],
+                    "spk_no"                        => @$_POST["spk_no"],
+                    "spk_at"                        => @$_POST["spk_at"],
+                    "customer_id"                   => @$_POST["customer_id"],
+                    "customer_name"                 => @$_POST["customer_name"],
+                    "vehicle_id"                    => @$_POST["vehicle_id"],
+                    "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
+                ];
 
             $data = $data + [
-                "spk_no"                        => @$_POST["spk_no"],
-                "spk_at"                        => @$_POST["spk_at"],
-                "customer_id"                   => @$_POST["customer_id"],
-                "customer_name"                 => @$_POST["customer_name"],
                 "checking_at"                   => @$_POST["checking_at"],
-                "vehicle_id"                    => @$_POST["vehicle_id"],
-                "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
                 "notes"                         => @$_POST["notes"],
             ];
             return $data;
         }
 
-        if ($masterdetail == "detail")
-            return [
+        if ($masterdetail == "detail") {
+            $data = [];
+            if ($mode == "add")
+                $data = [
+                    "tire_id"               => @$_POST["tire_id"],
+                    "code"                  => @$_POST["tire_qr_code"],
+                    "tire_type_id"          => @$_POST["tire_type_id"],
+                    "old_tire_position_id"  => @$_POST["old_tire_position_id"],
+                ];
+
+            $data = $data + [
                 "checking_id"           => $id,
-                "tire_id"               => @$_POST["tire_id"],
-                "code"                  => @$_POST["tire_qr_code"],
-                "tire_type_id"          => @$_POST["tire_type_id"],
                 "tire_position_id"      => @$_POST["tire_position_id"],
-                "old_tire_position_id"  => @$_POST["old_tire_position_id"],
+                "tire_position_changed" => @$_POST["tire_position_changed"],
                 "km"                    => @$_POST["km"],
                 "rtd1"                  => @$_POST["rtd1"],
                 "rtd2"                  => @$_POST["rtd2"],
@@ -132,6 +160,8 @@ class Checking extends BaseController
                 "psi"                   => @$_POST["psi"],
                 "remark"                => @$_POST["remark"],
             ];
+            return $data;
+        }
     }
 
     public function add()
@@ -197,9 +227,11 @@ class Checking extends BaseController
     {
         $this->privilege_check($this->menu_ids, 2, $this->route_name);
         if (isset($_POST["Save"])) {
-            $checking = $this->saving_data("edit");
-            $checking = $checking + $this->updated_values();
+            $checking = $this->saving_data("edit") + $this->updated_values();
             if ($this->checkings->update($id, $checking)) {
+                $checking_detail_id = $this->checking_details->where(["is_deleted" => 0, "checking_id" => $id, "code" => @$_POST["tire_qr_code"]])->findAll()[0]->id;
+                $checking_detail = $this->saving_data("edit", "detail", $id) + $this->updated_values();
+                $this->checking_details->update($checking_detail_id, $checking_detail);
                 $this->session->setFlashdata("flash_message", ["success", "Success editing checking"]);
                 return redirect()->to(base_url() . '/checking/edit/' . $id);
             } else
@@ -209,9 +241,9 @@ class Checking extends BaseController
         $data["__modulename"] = "Edit Checking";
         $data["__mode"] = "edit";
         $data["id"] = $id;
-        $data["checking"] = $this->checkings->where("is_deleted", "0")->find([$id])[0];
         $data = $data + $this->common();
         $data = $data + $this->get_reference_data();
+        $data = $data + $this->get_saved_data($id);
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('checkings/v_edit');

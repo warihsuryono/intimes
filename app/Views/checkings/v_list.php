@@ -73,8 +73,10 @@
                                 <tr>
                                     <th></th>
                                     <th>No</th>
-                                    <th>SPK No</th>
-                                    <th>SPK Date</th>
+                                    <th>Vehicle Registration Plate</th>
+                                    <th>Tire QRCode</th>
+                                    <th>Tire Position</th>
+                                    <th>RTD</th>
                                     <th>Checked at</th>
                                     <th>Km Check</th>
                                     <th>Created At</th>
@@ -97,9 +99,16 @@
                                             </a>
                                         </td>
                                         <td><?= $no; ?></td>
-                                        <td><?= $checking->spk_no; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($checking->spk_at)); ?></td>
-                                        <td><?= date("d-m-Y", strtotime($checking->check_at)); ?></td>
+                                        <td><?= $checking->vehicle_registration_plate; ?></td>
+                                        <td><?= $checking_detail[$checking->id]->code; ?></td>
+                                        <td><?= $checking_detail[$checking->id]->tire_position->name; ?></td>
+                                        <td>
+                                            <?= $checking_detail[$checking->id]->rtd1; ?>,
+                                            <?= $checking_detail[$checking->id]->rtd2; ?>,
+                                            <?= $checking_detail[$checking->id]->rtd3; ?>,
+                                            <?= $checking_detail[$checking->id]->rtd4; ?>
+                                        </td>
+                                        <td><?= date("d-m-Y", strtotime($checking->checking_at)); ?></td>
                                         <td><?= $checking_detail[$checking->id]->km; ?></td>
                                         <td><?= date("d-m-Y H:i:s", strtotime($checking->created_at)); ?></td>
                                         <td><?= $checking->created_by; ?></td>

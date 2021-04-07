@@ -72,10 +72,10 @@
                                         </script>
                                         <li class="list-group-item" id="tire_position_remark_area" style="display:none;">
                                             <b>Remark</b>
-                                            <?= $_form->textarea("tire_position_remark"); ?>
+                                            <?= $_form->textarea("remark"); ?>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>KM Install</b> <a class="pull-right" id="km_install"></a>
+                                            <b>KM Mounting</b> <a class="pull-right" id="mount_km"></a>
                                         </li>
                                         <li class="list-group-item">
                                             <b>KM Last Checked</b> <a class="pull-right" id="check_km_last"></a>
@@ -97,24 +97,35 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>KM Check</label>
-                                        <?= $_form->input("check_km", "", "required"); ?>
+                                        <?= $_form->input("km", "", "required"); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Check Date</label>
-                                        <?= $_form->input("check_at", "", "type='date' required"); ?>
+                                        <?= $_form->input("checking_at", date("Y-m-d"), "type='date' required"); ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Remain Tread Depth</label>
-                                        <?= $_form->input("remain_tread_depth", "", "type='number' required"); ?>
+                                        <label>Remain Tread Depth 1,2,3,4</label>
+                                        <div class="input-group">
+                                            <?= $_form->input("rtd1", "", "type='number' required"); ?>
+                                            <?= $_form->input("rtd2", "", "type='number' required"); ?>
+                                            <?= $_form->input("rtd3", "", "type='number' required"); ?>
+                                            <?= $_form->input("rtd4", "", "type='number' required"); ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>PSI</label>
+                                        <label>PSI Before</label>
+                                        <?= $_form->input("psi_before", "", "type='number'"); ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>PSI After</label>
                                         <?= $_form->input("psi", "", "type='number'"); ?>
                                     </div>
                                 </div>
@@ -172,7 +183,7 @@
                 var last_checking = JSON.parse(result.replace("[", "").replace("]", ""));
                 try {
                     $("#old_position").html(last_checking.tire_position.name);
-                    $("#km_install").html(last_checking.km_install);
+                    $("#mount_km").html(last_checking.mount_km);
                     $("#check_km_last").html(last_checking.check_km);
                     $("#remain_tread_depth_last").html(last_checking.remain_tread_depth);
                 } catch (e) {}

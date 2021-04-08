@@ -7,8 +7,6 @@ use App\Models\m_checking_detail;
 use App\Models\m_checking_photo;
 use App\Models\m_mounting;
 use App\Models\m_mounting_detail;
-use App\Models\m_tire_position;
-use App\Models\m_tire_type;
 use App\Models\m_vehicle;
 use App\Models\m_vehicle_brand;
 use App\Models\m_vehicle_type;
@@ -22,8 +20,6 @@ class Checking extends BaseController
     protected $checking_photos;
     protected $mountings;
     protected $mounting_details;
-    protected $tire_positions;
-    protected $tire_types;
     protected $vehicles;
     protected $vehicle_types;
     protected $vehicle_brands;
@@ -38,8 +34,6 @@ class Checking extends BaseController
         $this->checking_photos =  new m_checking_photo();
         $this->mountings =  new m_mounting();
         $this->mounting_details =  new m_mounting_detail();
-        $this->tire_positions =  new m_tire_position();
-        $this->tire_types =  new m_tire_type();
         $this->vehicles =  new m_vehicle();
         $this->vehicle_types =  new m_vehicle_type();
         $this->vehicle_brands =  new m_vehicle_brand();

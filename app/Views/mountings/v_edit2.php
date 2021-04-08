@@ -48,7 +48,7 @@
                                         <label>Add Tire Code</label>
                                         <?= $_form->hidden("tire_id"); ?>
                                         <div class="input-group">
-                                            <?= $_form->input("tire_qr_code", "", "required"); ?>
+                                            <?= $_form->input("tire_qr_code", "", "required onblur=\"on_qr_success(this.value)\""); ?>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
                                             </span>
@@ -83,7 +83,28 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
+                                                <label>Size</label><?= $_form->select("tire_size_id", $tire_sizes); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Brands</label><?= $_form->select("tire_brand_id", $tire_brands); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
                                                 <label>Type</label><?= $_form->select("tire_type_id", $tire_types); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Pattern</label><?= $_form->select("tire_pattern_id", $tire_patterns); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -222,7 +243,19 @@
                         $("#li_psi").css("display", "block");
                 } catch (e) {}
                 try {
+                    $("#tire_size_id").val(tire.size.id);
+                } catch (e) {}
+                try {
+                    $("#tire_brand_id").val(tire.brand.id);
+                } catch (e) {}
+                try {
                     $("#tire_type_id").val(tire._type.id);
+                } catch (e) {}
+                try {
+                    $("#tire_pattern_id").val(tire.pattern.id);
+                } catch (e) {}
+                try {
+                    $("#otd").val(tire.tread_depth);
                 } catch (e) {}
             });
         }

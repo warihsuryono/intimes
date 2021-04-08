@@ -19,6 +19,11 @@ use App\Models\m_a_menu;
 use App\Models\m_a_user;
 use App\Models\m_a_group;
 use App\Models\m_division;
+use App\Models\m_tire_brand;
+use App\Models\m_tire_pattern;
+use App\Models\m_tire_position;
+use App\Models\m_tire_size;
+use App\Models\m_tire_type;
 use CodeIgniter\Controller;
 
 class BaseController extends Controller
@@ -30,12 +35,24 @@ class BaseController extends Controller
 	protected $session;
 	protected $_form;
 
+	protected $tire_sizes;
+	protected $tire_brands;
+	protected $tire_types;
+	protected $tire_patterns;
+	protected $tire_positions;
+
 	public function __construct()
 	{
 		$this->users =  new m_a_user();
 		$this->groups =  new m_a_group();
 		$this->menus =  new m_a_menu();
 		$this->divisions =  new m_division();
+		$this->tire_sizes = new m_tire_size();
+		$this->tire_brands = new m_tire_brand();
+		$this->tire_types = new m_tire_type();
+		$this->tire_patterns = new m_tire_pattern();
+		$this->tire_positions = new m_tire_position();
+
 		$this->session = \Config\Services::session();
 		$REQUEST_URI = explode("/", $_SERVER["REQUEST_URI"]);
 		if ($REQUEST_URI[count($REQUEST_URI) - 1] != "login" && !$this->session->get("loggedin")) {

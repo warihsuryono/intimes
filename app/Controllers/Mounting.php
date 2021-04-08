@@ -6,8 +6,6 @@ use App\Models\m_customer;
 use App\Models\m_mounting;
 use App\Models\m_mounting_detail;
 use App\Models\m_mounting_photo;
-use App\Models\m_tire_position;
-use App\Models\m_tire_type;
 use App\Models\m_vehicle;
 use App\Models\m_vehicle_brand;
 use App\Models\m_vehicle_type;
@@ -18,8 +16,6 @@ class Mounting extends BaseController
     protected $mountings;
     protected $mounting_details;
     protected $mounting_photos;
-    protected $tire_positions;
-    protected $tire_types;
     protected $vehicles;
     protected $vehicle_types;
     protected $vehicle_brands;
@@ -33,8 +29,6 @@ class Mounting extends BaseController
         $this->mountings =  new m_mounting();
         $this->mounting_details =  new m_mounting_detail();
         $this->mounting_photos =  new m_mounting_photo();
-        $this->tire_positions =  new m_tire_position();
-        $this->tire_types =  new m_tire_type();
         $this->vehicles =  new m_vehicle();
         $this->vehicle_types =  new m_vehicle_type();
         $this->vehicle_brands =  new m_vehicle_brand();
@@ -50,7 +44,10 @@ class Mounting extends BaseController
         @$data["yesnooption"][1]->name = "Yes";
 
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
+        $data["tire_sizes"] = $this->tire_sizes->where("is_deleted", "0")->findAll();
+        $data["tire_brands"] = $this->tire_brands->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
+        $data["tire_patterns"] = $this->tire_patterns->where("is_deleted", "0")->findAll();
 
         if (isset($_POST["tire_position_id"]))
             $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
@@ -153,6 +150,9 @@ class Mounting extends BaseController
                 "code"              => @$_POST["tire_qr_code"],
                 "tire_type_id"      => @$_POST["tire_type_id"],
                 "tire_position_id"  => @$_POST["tire_position_id"],
+                "tire_size_id"      => @$_POST["tire_size_id"],
+                "tire_brand_id"     => @$_POST["tire_brand_id"],
+                "tire_pattern_id"  => @$_POST["tire_pattern_id"],
                 "km"                => @$_POST["km"],
                 "otd"               => @$_POST["otd"],
                 "price"             => 0,

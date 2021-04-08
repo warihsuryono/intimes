@@ -130,9 +130,9 @@ class Mounting extends BaseController
         $data["startrow"] = $startrow;
         $data["numrow"] = $numrow;
         $data["maxpage"] = ceil($numrow / MAX_ROW);
-        $data["mountings"] = $mountings;
+        $data["mountings"] = @$mountings;
         $data["mounting_details"] = @$mounting_details;
-        $data["mounting_detail"] = $mounting_detail;
+        $data["mounting_detail"] = @$mounting_detail;
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');

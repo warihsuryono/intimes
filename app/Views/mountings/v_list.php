@@ -96,13 +96,17 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>No</th>
-                                    <th>Id</th>
+                                    <th>Customer</th>
                                     <th>SPK No</th>
                                     <th>SPK Date</th>
-                                    <th>Customer</th>
                                     <th>Mounting at</th>
                                     <th>Reg Plate</th>
+                                    <th>Position</th>
+                                    <th>Uniq Code</th>
+                                    <th>Size</th>
+                                    <th>Brand</th>
+                                    <th>Type</th>
+                                    <th>Pattern</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                 </tr>
@@ -110,27 +114,31 @@
                             <tbody>
                                 <?php
                                 $no = $startrow;
-                                foreach ($mountings as $mounting) :
+                                foreach ($mounting_details as $_mounting_detail) :
                                     $no++;
                                 ?>
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/add/<?= $mounting->id; ?>">
+                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/add/<?= $_mounting_detail->mounting_id; ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting->id; ?>);">
+                                            <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $_mounting_detail->mounting_id; ?>);">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $mounting->id; ?></td>
-                                        <td><?= $mounting->spk_no; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($mounting->spk_at)); ?></td>
-                                        <td><?= $mounting->customer_name; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($mounting->mounting_at)); ?></td>
-                                        <td><?= $mounting->vehicle_registration_plate; ?></td>
-                                        <td><?= date("d-m-Y H:i:s", strtotime($mounting->created_at)); ?></td>
-                                        <td><?= $mounting->created_by; ?></td>
+                                        <td><?= $mountings[$_mounting_detail->mounting_id]->customer_name; ?></td>
+                                        <td><?= $mountings[$_mounting_detail->mounting_id]->spk_no; ?></td>
+                                        <td><?= date("d-m-Y", strtotime($mountings[$_mounting_detail->mounting_id]->spk_at)); ?></td>
+                                        <td><?= date("d-m-Y", strtotime($mountings[$_mounting_detail->mounting_id]->mounting_at)); ?></td>
+                                        <td><?= $mountings[$_mounting_detail->mounting_id]->vehicle_registration_plate; ?></td>
+                                        <td><?= $mounting_detail[$_mounting_detail->id]["tire_position"]->name; ?></td>
+                                        <td><?= $_mounting_detail->code; ?></td>
+                                        <td><?= $mounting_detail[$_mounting_detail->id]["tire_size"]->name; ?></td>
+                                        <td><?= $mounting_detail[$_mounting_detail->id]["tire_brand"]->name; ?></td>
+                                        <td><?= $mounting_detail[$_mounting_detail->id]["tire_type"]->name; ?></td>
+                                        <td><?= $mounting_detail[$_mounting_detail->id]["tire_pattern"]->name; ?></td>
+                                        <td><?= date("d-m-Y H:i:s", strtotime($mountings[$_mounting_detail->mounting_id]->created_at)); ?></td>
+                                        <td><?= $mountings[$_mounting_detail->mounting_id]->created_by; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>

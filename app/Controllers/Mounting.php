@@ -103,20 +103,36 @@ class Mounting extends BaseController
         if (isset($_GET["code"]) && $_GET["code"] != "")
             $wherclause .= " AND id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '%" . $_GET["code"] . "%')";
 
-        if ($mountings = $this->mountings->where($wherclause)->findAll(MAX_ROW, $startrow)) {
-            $numrow = count($this->mountings->where($wherclause)->findAll());
-            foreach ($mountings as $mounting) {
-                $mounting_detail[$mounting->id]["mounting_details"] = @$this->mounting_details->where("mounting_id", $mounting->id)->findAll();
+        if ($mode == "mounted")
+            if ($mountings = $this->mountings->where($wherclause)->findAll(MAX_ROW, $startrow)) {
+                $numrow = count($this->mountings->where($wherclause)->findAll());
+                foreach ($mountings as $mounting) {
+                    $mounting_detail[$mounting->id]["mounting_details"] = @$this->mounting_details->where("mounting_id", $mounting->id)->findAll();
+                }
+            } else {
+                $numrow = 0;
             }
-        } else {
-            $numrow = 0;
-        }
+        if ($mode == "")
+            if ($mounting_details = $this->mounting_details->where("mounting_id IN (SELECT id FROM mountings WHERE " . $wherclause . ")")->findAll(MAX_ROW, $startrow)) {
+                $numrow = count($this->mounting_details->where("mounting_id IN (SELECT id FROM mountings WHERE " . $wherclause . ")")->findAll());
+                foreach ($mounting_details as $_mounting_detail) {
+                    $mountings[$_mounting_detail->mounting_id] = @$this->mountings->where("id", $_mounting_detail->mounting_id)->findAll()[0];
+                    $mounting_detail[$_mounting_detail->id]["tire_position"] = @$this->tire_positions->where("id", $_mounting_detail->tire_position_id)->findAll()[0];
+                    $mounting_detail[$_mounting_detail->id]["tire_size"] = @$this->tire_sizes->where("id", $_mounting_detail->tire_size_id)->findAll()[0];
+                    $mounting_detail[$_mounting_detail->id]["tire_brand"] = @$this->tire_brands->where("id", $_mounting_detail->tire_brand_id)->findAll()[0];
+                    $mounting_detail[$_mounting_detail->id]["tire_type"] = @$this->tire_types->where("id", $_mounting_detail->tire_type_id)->findAll()[0];
+                    $mounting_detail[$_mounting_detail->id]["tire_pattern"] = @$this->tire_patterns->where("id", $_mounting_detail->tire_pattern_id)->findAll()[0];
+                }
+            } else {
+                $numrow = 0;
+            }
 
         $data["startrow"] = $startrow;
         $data["numrow"] = $numrow;
         $data["maxpage"] = ceil($numrow / MAX_ROW);
         $data["mountings"] = $mountings;
-        $data["mounting_detail"] = @$mounting_detail;
+        $data["mounting_details"] = @$mounting_details;
+        $data["mounting_detail"] = $mounting_detail;
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');

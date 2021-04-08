@@ -203,6 +203,38 @@
     }
 
     function tire_position_clicked(tire_position_id) {
+        <?php if ($mounting_id > 0) : ?>
+            $.get("<?= base_url(); ?>/checking/get_qrcode_by_tire_position_id/<?= $mounting_id; ?>/" + tire_position_id, function(result) {
+                if (result)
+                    on_qr_success(result);
+                else {
+                    try {
+                        $("#tire_id").val("");
+                    } catch (e) {}
+                    try {
+                        $("#tire_size").html("");
+                    } catch (e) {}
+                    try {
+                        $("#tire_brand").html("");
+                    } catch (e) {}
+                    try {
+                        $("#tire_type").html("");
+                    } catch (e) {}
+                    try {
+                        $("#tire_pattern").html("");
+                    } catch (e) {}
+                    try {
+                        $("#tread_depth").html("");
+                    } catch (e) {}
+                    try {
+                        $("#psi").html("");
+                    } catch (e) {}
+                    try {
+                        $("[name='tread_depth']").val("");
+                    } catch (e) {}
+                }
+            });
+        <?php endif ?>
         $("#tire_position_id").val(tire_position_id);
         for (var i = 1; i < 30; i++) {
             try {
@@ -212,5 +244,18 @@
         }
         $("#tires_map_" + tire_position_id).addClass("btn-warning");
         $("#tires_map_" + tire_position_id).removeClass("btn-info");
+    }
+
+    function pageloaded() {
+        $.get("<?= base_url(); ?>/mounting/get_tires_map/<?= $vehicle_type_id; ?>", function(result) {
+            $("#tire_descriptions").fadeIn();
+            $("#tires_map").html(result);
+            if ($("#tiresrow").val() == 1) $("#tires_map").height(200);
+            if ($("#tiresrow").val() == 2) $("#tires_map").height(300);
+            if ($("#tiresrow").val() == 3) $("#tires_map").height(400);
+            if ($("#tiresrow").val() == 4) $("#tires_map").height(500);
+            if ($("#tiresrow").val() == 5) $("#tires_map").height(600);
+            if ($("#tiresrow").val() == 6) $("#tires_map").height(700);
+        });
     }
 </script>

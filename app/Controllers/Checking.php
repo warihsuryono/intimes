@@ -164,16 +164,21 @@ class Checking extends BaseController
         }
     }
 
-    public function add()
+    public function add($refferal = "", $mounting_id = 0)
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
-        $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_POST["tire_qr_code"] . "')")->orderBy("mounting_at DESC")->findAll();
-        if (count($mounting) <= 0 && @$_POST["tire_qr_code"] != "") {
-            $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . $_POST["tire_qr_code"] . "` has never been installed"]);
-            return redirect()->to(base_url() . '/checkings');
-            exit();
-        }
+        if ($mounting_id == 0) {
+            $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_POST["tire_qr_code"] . "')")->orderBy("mounting_at DESC")->findAll();
+            if (count($mounting) <= 0 && @$_POST["tire_qr_code"] != "") {
+                $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . $_POST["tire_qr_code"] . "` has never been installed"]);
+                return redirect()->to(base_url() . '/checkings');
+                exit();
+            }
+        } else
+            $mounting = @$this->mountings->where(["is_deleted" => 0, "id" => $mounting_id])->findAll();
+
         $data["mounting"] = @$mounting[0];
+        $data["vehicle_type_id"] = $this->vehicles->where(["is_deleted" => 0, "id" => $data["mounting"]->vehicle_id])->findAll()[0]->vehicle_type_id;
 
         if (isset($_POST["Save"])) {
             $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_POST["tire_qr_code"] . "')")->orderBy("mounting_at DESC")->findAll()[0];
@@ -214,6 +219,8 @@ class Checking extends BaseController
 
         $data["__modulename"] = "Add Checking";
         $data["__mode"] = "add";
+        $data["refferal"] = $refferal;
+        $data["mounting_id"] = $mounting_id;
         $data = $data + $this->common();
         $data = $data + $this->get_reference_data();
         echo view('v_header', $data);
@@ -406,5 +413,14 @@ class Checking extends BaseController
             }
         }
         return $tires_map;
+    }
+
+    function get_qrcode_by_tire_position_id($mounting_id, $tire_position_id)
+    {
+        $checking_detail = @$this->checking_details->join("checkings", "checking_details.checking_id = checkings.id")->where(["checkings.is_deleted" => 0, "checkings.mounting_id" => $mounting_id, "tire_position_id" => $tire_position_id])->orderBy("checking_at DESC")->findAll()[0];
+        if (@$checking_detail->id > 0)
+            return @$checking_detail->code;
+        else
+            return @$this->mounting_details->where(["is_deleted" => 0, "mounting_id" => $mounting_id, "tire_position_id" => $tire_position_id])->findAll()[0]->code;
     }
 }

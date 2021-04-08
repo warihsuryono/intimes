@@ -249,7 +249,7 @@ $routes->get('/installation/delete/(:num)', 'Installation::delete/$1');
 
 $routes->get('/mountings', 'Mounting::index');
 $routes->get('/demountings', 'Demounting::index');
-$routes->get('/checkings', 'Checking::index');
+$routes->get('/checkings', 'Mounting::index/mounted');
 
 $routes->get('/tube_brands', 'Tube_brand::index');
 $routes->get('/flap_brands', 'Flap_brand::index');

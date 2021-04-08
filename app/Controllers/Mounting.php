@@ -75,12 +75,15 @@ class Mounting extends BaseController
         return $data;
     }
 
-    public function index()
+    public function index($mode = "")
     {
         $this->privilege_check($this->menu_ids);
 
         $page = isset($_GET["page"]) ? $_GET["page"] - 1 : 0;
-        $data["__modulename"] = "Mounting";
+        if ($mode == "")
+            $data["__modulename"] = "Mounting";
+        if ($mode == "mounted")
+            $data["__modulename"] = "Checking";
         $startrow = $page * MAX_ROW;
 
         $wherclause = "is_deleted = '0'";
@@ -120,7 +123,10 @@ class Mounting extends BaseController
         $data = $data + $this->common();
         echo view('v_header', $data);
         echo view('v_menu');
-        echo view('mountings/v_list');
+        if ($mode == "")
+            echo view('mountings/v_list');
+        if ($mode == "mounted")
+            echo view('mountings/v_mounted');
         echo view('v_footer');
     }
 

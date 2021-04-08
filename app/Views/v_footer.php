@@ -90,6 +90,10 @@
     function qrcode_reader(elm_id) {
         window.open("<?= base_url(); ?>/Qr_reader?e=" + elm_id);
     }
+
+    try {
+        pageloaded();
+    } catch (ex) {}
 </script>
 <!-- </body></html> -->
 </body>

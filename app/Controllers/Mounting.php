@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\m_checking;
+use App\Models\m_checking_detail;
 use App\Models\m_customer;
 use App\Models\m_mounting;
 use App\Models\m_mounting_detail;
@@ -20,6 +22,8 @@ class Mounting extends BaseController
     protected $vehicle_types;
     protected $vehicle_brands;
     protected $customers;
+    protected $checkings;
+    protected $checking_details;
 
     public function __construct()
     {
@@ -33,6 +37,8 @@ class Mounting extends BaseController
         $this->vehicle_types =  new m_vehicle_type();
         $this->vehicle_brands =  new m_vehicle_brand();
         $this->customers =  new m_customer();
+        $this->checkings =  new m_checking();
+        $this->checking_details =  new m_checking_detail();
     }
 
     public function get_reference_data($id = 0)
@@ -108,6 +114,9 @@ class Mounting extends BaseController
                 $numrow = count($this->mountings->where($wherclause)->findAll());
                 foreach ($mountings as $mounting) {
                     $mounting_detail[$mounting->id]["mounting_details"] = @$this->mounting_details->where("mounting_id", $mounting->id)->findAll();
+                    $data["checking"][$mounting->id] = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting->id])->orderBy("checking_at DESC")->findAll()[0];
+                    if (@$data["checking"][$mounting->id]->id > 0)
+                        $data["checking_detail"][$mounting->id] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => @$data["checking"][$mounting->id]->id])->orderBy("id DESC")->findAll()[0];
                 }
             } else {
                 $numrow = 0;

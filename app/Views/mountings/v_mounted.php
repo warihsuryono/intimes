@@ -96,14 +96,11 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>No</th>
-                                    <th>SPK No</th>
-                                    <th>SPK Date</th>
                                     <th>Customer</th>
-                                    <th>Mounting at</th>
                                     <th>Reg Plate</th>
-                                    <th>Created At</th>
-                                    <th>Created By</th>
+                                    <th>Mounting at</th>
+                                    <th>Last Checked at</th>
+                                    <th>Remark</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,14 +115,11 @@
                                                 <i class="fas fa-search"></i>
                                             </a>
                                         </td>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $mounting->spk_no; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($mounting->spk_at)); ?></td>
                                         <td><?= $mounting->customer_name; ?></td>
-                                        <td><?= date("d-m-Y", strtotime($mounting->mounting_at)); ?></td>
                                         <td><?= $mounting->vehicle_registration_plate; ?></td>
-                                        <td><?= date("d-m-Y H:i:s", strtotime($mounting->created_at)); ?></td>
-                                        <td><?= $mounting->created_by; ?></td>
+                                        <td><?= ($mounting->mounting_at != "0000-00-00" && @$mounting->mounting_at != "") ? date("d-m-Y", strtotime($mounting->mounting_at)) : ""; ?></td>
+                                        <td><?= (@$checking[$mounting->id]->checking_at != "0000-00-00" && @$checking[$mounting->id]->checking_at != "") ? date("d-m-Y", strtotime(@$checking[$mounting->id]->checking_at)) : ""; ?></td>
+                                        <td><?= @$checking[$mounting->id]->notes; ?> <?= @$checking_detail[$mounting->id]->remark; ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>

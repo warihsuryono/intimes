@@ -47,6 +47,12 @@ class Checking extends BaseController
         @$data["yesnooption"][1]->id = 1;
         @$data["yesnooption"][1]->name = "Yes";
 
+
+        @$data["decisions"][0]->id = "returned";
+        @$data["decisions"][0]->name = "Returned";
+        @$data["decisions"][1]->id = "replaced";
+        @$data["decisions"][1]->name = "Replaced";
+
         $data["tire_positions"] = $this->tire_positions->where("is_deleted", "0")->findAll();
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
         $data["checkings_office_only"] = false;
@@ -58,6 +64,7 @@ class Checking extends BaseController
     {
         $data["checking"] = @$this->checkings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
         $data["checking_detail"] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => $id])->orderBy("id DESC")->findAll()[0];
+        $data["checking_details"] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => $id])->findAll();
         $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["checking"]->vehicle_id])->findAll()[0];
         $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
         $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
@@ -145,6 +152,7 @@ class Checking extends BaseController
                 "checking_id"           => $id,
                 "tire_position_id"      => @$_POST["tire_position_id"],
                 "tire_position_changed" => @$_POST["tire_position_changed"],
+                "decision"              => @$_POST["decision"],
                 "km"                    => @$_POST["km"],
                 "rtd1"                  => @$_POST["rtd1"],
                 "rtd2"                  => @$_POST["rtd2"],
@@ -341,7 +349,7 @@ class Checking extends BaseController
             $data["tire_position"] = @$this->tire_positions->where(["is_deleted" => 0, "id" => $mounting_detail->tire_position_id])->findAll()[0];
             $data["mount_km"] = @$mounting_detail->km;
             $data["check_km"] = 0;
-            $data["remain_tread_depth"] = @$mounting_detail->otd;
+            $data["remain_tread_depth"] = 0;
         }
         echo json_encode($data);
     }

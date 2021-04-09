@@ -7,8 +7,10 @@
         <?php if ($checking_detail->tire_position_changed) : ?>
             $("[name='tire_position_changed']").attr("checked", true);
             $("#tire_position_remark_area").fadeIn();
+            $("#tire_position_decision_area").fadeIn();
         <?php endif ?>
         $("[name='remark']").val("<?= $checking_detail->remark; ?>");
+        $("[name='decision']").val("<?= $checking_detail->decision; ?>");
         $("[name='km']").val("<?= $checking_detail->km; ?>");
         $("[name='rtd1']").val("<?= $checking_detail->rtd1; ?>");
         $("[name='rtd2']").val("<?= $checking_detail->rtd2; ?>");

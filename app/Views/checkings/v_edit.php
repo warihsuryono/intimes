@@ -18,7 +18,7 @@
                                         <label>Tire Uniq Code</label>
                                         <input id="tire_id" name="tire_id" type="hidden" required>
                                         <div class="input-group">
-                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" required <?= ($__mode == "add") ? "" : "readonly"; ?>>
+                                            <input id="tire_qr_code" name="tire_qr_code" type="text" class="form-control" onblur="on_qr_success(this.value)" required <?= ($__mode == "add") ? "" : "readonly"; ?>>
                                             <?php if ($__mode == "add") : ?>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-info btn-flat" onclick="qrcode_reader('tire_qr_code');"><i class="fa fa-barcode"></i></button>
@@ -46,12 +46,6 @@
                                         <li class="list-group-item">
                                             <b>Pattern</b> <a class="pull-right" id="tire_pattern"></a>
                                         </li>
-                                        <li class="list-group-item">
-                                            <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>PSI</b> <a class="pull-right" id="psi"></a>
-                                        </li>
                                     </ul>
                                     <br>
                                 </div>
@@ -61,29 +55,44 @@
                                             <b>Position Before</b> <a class="pull-right" id="old_position"></a>
                                         </li>
                                         <li class="list-group-item">
+                                            <b>KM Mounting</b> <a class="pull-right" id="mount_km"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Original Tread Depth</b> <a class="pull-right" id="tread_depth"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>PSI</b> <a class="pull-right" id="psi"></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Last Remain Tread Depth</b> <a class="pull-right" id="remain_tread_depth_last"></a>
+                                        </li>
+                                        <li class="list-group-item">
                                             <b>Position Changed ?</b>
                                             <div class="pull-right"><?= $_form->input("tire_position_changed", "1", "type='checkbox' onchange='changing_tire_position(this)'"); ?> Yes</div>
                                         </li>
                                         <script>
                                             function changing_tire_position(elm) {
-                                                if (elm.checked)
+                                                if (elm.checked) {
                                                     $("#tire_position_remark_area").fadeIn();
-                                                else
+                                                    $("#tire_position_decision_area").fadeIn();
+                                                } else {
                                                     $("#tire_position_remark_area").fadeOut();
+                                                    $("#tire_position_decision_area").fadeOut();
+                                                    $("#remark").val("");
+                                                    $("#decision").val("");
+                                                }
                                             }
                                         </script>
                                         <li class="list-group-item" id="tire_position_remark_area" style="display:none;">
                                             <b>Remark</b>
-                                            <?= $_form->textarea("remark"); ?>
+                                            <?= $_form->textarea("remark", ""); ?>
                                         </li>
-                                        <li class="list-group-item">
-                                            <b>KM Mounting</b> <a class="pull-right" id="mount_km"></a>
+                                        <li class="list-group-item" id="tire_position_decision_area" style="display:none;">
+                                            <b>Decision</b>
+                                            <?= $_form->select("decision", $decisions); ?>
                                         </li>
                                         <li class="list-group-item">
                                             <b>KM Last Checked</b> <a class="pull-right" id="check_km_last"></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <b>Last Remain Tread Depth</b> <a class="pull-right" id="remain_tread_depth_last"></a>
                                         </li>
                                     </ul>
                                     <br>
@@ -203,11 +212,12 @@
     }
 
     function tire_position_clicked(tire_position_id) {
-        <?php if ($mounting_id > 0) : ?>
+        <?php if (@$mounting_id > 0) : ?>
             $.get("<?= base_url(); ?>/checking/get_qrcode_by_tire_position_id/<?= $mounting_id; ?>/" + tire_position_id, function(result) {
-                if (result)
+                if (result) {
                     on_qr_success(result);
-                else {
+                    $("#tire_qr_code").val(result);
+                } else {
                     try {
                         $("#tire_id").val("");
                     } catch (e) {}
@@ -247,7 +257,7 @@
     }
 
     function pageloaded() {
-        $.get("<?= base_url(); ?>/mounting/get_tires_map/<?= $vehicle_type_id; ?>", function(result) {
+        $.get("<?= base_url(); ?>/mounting/get_tires_map/<?= @$vehicle_type_id; ?>", function(result) {
             $("#tire_descriptions").fadeIn();
             $("#tires_map").html(result);
             if ($("#tiresrow").val() == 1) $("#tires_map").height(200);
@@ -256,6 +266,8 @@
             if ($("#tiresrow").val() == 4) $("#tires_map").height(500);
             if ($("#tiresrow").val() == 5) $("#tires_map").height(600);
             if ($("#tiresrow").val() == 6) $("#tires_map").height(700);
+            // $("#tires_map").children().removeClass("btn-info");
+            // $("#tires_map").children().addClass("btn-secondary");
         });
     }
 </script>

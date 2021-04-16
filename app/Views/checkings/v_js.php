@@ -1,5 +1,5 @@
 <script>
-    <?php if (isset($checking)) : ?>
+    <?php if (isset($checking) && isset($checking_detail)) : ?>
         $("[name='tire_id']").val("<?= $checking_detail->tire_id; ?>");
         $("[name='tire_qr_code']").val("<?= $checking_detail->code; ?>");
         on_qr_success("<?= $checking_detail->code; ?>");

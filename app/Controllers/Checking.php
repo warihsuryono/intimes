@@ -276,6 +276,10 @@ class Checking extends BaseController
         $data["last_checking_details"] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => $data["last_checking"]->checking_id])->findAll();
 
         if (isset($_POST["start_checking"])) {
+            $last_checking = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting_id, "checking_at" => $_POST["checking_at"]])->findAll()[0];
+            if (@$last_checking->id > 0)
+                return redirect()->to(base_url() . '/checking/execution2/' . $last_checking->id);
+
             $_POST["mounting_id"] = $mounting_id;
             $_POST["customer_id"] = $data["mounting"]->customer_id;
             $_POST["customer_name"] = $data["mounting"]->customer_name;
@@ -285,10 +289,9 @@ class Checking extends BaseController
             $_POST["spk_no"] = "";
             $_POST["spk_at"] = "0000-00-00";
             $checking = $this->saving_data("add") + $this->created_values() + $this->updated_values();
-            if ($this->checkings->save($checking)) {
-                $id = $this->checkings->insertID();
-                return redirect()->to(base_url() . '/checking/edit/' . $id);
-            } else
+            if ($this->checkings->save($checking))
+                return redirect()->to(base_url() . '/checking/execution2/' . $this->checkings->insertID());
+            else
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding checking"]);
         }
 
@@ -300,6 +303,24 @@ class Checking extends BaseController
         echo view('v_header', $data);
         echo view('v_menu');
         echo view('checkings/v_execution1');
+        echo view('v_footer');
+        echo view('checkings/v_js');
+    }
+
+    public function execution2($checking_id)
+    {
+        $this->privilege_check($this->menu_ids, 1, $this->route_name);
+        $data["checking"] = $this->checkings->where(["is_deleted" => 0, "id" => $checking_id])->findAll()[0];
+        $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $data["checking"]->mounting_id])->findAll()[0];
+        $data["vehicle_type_id"] = $this->vehicles->where(["is_deleted" => 0, "id" => $data["mounting"]->vehicle_id])->findAll()[0]->vehicle_type_id;
+
+        $data["__modulename"] = "Add Checking";
+        $data["__mode"] = "add";
+        $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
+        echo view('v_header', $data);
+        echo view('v_menu');
+        echo view('checkings/v_execution2');
         echo view('v_footer');
         echo view('checkings/v_js');
     }

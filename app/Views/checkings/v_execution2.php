@@ -34,8 +34,7 @@
                                     </li>
                                 </ul> <br>
                                 <div class="form-group">
-                                    <button class="btn btn-primary" style="float: right;" onclick="start_checking();">Start Checking >> </button>
-                                    <!-- <button class="btn btn-primary" style="float: right;" onclick="window.location='';">Start Checking >> </button> -->
+                                    <button class="btn btn-primary" style="float: right;" onclick="window.location='<?= base_url(); ?>/checking/executions/<?= $mounting->id; ?>/2';">Start Checking >> </button>
                                 </div>
                             </div>
                             <div class="col-sm-1">
@@ -52,27 +51,3 @@
         </div>
     </div>
 </div>
-<script>
-    function start_checking() {
-        var content = "<form method='POST' id='form_start_checking'>";
-        content += "    <?= $_form->hidden("start_checking", "add"); ?>";
-        content += "    <ul class=\"list-group list-group-unbordered\">";
-        content += "        <li class=\"list-group-item\">";
-        content += "            <b>Last Odometer</b> <a class=\"pull-right\"><?= (@$last_checking_details[0]->km > 0) ? $last_checking_details[0]->km : $mounting_details[0]->km; ?></a>";
-        content += "        </li>";
-        content += "        <li class=\"list-group-item\">";
-        content += "            <b>Checking At</b><?= $_form->input("checking_at", date("Y-m-d"), "type=date"); ?>";
-        content += "        </li>";
-        content += "        <li class=\"list-group-item\">";
-        content += "            <b>Current Odometer</b><?= $_form->input("km"); ?>";
-        content += "        </li>";
-        content += "    </ul>";
-        content += "</form>";
-        $('#modal_title').html('Vehicle Odometer');
-        $('#modal_message').html(content);
-        $('#modal_type').attr("class", 'modal-content');
-        $('#modal_ok_link').attr("class", 'btn btn-success');
-        $('#modal_ok_link').attr("href", 'javascript:form_start_checking.submit();');
-        $('#modal-form').modal();
-    }
-</script>

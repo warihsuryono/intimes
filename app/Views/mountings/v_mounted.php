@@ -114,7 +114,7 @@
                                 ?>
                                     <tr>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/checking/executions/<?= $mounting->id; ?>">
+                                            <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/checking/execution1/<?= $mounting->id; ?>">
                                                 <i class="fas fa-search"></i>
                                             </a>
                                         </td>

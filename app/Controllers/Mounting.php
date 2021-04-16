@@ -91,6 +91,9 @@ class Mounting extends BaseController
 
         $wherclause = "is_deleted = '0'";
 
+        if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "")
+            $wherclause .= " AND customer_id = '" . $_GET["customer_id"] . "'";
+
         if (isset($_GET["spk_no"]) && $_GET["spk_no"] != "")
             $wherclause .= " AND spk_no LIKE '%" . $_GET["spk_no"] . "%'";
 
@@ -114,6 +117,7 @@ class Mounting extends BaseController
                 $numrow = count($this->mountings->where($wherclause)->findAll());
                 foreach ($mountings as $mounting) {
                     $mounting_detail[$mounting->id]["mounting_details"] = @$this->mounting_details->where("mounting_id", $mounting->id)->findAll();
+                    $mounting_detail[$mounting->id]["customer"] = @$this->customers->where("id", $mounting->customer_id)->findAll()[0];
                     $data["checking"][$mounting->id] = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting->id])->orderBy("checking_at DESC")->findAll()[0];
                     if (@$data["checking"][$mounting->id]->id > 0)
                         $data["checking_detail"][$mounting->id] = @$this->checking_details->where(["is_deleted" => 0, "checking_id" => @$data["checking"][$mounting->id]->id])->orderBy("id DESC")->findAll()[0];

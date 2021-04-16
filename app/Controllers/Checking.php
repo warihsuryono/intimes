@@ -260,6 +260,69 @@ class Checking extends BaseController
         echo view('checkings/v_js');
     }
 
+    public function executions($mounting_id, $steps = 1)
+    {
+        $this->privilege_check($this->menu_ids, 1, $this->route_name);
+        $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $mounting_id])->findAll()[0];
+        $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
+        $data["vehicle_type_id"] = $data["vehicle"]->vehicle_type_id;
+        $classmounting = new Mounting();
+        $data["tires_map"] = $classmounting->get_tires_map($data["vehicle"]->vehicle_type_id);
+        $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;
+        $data["vehicle_brand"] = $this->vehicle_brands->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_brand_id])->findAll()[0]->name;
+
+        if (isset($_POST["Save"])) {
+            $mounting = @$this->mountings->where("is_deleted", 0)->where("id IN (SELECT mounting_id FROM mounting_details WHERE code LIKE '" . $_POST["tire_qr_code"] . "')")->orderBy("mounting_at DESC")->findAll()[0];
+            if (@$mounting->id <= 0) {
+                $this->session->setFlashdata("flash_message", ["error", "Sorry, tire with code `" . @$_POST["tire_qr_code"] . "` has never been installed"]);
+                return redirect()->to(base_url() . '/checking/add');
+                exit();
+            }
+            $mounting_detail = @$this->mounting_details->where(["mounting_id" => $mounting->id, "code" => @$_POST["tire_qr_code"]])->findAll()[0];
+            $_POST["mounting_id"] = $mounting->id;
+            $_POST["customer_id"] = $mounting->customer_id;
+            $_POST["customer_name"] = $mounting->customer_name;
+            $_POST["vehicle_id"] = $mounting->vehicle_id;
+            $_POST["vehicle_registration_plate"] = $mounting->vehicle_registration_plate;
+            $_POST["old_tire_position_id"] = $mounting_detail->tire_position_id;
+            $_POST["tire_id"] = $mounting_detail->tire_id;
+            $_POST["tire_qr_code"] = $mounting_detail->code;
+            $_POST["tire_type_id"] = $mounting_detail->tire_type_id;
+
+            $_POST["spk_no"] = "";
+            $_POST["spk_at"] = "0000-00-00";
+
+            $checking = @$this->checkings->where(["is_deleted" => 0, "mounting_id" => $mounting->id])->orderBy("id DESC")->findAll()[0];
+            if (@$checking->id > 0) {
+                $checking_detail = @$this->checking_details->where(["checking_id" => $checking->id, "code" => $_POST["tire_qr_code"]])->findAll()[0];
+                $_POST["old_tire_position_id"] = $checking_detail->tire_position_id;
+            }
+            $checking = $this->saving_data("add") + $this->created_values() + $this->updated_values();
+            if ($this->checkings->save($checking)) {
+                $id = $this->checkings->insertID();
+                $checking_detail = $this->saving_data("add", "detail", $id) + $this->created_values() + $this->updated_values();
+                $this->checking_details->save($checking_detail);
+                $this->session->setFlashdata("flash_message", ["success", "Success adding checking"]);
+                return redirect()->to(base_url() . '/checking/edit/' . $id);
+            } else
+                $this->session->setFlashdata("flash_message", ["error", "Failed adding checking"]);
+        }
+
+        $data["__modulename"] = "Add Checking";
+        $data["__mode"] = "add";
+        $data["mounting_id"] = $mounting_id;
+        $data = $data + $this->common();
+        $data = $data + $this->get_reference_data();
+        echo view('v_header', $data);
+        echo view('v_menu');
+        if ($steps == 1)
+            echo view('checkings/v_execution1');
+        if ($steps == 2)
+            echo view('checkings/v_execution2');
+        echo view('v_footer');
+        echo view('checkings/v_js');
+    }
+
     public function takepictures($id)
     {
         $this->privilege_check($this->menu_ids, 2, $this->route_name);

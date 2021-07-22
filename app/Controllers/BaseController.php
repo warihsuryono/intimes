@@ -14,6 +14,7 @@ namespace App\Controllers;
  *
  * @package CodeIgniter
  */
+use CodeIgniter\HTTP\IncomingRequest;
 
 use App\Models\m_a_menu;
 use App\Models\m_a_user;
@@ -28,6 +29,8 @@ use CodeIgniter\Controller;
 
 class BaseController extends Controller
 {
+	protected $request;
+
 	protected $users;
 	protected $groups;
 	protected $menus;
@@ -43,6 +46,7 @@ class BaseController extends Controller
 
 	public function __construct()
 	{
+		$this->request =  service('request');
 		$this->users =  new m_a_user();
 		$this->groups =  new m_a_group();
 		$this->menus =  new m_a_menu();

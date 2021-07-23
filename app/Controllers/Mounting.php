@@ -192,17 +192,18 @@ class Mounting extends BaseController
     public function add($id = 0, $page = 1)
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
-        if (isset($_POST["saving_page_1"]) && false) {
+        if (isset($_POST["saving_page_1"])) {
             //cari kesamaan data
-            $identic_id = @$this->mountings->where(["is_deleted" => 0
-                                                    ,"spk_no" => $this->request->getPost("spk_no")
-                                                    ,"mounting_at" => $this->request->getPost("mounting_at")
-                                                    ,"vehicle_id" => $this->request->getPost("vehicle_id")
-                                                    ])->findAll()[0]->id;
-if(@$identic_id > 0){
-    return redirect()->to(base_url() . '/mounting/add/' . $identic_id);
-    exit();
-}
+            $identic_id = @$this->mountings->where([
+                "is_deleted" => 0,
+                "spk_no" => $this->request->getPost("spk_no"),
+                "mounting_at" => $this->request->getPost("mounting_at"),
+                "vehicle_id" => $this->request->getPost("vehicle_id")
+            ])->findAll()[0]->id;
+            if (@$identic_id > 0) {
+                return redirect()->to(base_url() . '/mounting/add/' . $identic_id);
+                exit();
+            }
             $mounting = $this->saving_data();
             $mounting = $mounting + $this->created_values() + $this->updated_values();
             if ($this->mountings->save($mounting)) {

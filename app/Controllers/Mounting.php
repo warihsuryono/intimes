@@ -55,8 +55,8 @@ class Mounting extends BaseController
         $data["tire_types"] = $this->tire_types->where("is_deleted", "0")->findAll();
         $data["tire_patterns"] = $this->tire_patterns->where("is_deleted", "0")->findAll();
 
-        if (isset($_POST["tire_position_id"]))
-            $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $_POST["tire_position_id"]])->findAll()[0];
+        if ($this->request->getPost("tire_position_id"))
+            $data["tire_position"] = $this->tire_positions->where(["is_deleted" => "0", "id" => $this->request->getPost("tire_position_id")])->findAll()[0];
 
         return $data;
     }
@@ -159,40 +159,40 @@ class Mounting extends BaseController
     public function saving_data($masterdetail = "master", $id = null)
     {
         if ($masterdetail == "master") {
-            $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => @$_POST["vehicle_id"]])->findAll()[0];
+            $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $this->request->getPost("vehicle_id")])->findAll()[0];
             $customer = @$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0];
             return  [
-                "spk_no"                        => @$_POST["spk_no"],
-                "spk_at"                        => @$_POST["spk_at"],
+                "spk_no"                        => $this->request->getPost("spk_no"),
+                "spk_at"                        => $this->request->getPost("spk_at"),
                 "customer_id"                   => @$customer->id,
                 "customer_name"                 => @$customer->company_name,
-                "mounting_at"                   => @$_POST["mounting_at"],
-                "vehicle_id"                    => @$_POST["vehicle_id"],
-                "vehicle_registration_plate"    => @$_POST["vehicle_registration_plate"],
-                "notes"                         => @$_POST["notes"],
+                "mounting_at"                   => $this->request->getPost("mounting_at"),
+                "vehicle_id"                    => $this->request->getPost("vehicle_id"),
+                "vehicle_registration_plate"    => $this->request->getPost("vehicle_registration_plate"),
+                "notes"                         => $this->request->getPost("notes"),
             ];
         }
         if ($masterdetail == "detail")
             return [
                 "mounting_id"       => $id,
-                "tire_id"           => @$_POST["tire_id"],
-                "code"              => @$_POST["tire_qr_code"],
-                "tire_type_id"      => @$_POST["tire_type_id"],
-                "tire_position_id"  => @$_POST["tire_position_id"],
-                "tire_size_id"      => @$_POST["tire_size_id"],
-                "tire_brand_id"     => @$_POST["tire_brand_id"],
-                "tire_pattern_id"  => @$_POST["tire_pattern_id"],
-                "km"                => @$_POST["km"],
-                "otd"               => @$_POST["otd"],
+                "tire_id"           => $this->request->getPost("tire_id"),
+                "code"              => $this->request->getPost("tire_qr_code"),
+                "tire_type_id"      => $this->request->getPost("tire_type_id"),
+                "tire_position_id"  => $this->request->getPost("tire_position_id"),
+                "tire_size_id"      => $this->request->getPost("tire_size_id"),
+                "tire_brand_id"     => $this->request->getPost("tire_brand_id"),
+                "tire_pattern_id"   => $this->request->getPost("tire_pattern_id"),
+                "km"                => $this->request->getPost("km"),
+                "otd"               => $this->request->getPost("otd"),
                 "price"             => 0,
-                "remark"            => @$_POST["remark"],
+                "remark"            => $this->request->getPost("remark"),
             ];
     }
 
     public function add($id = 0, $page = 1)
     {
         $this->privilege_check($this->menu_ids, 1, $this->route_name);
-        if (isset($_POST["saving_page_1"])) {
+        if ($this->request->getPost("saving_page_1")) {
             //cari kesamaan data
             $identic_id = @$this->mountings->where([
                 "is_deleted" => 0,
@@ -213,21 +213,23 @@ class Mounting extends BaseController
                 $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting"]);
         }
 
-        if (isset($_POST["saving_page_2"])) {
-            if ($_POST["tire_position_id"] == "") {
+        if ($this->request->getPost("saving_page_2")) {
+            if ($this->request->getPost("tire_position_id") == "") {
                 $this->session->setFlashdata("flash_message", ["error", "Please choose tire position"]);
                 return redirect()->to(base_url() . '/mounting/add/' . $id);
             }
-            if ($_POST["km"] == "") {
+            if ($this->request->getPost("km") == "") {
                 $this->session->setFlashdata("flash_message", ["error", "Please fill km"]);
                 return redirect()->to(base_url() . '/mounting/add/' . $id);
             }
 
-            $mounting_detail = $this->saving_data("detail", $id) + $this->created_values() + $this->updated_values();
-            if ($this->mounting_details->save($mounting_detail))
-                return redirect()->to(base_url() . '/mounting/add/' . $id);
-            else
-                $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting detail"]);
+            if ($this->request->getPost("save_mode") == "mounting") {
+                $mounting_detail = $this->saving_data("detail", $id) + $this->created_values() + $this->updated_values();
+                if ($this->mounting_details->save($mounting_detail))
+                    return redirect()->to(base_url() . '/mounting/add/' . $id);
+                else
+                    $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting detail"]);
+            }
         }
 
         $data["__modulename"] = "Mounting";

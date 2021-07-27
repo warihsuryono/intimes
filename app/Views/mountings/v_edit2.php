@@ -11,7 +11,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <form role="form" id="mainform" method="POST">
-                        <?= $_form->hidden("saving_page_2"); ?>
+                        <?= $_form->hidden("saving_page_2", "1"); ?>
                         <?= $_form->hidden("tire_position_id"); ?>
                         <div class="card-body">
                             <div class="row">
@@ -132,7 +132,8 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <button name="save" class="btn btn-primary">Add</button>
+                                                <button name="save_mode" value="mounting" class="btn btn-primary">Mounting</button>
+                                                <button name="save_mode" value="demounting" class="btn btn-warning">Demounting</button>
                                             </div>
                                         </div>
                                     </div>

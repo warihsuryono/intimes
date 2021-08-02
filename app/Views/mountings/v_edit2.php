@@ -140,6 +140,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-header">
+                            <h3 class="card-title"><b>Mounting</b></h3>
+                        </div>
                         <div class="card-body table-responsive p-0" style="height: 700px;">
                             <table class="table table-head-fixed text-nowrap table-striped">
                                 <thead>
@@ -175,6 +178,48 @@
                                 </tbody>
                             </table>
                         </div>
+
+
+                        <div class="card-header">
+                            <h3 class="card-title"><b>Demounting</b></h3>
+                        </div>
+                        <div class="card-body table-responsive p-0" style="height: 700px;">
+                            <table class="table table-head-fixed text-nowrap table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Position</th>
+                                        <th>KM</th>
+                                        <th>OTD</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php foreach ($demounting_details as $key => $demounting_detail) : ?>
+                                        <tr>
+                                            <td>
+                                                <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/demounting/photos/<?= $demounting_detail->id; ?>">
+                                                    <i class="fa fa-camera"></i>
+                                                </a>
+                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $demounting_detail->id; ?>);">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                            <td><?= $demounting_detail->code; ?></td>
+                                            <td><?= $demounting_detail->tire_type->name; ?></td>
+                                            <td><?= $demounting_detail->tire_position->name; ?> (<?= $demounting_detail->tire_position->code; ?>)</td>
+                                            <td><?= $demounting_detail->km; ?></td>
+                                            <td><?= $demounting_detail->otd; ?></td>
+                                            <td><?= $demounting_detail->remark; ?></td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class=" card-footer">
                             <a href="javascript:window.history.back();" class="btn btn-info">Back</a>
                             <button name="Done" class="btn btn-primary float-right" onclick="window.location='<?= base_url(); ?>/mountings'">Done</button>

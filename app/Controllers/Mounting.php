@@ -6,8 +6,11 @@ use App\Models\m_checking;
 use App\Models\m_checking_detail;
 use App\Models\m_customer;
 use App\Models\m_mounting;
+use App\Models\m_demounting;
 use App\Models\m_mounting_detail;
+use App\Models\m_demounting_detail;
 use App\Models\m_mounting_photo;
+use App\Models\m_demounting_photo;
 use App\Models\m_vehicle;
 use App\Models\m_vehicle_brand;
 use App\Models\m_vehicle_type;
@@ -16,8 +19,11 @@ class Mounting extends BaseController
 {
     protected $menu_ids;
     protected $mountings;
+    protected $demountings;
     protected $mounting_details;
+    protected $demounting_details;
     protected $mounting_photos;
+    protected $demounting_photos;
     protected $vehicles;
     protected $vehicle_types;
     protected $vehicle_brands;
@@ -31,8 +37,11 @@ class Mounting extends BaseController
         $this->route_name = "mountings";
         $this->menu_ids = $this->get_menu_ids($this->route_name);
         $this->mountings =  new m_mounting();
+        $this->demountings =  new m_demounting();
         $this->mounting_details =  new m_mounting_detail();
+        $this->demounting_details =  new m_demounting_detail();
         $this->mounting_photos =  new m_mounting_photo();
+        $this->demounting_photos =  new m_demounting_photo();
         $this->vehicles =  new m_vehicle();
         $this->vehicle_types =  new m_vehicle_type();
         $this->vehicle_brands =  new m_vehicle_brand();
@@ -64,7 +73,9 @@ class Mounting extends BaseController
     public function get_saved_data($id)
     {
         $data["mounting"] = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+        $data["demounting"] = @$this->demountings->where(["is_deleted" => 0, "mounting_id" => $id])->findAll()[0];
         $data["mounting_details"] = @$this->mounting_details->where(["is_deleted" => 0, "mounting_id" => $id])->findAll();
+        $data["demounting_details"] = @$this->demounting_details->where(["is_deleted" => 0, "demounting_id" => @$data["demounting"]->id])->findAll();
         $data["vehicle"] = $this->vehicles->where(["is_deleted" => "0", "id" => $data["mounting"]->vehicle_id])->findAll()[0];
         $data["tires_map"] = $this->get_tires_map($data["vehicle"]->vehicle_type_id);
         $data["vehicle_type"] = $this->vehicle_types->where(["is_deleted" => "0", "id" => $data["vehicle"]->vehicle_type_id])->findAll()[0]->name;

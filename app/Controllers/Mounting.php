@@ -86,6 +86,12 @@ class Mounting extends BaseController
                 $data["mounting_details"][$key]->tire_position = @$this->tire_positions->where(["is_deleted" => 0, "id" => $mounting_detail->tire_position_id])->findAll()[0];
             }
 
+        if (isset($data["demounting_details"]))
+            foreach ($data["demounting_details"] as $key => $demounting_detail) {
+                $data["demounting_details"][$key]->tire_type = @$this->tire_types->where(["is_deleted" => 0, "id" => $demounting_detail->tire_type_id])->findAll()[0];
+                $data["demounting_details"][$key]->tire_position = @$this->tire_positions->where(["is_deleted" => 0, "id" => $demounting_detail->tire_position_id])->findAll()[0];
+            }
+
         return $data;
     }
 
@@ -170,30 +176,39 @@ class Mounting extends BaseController
     public function saving_data($masterdetail = "master", $id = null)
     {
         if ($masterdetail == "master" || $masterdetail == "demounting") {
-            $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $this->request->getPost("vehicle_id")])->findAll()[0];
+            if ($id > 0) $mounting = @$this->mountings->where(["is_deleted" => 0, "id" => $id])->findAll()[0];
+
+            if ($masterdetail == "master") $vehicle_id = $this->request->getPost("vehicle_id");
+            else $vehicle_id = $mounting->vehicle_id;
+
+            $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $vehicle_id])->findAll()[0];
             $customer = @$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0];
+            $notes = $this->request->getPost("notes");
+            if ($notes == "") $notes = $mounting->notes;
 
             $return  = [
-                "spk_no"                        => $this->request->getPost("spk_no"),
-                "spk_at"                        => $this->request->getPost("spk_at"),
                 "customer_id"                   => @$customer->id,
                 "customer_name"                 => @$customer->company_name,
-                "mounting_at"                   => $this->request->getPost("mounting_at"),
-                "vehicle_id"                    => $this->request->getPost("vehicle_id"),
-                "vehicle_registration_plate"    => $this->request->getPost("vehicle_registration_plate"),
-                "notes"                         => $this->request->getPost("notes"),
+                "vehicle_id"                    => $vehicle_id,
+                "vehicle_registration_plate"    => $vehicle->registration_plate,
+                "notes"                         => $notes,
             ];
 
             if ($masterdetail == "master")
                 $return = $return + [
-                    "mounting_at"                 => $this->request->getPost("mounting_at"),
+                    "spk_no"                    => $this->request->getPost("spk_no"),
+                    "spk_at"                    => $this->request->getPost("spk_at"),
+                    "mounting_at"               => $this->request->getPost("mounting_at"),
                 ];
 
-            if ($masterdetail == "demounting")
+            if ($masterdetail == "demounting") {
                 $return = $return + [
-                    "mounting_id"                   => $id,
-                    "demounting_at"                 => $this->request->getPost("mounting_at"),
+                    "mounting_id"               => $id,
+                    "spk_no"                    => @$mounting->spk_no,
+                    "spk_at"                    => @$mounting->spk_at,
+                    "demounting_at"             => @$mounting->mounting_at,
                 ];
+            }
 
             return $return;
         }

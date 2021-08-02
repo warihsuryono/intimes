@@ -169,10 +169,11 @@ class Mounting extends BaseController
 
     public function saving_data($masterdetail = "master", $id = null)
     {
-        if ($masterdetail == "master") {
+        if ($masterdetail == "master" || $masterdetail == "demounting") {
             $vehicle = @$this->vehicles->where(["is_deleted" => 0, "id" => $this->request->getPost("vehicle_id")])->findAll()[0];
             $customer = @$this->customers->where(["is_deleted" => 0, "id" => $vehicle->customer_id])->findAll()[0];
-            return  [
+
+            $return  = [
                 "spk_no"                        => $this->request->getPost("spk_no"),
                 "spk_at"                        => $this->request->getPost("spk_at"),
                 "customer_id"                   => @$customer->id,
@@ -182,10 +183,23 @@ class Mounting extends BaseController
                 "vehicle_registration_plate"    => $this->request->getPost("vehicle_registration_plate"),
                 "notes"                         => $this->request->getPost("notes"),
             ];
+
+            if ($masterdetail == "master")
+                $return = $return + [
+                    "mounting_at"                 => $this->request->getPost("mounting_at"),
+                ];
+
+            if ($masterdetail == "demounting")
+                $return = $return + [
+                    "mounting_id"                   => $id,
+                    "demounting_at"                 => $this->request->getPost("mounting_at"),
+                ];
+
+            return $return;
         }
-        if ($masterdetail == "detail")
-            return [
-                "mounting_id"       => $id,
+
+        if ($masterdetail == "detail" || $masterdetail == "demounting_detail") {
+            $return =  [
                 "tire_id"           => $this->request->getPost("tire_id"),
                 "code"              => $this->request->getPost("tire_qr_code"),
                 "tire_type_id"      => $this->request->getPost("tire_type_id"),
@@ -194,10 +208,27 @@ class Mounting extends BaseController
                 "tire_brand_id"     => $this->request->getPost("tire_brand_id"),
                 "tire_pattern_id"   => $this->request->getPost("tire_pattern_id"),
                 "km"                => $this->request->getPost("km"),
-                "otd"               => $this->request->getPost("otd"),
-                "price"             => 0,
                 "remark"            => $this->request->getPost("remark"),
             ];
+
+            if ($masterdetail == "detail")
+                $return = $return +  [
+                    "mounting_id"       => $id,
+                    "otd"               => $this->request->getPost("otd"),
+                    "price"             => 0,
+                ];
+
+            if ($masterdetail == "demounting_detail")
+                $return = $return +  [
+                    "demounting_id"       => $id,
+                    "rtd1"              => $this->request->getPost("rtd1"),
+                    "rtd2"              => $this->request->getPost("rtd2"),
+                    "rtd3"              => $this->request->getPost("rtd3"),
+                    "rtd4"              => $this->request->getPost("rtd4"),
+                ];
+
+            return $return;
+        }
     }
 
     public function add($id = 0, $page = 1)
@@ -240,6 +271,23 @@ class Mounting extends BaseController
                     return redirect()->to(base_url() . '/mounting/add/' . $id);
                 else
                     $this->session->setFlashdata("flash_message", ["error", "Failed adding Mounting detail"]);
+            }
+
+            if ($this->request->getPost("save_mode") == "demounting") {
+                $demounting = @$this->demountings->where(["is_deleted" => 0, "mounting_id" => $id])->findAll()[0];
+                if (@$demounting->id > 0)
+                    $demounting_id = $demounting->id;
+                else {
+                    $this->demountings->save($this->saving_data("demounting", $id) + $this->created_values() + $this->updated_values());
+                    $demounting_id = $this->demountings->insertID();
+                    $demounting = @$this->demountings->find($demounting_id);
+                }
+
+                $demounting_detail = $this->saving_data("demounting_detail", $demounting_id) + $this->created_values() + $this->updated_values();
+                if ($this->demounting_details->save($demounting_detail))
+                    return redirect()->to(base_url() . '/mounting/add/' . $id);
+                else
+                    $this->session->setFlashdata("flash_message", ["error", "Failed adding Demounting detail"]);
             }
         }
 

@@ -118,7 +118,20 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <label>OTD</label><?= $_form->input("otd"); ?>
+                                                <label>OTD (Mounting Only)</label><?= $_form->input("otd"); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>RTD 1,2,3,4 (Demounting Only)</label>
+                                                <div class="input-group">
+                                                    <?= $_form->input("rtd1"); ?>
+                                                    <?= $_form->input("rtd2"); ?>
+                                                    <?= $_form->input("rtd3"); ?>
+                                                    <?= $_form->input("rtd4"); ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +205,7 @@
                                         <th>Type</th>
                                         <th>Position</th>
                                         <th>KM</th>
-                                        <th>OTD</th>
+                                        <th>RTD</th>
                                         <th>Remark</th>
                                     </tr>
                                 </thead>
@@ -212,7 +225,7 @@
                                             <td><?= $demounting_detail->tire_type->name; ?></td>
                                             <td><?= $demounting_detail->tire_position->name; ?> (<?= $demounting_detail->tire_position->code; ?>)</td>
                                             <td><?= $demounting_detail->km; ?></td>
-                                            <td><?= $demounting_detail->otd; ?></td>
+                                            <td><?= $demounting_detail->rtd1; ?>, <?= $demounting_detail->rtd2; ?>, <?= $demounting_detail->rtd3; ?>, <?= $demounting_detail->rtd4; ?></td>
                                             <td><?= $demounting_detail->remark; ?></td>
                                         </tr>
                                     <?php endforeach ?>

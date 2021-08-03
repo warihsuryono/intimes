@@ -20,9 +20,17 @@
                                         </label>
                                         <input onchange="loadPhoto(this);" type="file" capture="camera" name='takephoto' id='takephoto' style='display:none;'>
                                         <div id="photos">
-                                            <?php foreach ($mounting_photos as $mounting_photo) : ?>
-                                                <?= "<img style='margin:10px;' height='200' src='" . base_url() . "/dist/upload/mountings/" . $mounting_photo->filename . "'>"; ?>
-                                            <?php endforeach ?>
+                                            <?php if ($_mode == "mounting") : ?>
+                                                <?php foreach ($mounting_photos as $mounting_photo) : ?>
+                                                    <?= "<img style='margin:10px;' height='200' src='" . base_url() . "/dist/upload/mountings/" . $mounting_photo->filename . "'>"; ?>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+
+                                            <?php if ($_mode == "demounting") : ?>
+                                                <?php foreach ($demounting_photos as $demounting_photo) : ?>
+                                                    <?= "<img style='margin:10px;' height='200' src='" . base_url() . "/dist/upload/demountings/" . $demounting_photo->filename . "'>"; ?>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
                                         </div>
                                     </div>
                                 </div>
@@ -44,13 +52,13 @@
             reader.onload = function(e) {
                 $.ajax({
                     type: 'PUT',
-                    url: '<?= base_url(); ?>/mounting/put_photo/<?= $id; ?>',
+                    url: '<?= base_url(); ?>/mounting/put_photo/<?= $id; ?>/<?= $_mode; ?>',
                     data: e.target.result
                 }).done(function(result) {
                     var photos = JSON.parse(result);
                     imgs = "";
                     for (var ii = 0; ii < photos.length; ii++) {
-                        imgs = imgs + "<img style='margin:10px;' height='200' src='<?= base_url(); ?>/dist/upload/mountings/" + photos[ii].filename + "'>";
+                        imgs = imgs + "<img style='margin:10px;' height='200' src='<?= base_url(); ?>/dist/upload/<?= $_mode; ?>s/" + photos[ii].filename + "'>";
                     }
                     $("#photos").html(imgs);
                 });
@@ -67,7 +75,7 @@
             $("#btnSave").prop('disabled', true);
             $.ajax({
                 type: 'PUT',
-                url: '<?= base_url(); ?>/mounting/delete_photo',
+                url: '<?= base_url(); ?>/<?= $_mode; ?>/delete_photo',
                 data: filename
             }).done(function(result) {
                 document.getElementById('img_' + document.getElementById("beforeafter").value + '[' + ii + ']').src = "";

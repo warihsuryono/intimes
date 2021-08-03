@@ -176,7 +176,7 @@
                                                 <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/photos/<?= $mounting_detail->id; ?>">
                                                     <i class="fa fa-camera"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting_detail->id; ?>);">
+                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $mounting_detail->id; ?>,'mounting');">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -214,10 +214,10 @@
                                     <?php foreach ($demounting_details as $key => $demounting_detail) : ?>
                                         <tr>
                                             <td>
-                                                <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/demounting/photos/<?= $demounting_detail->id; ?>">
+                                                <a class="btn btn-info btn-sm" href="<?= base_url(); ?>/mounting/photos/<?= $demounting_detail->id; ?>/demounting">
                                                     <i class="fa fa-camera"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $demounting_detail->id; ?>);">
+                                                <a class="btn btn-danger btn-sm" href="#" onclick="delete_confirmation(<?= $demounting_detail->id; ?>,'demounting');">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -257,11 +257,15 @@
             document.getElementById("tires_map").style.height = "700px";
 
 
-        function delete_confirmation(id) {
-            $('#modal_title').html('Delete Mounting');
+        function delete_confirmation(id, mode) {
+            mode = mode || "mounting";
+            if (mode == "mounting")
+                $('#modal_title').html('Delete Mounting');
+            if (mode == "demounting")
+                $('#modal_title').html('Delete Demounting');
             $('#modal_message').html('Are you sure want to delete this data?');
             $('#modal_type').attr("class", 'modal-content bg-danger');
-            $('#modal_ok_link').attr("href", '<?= base_url(); ?>/mounting/delete_detail/' + id);
+            $('#modal_ok_link').attr("href", '<?= base_url(); ?>/mounting/delete_detail/' + id + '/' + mode);
             $('#modal-form').modal();
         }
 

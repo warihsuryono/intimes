@@ -5,7 +5,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <form role="form" id="mainform" method="POST">
-                        <?= $_form->hidden("saving_page_1"); ?>
+                        <?= $_form->hidden("saving_page_1", "1"); ?>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-4">

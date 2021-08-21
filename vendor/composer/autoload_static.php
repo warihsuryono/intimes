@@ -18,6 +18,10 @@ class ComposerStaticInit44b6d8e51e53d8e61f82b587dc444667
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'm' => 
+        array (
+            'monken\\' => 7,
+        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
@@ -61,6 +65,10 @@ class ComposerStaticInit44b6d8e51e53d8e61f82b587dc444667
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'monken\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monken/cli-create/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -119,6 +127,7 @@ class ComposerStaticInit44b6d8e51e53d8e61f82b587dc444667
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/AssertionFailedError.php',

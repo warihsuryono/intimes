@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c49469ea6df972381be63807c7e127d",
+    "content-hash": "7f288710211219b39ecd3f12e1f80459",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -226,6 +226,52 @@
                 }
             ],
             "time": "2020-05-20T16:45:56+00:00"
+        },
+        {
+            "name": "monken/cli-create",
+            "version": "v0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/monkenWu/CodeIgniter4_CLI-Create.git",
+                "reference": "fed7013dd3b2038aad27b3ea12cc647d0cd88d91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/monkenWu/CodeIgniter4_CLI-Create/zipball/fed7013dd3b2038aad27b3ea12cc647d0cd88d91",
+                "reference": "fed7013dd3b2038aad27b3ea12cc647d0cd88d91",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "monken\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "monkenWu",
+                    "email": "610877102@mail.nknu.edu.tw"
+                }
+            ],
+            "description": "Cli-Create is based on CodeIgniter4. It will help you generate template files more quickly when developing projects with CodeIgniter4.",
+            "keywords": [
+                "cli",
+                "codeigniter",
+                "codeigniter4",
+                "create"
+            ],
+            "support": {
+                "issues": "https://github.com/monkenWu/CodeIgniter4_CLI-Create/issues",
+                "source": "https://github.com/monkenWu/CodeIgniter4_CLI-Create/tree/v0.3.1"
+            },
+            "time": "2020-05-30T08:05:22+00:00"
         },
         {
             "name": "psr/log",
@@ -1888,5 +1934,5 @@
         "php": ">=7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }
